@@ -1,0 +1,63 @@
+version: "3.9"
+services:
+  email:
+    image: "maildev/maildev"
+    ports:
+      - "8082:1080"
+
+  db:
+    image: "postgres:13.5-alpine"
+    environment:
+      POSTGRES_DB: refueling
+      POSTGRES_USER: refueling
+      POSTGRES_PASSWORD: refueling123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgre_refueling_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: "dpage/pgadmin4"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@domain.com
+      PGADMIN_DEFAULT_PASSWORD: refueling123
+    ports:
+      - "8083:80"
+    depends_on:
+      - db
+
+  backend:
+    image: "refueling-log-backend:latest"
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      PORT: 8080
+      TOKEN_SIGN_KEY: "somesecrettoken"
+      DATABASE_PASSWORD: "refueling123"
+      DATABASE_USER: "refueling"
+      DATABASE: "refueling"
+      DATABASE_HOST: "db"
+      DATABASE_PORT: 5432
+      DATABASE_LOGGING: "true"
+      EMAIL_HOST: email
+      EMAIL_PORT: 1025
+      EMAIL_USER:
+      EMAIL_PASS:
+      EMAIL_FROM: test@noreply.com
+    depends_on:
+      - db
+      - email
+
+  frontend:
+    image: "refueling-log-frontend:latest"
+    restart: always
+    ports:
+      - "8081:80"
+    environment:
+      NGINX_PORT: 80
+    depends_on:
+      - backend
+
+volumes:
+  postgre_refueling_data:

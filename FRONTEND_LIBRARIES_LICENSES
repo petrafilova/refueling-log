@@ -1,0 +1,14 @@
+name                         installed version  author                                                         license type  link
+----                         -----------------  ------                                                         ------------  ----
+@testing-library/jest-dom    5.16.3             Ernesto Garcia gnapse@gmail.com http://gnapse.github.io        MIT           git+https://github.com/testing-library/jest-dom.git
+@testing-library/react       12.1.4             Kent C. Dodds me@kentcdodds.com https://kentcdodds.com         MIT           git+https://github.com/testing-library/react-testing-library.git
+@testing-library/user-event  13.5.0             Giorgio Polvara polvara@gmail.com                              MIT           git+https://github.com/testing-library/user-event.git
+@types/jest                  27.4.1                                                                            MIT           https://github.com/DefinitelyTyped/DefinitelyTyped.git
+@types/node                  16.11.26                                                                          MIT           https://github.com/DefinitelyTyped/DefinitelyTyped.git
+@types/react                 17.0.43                                                                           MIT           https://github.com/DefinitelyTyped/DefinitelyTyped.git
+@types/react-dom             17.0.14                                                                           MIT           https://github.com/DefinitelyTyped/DefinitelyTyped.git
+react                        18.0.0                                                                            MIT           git+https://github.com/facebook/react.git
+react-dom                    18.0.0                                                                            MIT           git+https://github.com/facebook/react.git
+react-scripts                5.0.0                                                                             MIT           git+https://github.com/facebook/create-react-app.git
+typescript                   4.6.3              Microsoft Corp.                                                Apache-2.0    https://github.com/Microsoft/TypeScript.git
+web-vitals                   2.1.4              Philip Walton philip@philipwalton.com http://philipwalton.com  Apache-2.0    git+https://github.com/GoogleChrome/web-vitals.git
