@@ -233,6 +233,7 @@ export const updatePassword = (
         });
 };
 
+// TODO allow delete user and cascade delete all his data
 export const deleteAccount = (
     req: Request,
     res: Response,

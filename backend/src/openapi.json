@@ -314,6 +314,9 @@
                     "401": {
                         "$ref": "#/components/responses/UnauthorizedError"
                     },
+                    "409": {
+                        "$ref": "#/components/responses/ConstraintError"
+                    },
                     "422": {
                         "$ref": "#/components/responses/UnprocessableEntity"
                     },
@@ -402,6 +405,9 @@
                     "404": {
                         "$ref": "#/components/responses/NotFound"
                     },
+                    "409": {
+                        "$ref": "#/components/responses/ConstraintError"
+                    },
                     "422": {
                         "$ref": "#/components/responses/UnprocessableEntity"
                     },
@@ -468,6 +474,9 @@
                     },
                     "401": {
                         "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/ConstraintError"
                     },
                     "500": {
                         "$ref": "#/components/responses/InternalServerError"
@@ -594,6 +603,9 @@
                     "404": {
                         "$ref": "#/components/responses/NotFound"
                     },
+                    "409": {
+                        "$ref": "#/components/responses/ConstraintError"
+                    },
                     "422": {
                         "$ref": "#/components/responses/UnprocessableEntity"
                     },
@@ -624,6 +636,9 @@
                     },
                     "404": {
                         "$ref": "#/components/responses/NotFound"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/ConstraintError"
                     },
                     "422": {
                         "$ref": "#/components/responses/UnprocessableEntity"
@@ -754,6 +769,9 @@
                     },
                     "404": {
                         "$ref": "#/components/responses/NotFound"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/ConstraintError"
                     },
                     "422": {
                         "$ref": "#/components/responses/UnprocessableEntity"
@@ -963,6 +981,9 @@
                     "404": {
                         "$ref": "#/components/responses/NotFound"
                     },
+                    "409": {
+                        "$ref": "#/components/responses/ConstraintError"
+                    },
                     "422": {
                         "$ref": "#/components/responses/UnprocessableEntity"
                     },
@@ -1128,6 +1149,9 @@
                     "401": {
                         "$ref": "#/components/responses/UnauthorizedError"
                     },
+                    "409": {
+                        "$ref": "#/components/responses/ConstraintError"
+                    },
                     "422": {
                         "$ref": "#/components/responses/UnprocessableEntity"
                     },
@@ -1178,6 +1202,9 @@
                     "404": {
                         "$ref": "#/components/responses/NotFound"
                     },
+                    "409": {
+                        "$ref": "#/components/responses/ConstraintError"
+                    },
                     "422": {
                         "$ref": "#/components/responses/UnprocessableEntity"
                     },
@@ -1208,6 +1235,9 @@
                     },
                     "404": {
                         "$ref": "#/components/responses/NotFound"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/ConstraintError"
                     },
                     "422": {
                         "$ref": "#/components/responses/UnprocessableEntity"
@@ -2294,7 +2324,7 @@
                 }
             },
             "ConstraintError": {
-                "description": "Constraint is missing or duplicate id provided.",
+                "description": "Constraint or duplicity error.",
                 "content": {
                     "application/json": {
                         "schema": {

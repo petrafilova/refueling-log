@@ -92,6 +92,7 @@ export const updateExpensesType = async (
     }
 };
 
+// TODO check if don't allow delete if in use
 export const deleteExpensesType = (
     req: Request,
     res: Response,

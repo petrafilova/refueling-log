@@ -4,6 +4,7 @@ import {
     Column,
     DataType,
     ForeignKey,
+    Index,
     Model,
     Table,
 } from 'sequelize-typescript';
@@ -28,6 +29,10 @@ class VehicleFuel extends Model<
     VehicleFuelCreationAttributes
 > {
     @AllowNull(false)
+    @Index({
+        name: 'unique-vehicle-fuel',
+        unique: true,
+    })
     @Column({
         type: DataType.ENUM(
             'GASOLINE',
@@ -41,6 +46,10 @@ class VehicleFuel extends Model<
     fuel: 'GASOLINE' | 'DIESEL' | 'LPG' | 'CNG' | 'HYDROGEN' | 'ELECTRICITY';
 
     @AllowNull(false)
+    @Index({
+        name: 'unique-vehicle-fuel',
+        unique: true,
+    })
     @ForeignKey(() => Vehicle)
     @Column
     vehicleId: number;

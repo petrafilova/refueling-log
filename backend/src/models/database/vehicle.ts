@@ -5,6 +5,7 @@ import {
     DataType,
     DefaultScope,
     ForeignKey,
+    Index,
     HasMany,
     Model,
     Scopes,
@@ -53,6 +54,10 @@ class Vehicle extends Model<VehicleAttributes, VehicleCreationAttributes> {
     model: string;
 
     @AllowNull(false)
+    @Index({
+        name: 'unique-vehicle',
+        unique: true,
+    })
     @Column({
         type: DataType.STRING(10),
     })
@@ -71,12 +76,20 @@ class Vehicle extends Model<VehicleAttributes, VehicleCreationAttributes> {
     color: string;
 
     @AllowNull
+    @Index({
+        name: 'unique-vehicle',
+        unique: true,
+    })
     @Column({
         type: DataType.STRING(17),
     })
     vin: string;
 
     @AllowNull(false)
+    @Index({
+        name: 'unique-vehicle',
+        unique: true,
+    })
     @ForeignKey(() => User)
     @Column
     username: string;

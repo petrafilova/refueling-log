@@ -100,6 +100,7 @@ export const updateVehicleFuel = (
         });
 };
 
+// TODO check if don't allow delete if used
 export const deleteVehicleFuel = (
     req: Request,
     res: Response,

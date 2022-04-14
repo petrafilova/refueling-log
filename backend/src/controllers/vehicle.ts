@@ -123,6 +123,7 @@ export const updateVehicle = async (
     }
 };
 
+// TODO allow delete vehicle and cascade remove all data
 export const deleteVehicle = (
     req: Request,
     res: Response,
