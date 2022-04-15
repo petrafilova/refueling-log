@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import jwt, { JsonWebTokenError, JwtPayload, NotBeforeError, TokenExpiredError } from 'jsonwebtoken';
 import CustomError from '../models/customError';
 import { CUSTOM_ERROR_CODES } from '../models/errorCodes';
 
@@ -29,6 +29,18 @@ const isRefresh = (req: Request, res: Response, next: NextFunction) => {
         req.username = decodedToken.username;
         next();
     } catch (err) {
+        if (err instanceof TokenExpiredError) {
+            const error = new CustomError(err.message);
+            error.code = CUSTOM_ERROR_CODES.EXPIRED_TOKEN;
+            error.statusCode = 401;
+            throw error;
+        }
+        if (err instanceof JsonWebTokenError || err instanceof NotBeforeError) {
+            const error = new CustomError(err.message);
+            error.code = CUSTOM_ERROR_CODES.INVALID_TOKEN;
+            error.statusCode = 401;
+            throw error;
+        }
         throw err;
     }
 };

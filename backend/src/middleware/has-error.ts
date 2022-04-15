@@ -3,7 +3,7 @@ import CustomError from '../models/customError';
 import { CUSTOM_ERROR_CODES } from '../models/errorCodes';
 
 const hasError = (
-    error: CustomError,
+    error: Error,
     req: Request,
     res: Response,
     /* eslint-disable */ next: NextFunction

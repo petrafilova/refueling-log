@@ -1589,7 +1589,9 @@
                             "ACCOUNT_DOESNT_EXIST",
                             "UNABLE_TO_SENT_REG_EMAIL",
                             "EMAIL_IN_USE",
-                            "CONSTRAINT_FAILED"
+                            "CONSTRAINT_FAILED",
+                            "EXPIRED_TOKEN",
+                            "INVALID_TOKEN"
                         ]
                     },
                     "data": {
