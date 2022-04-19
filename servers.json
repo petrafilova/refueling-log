@@ -1,0 +1,13 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "refueling",
+      "Group": "Servers",
+      "Port": 5432,
+      "Username": "refueling",
+      "Host": "db",
+      "SSLMode": "disable",
+      "MaintenanceDB": "refueling"
+    }
+  }
+}
