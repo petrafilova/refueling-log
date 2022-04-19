@@ -1,52 +1,58 @@
-version: "3.9"
+version: '3.9'
 services:
-  email:
-    image: "maildev/maildev"
-    ports:
-      - "8082:1080"
+    email:
+        image: 'maildev/maildev'
+        ports:
+            - '8082:1080'
 
-  db:
-    image: "postgres:13.5-alpine"
-    environment:
-      POSTGRES_DB: refueling
-      POSTGRES_USER: refueling
-      POSTGRES_PASSWORD: refueling123
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgre_refueling_data:/var/lib/postgresql/data
+    db:
+        image: 'postgres:13.5-alpine'
+        environment:
+            POSTGRES_DB: refueling
+            POSTGRES_USER: refueling
+            POSTGRES_PASSWORD: refueling123
+        ports:
+            - '5432:5432'
+        volumes:
+            - postgre_refueling_data:/var/lib/postgresql/data
 
-  pgadmin:
-    image: "dpage/pgadmin4"
-    environment:
-      PGADMIN_DEFAULT_EMAIL: refueling@refueling.com
-      PGADMIN_DEFAULT_PASSWORD: refueling123
-    ports:
-      - "8083:80"
-    depends_on:
-      - db
+    pgadmin:
+        image: 'dpage/pgadmin4'
+        environment:
+            PGADMIN_DEFAULT_EMAIL: refueling@refueling.com
+            PGADMIN_DEFAULT_PASSWORD: refueling123
+            PGADMIN_CONFIG_SERVER_MODE: 'False'
+            MASTER_PASSWORD_REQUIRED: 'False'
+        ports:
+            - '8083:80'
+        volumes:
+            - ./servers.json:/pgadmin4/servers.json
+            - pgadmin_data:/var/lib/pgadmin
+        depends_on:
+            - db
 
-  backend:
-    image: "refueling-log-backend:latest"
-    restart: always
-    ports:
-      - "8080:8080"
-    environment:
-      PORT: 8080
-      DATABASE_PASSWORD: refueling123
-      DATABASE_USER: refueling
-      DATABASE: refueling
-      DATABASE_HOST: db
-      DATABASE_PORT: 5432
-      DATABASE_LOGGING: true
-      EMAIL_HOST: email
-      EMAIL_PORT: 1025
-      EMAIL_USER:
-      EMAIL_PASS:
-      EMAIL_FROM: test@noreply.com
-    depends_on:
-      - db
-      - email
+    backend:
+        image: 'refueling-log-backend:latest'
+        restart: always
+        ports:
+            - '8080:8080'
+        environment:
+            PORT: 8080
+            DATABASE_PASSWORD: refueling123
+            DATABASE_USER: refueling
+            DATABASE: refueling
+            DATABASE_HOST: db
+            DATABASE_PORT: 5432
+            DATABASE_LOGGING: true
+            EMAIL_HOST: email
+            EMAIL_PORT: 1025
+            EMAIL_USER:
+            EMAIL_PASS:
+            EMAIL_FROM: test@noreply.com
+        depends_on:
+            - db
+            - email
 
 volumes:
-  postgre_refueling_data:
+    postgre_refueling_data:
+    pgadmin_data:
