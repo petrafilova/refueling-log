@@ -64,7 +64,7 @@ export const refreshToken = (
                 confirmed: true,
             },
         })
-        .then(async (user) => {
+        .then((user) => {
             if (!user) {
                 const error = new CustomError();
                 error.code = CUSTOM_ERROR_CODES.INVALID_CREDENTIALS;
@@ -224,8 +224,9 @@ export const updatePassword = (
                 throw error;
             }
 
-            user.password = newPassword;
-            await user.save();
+            await user.update({
+                password: newPassword
+            });
             res.status(204).send();
         })
         .catch((err) => {

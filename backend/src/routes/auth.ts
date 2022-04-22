@@ -58,7 +58,7 @@ router.post(
 
 router.post(
     '/confirm/:uuid',
-    [param('uuid').trim().escape().isUUID('4')],
+    [param('uuid').trim().escape().isUUID('4').notEmpty()],
     validationError,
     authController.confirmAccount
 );
