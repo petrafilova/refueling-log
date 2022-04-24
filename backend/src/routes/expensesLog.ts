@@ -4,6 +4,7 @@ import { body, param } from 'express-validator';
 import validationError from '../middleware/validationError';
 import * as expensesLogController from '../controllers/expensesLog';
 import isAuth from '../middleware/is-auth';
+import { ALL_SORTS, SORT_ORDER } from '../models/sortOrderEnum';
 
 const router = express.Router();
 
@@ -11,11 +12,11 @@ router.post(
     '/byVehicle/:vehicleId',
     isAuth,
     [
-        param('vehicleId').isInt(),
-        body('page').default(0).isInt(),
-        body('pageSize').default(10).isInt(),
-        body('order').default('DESC').isIn(['DESC', 'ASC']),
-        body('typeId').optional({ nullable: true }).isInt(),
+        param('vehicleId').isInt({ min: 1, allow_leading_zeroes: false }),
+        body('page').default(0).isInt({ min: 0, allow_leading_zeroes: false }),
+        body('pageSize').default(10).isInt({ min: 1, allow_leading_zeroes: false }),
+        body('order').default(SORT_ORDER.DESC).isIn(ALL_SORTS),
+        body('typeId').optional({ nullable: true }).isInt({ min: 1, allow_leading_zeroes: false }),
     ],
     validationError,
     expensesLogController.getByVehicle
@@ -24,7 +25,7 @@ router.post(
 router.get(
     '/:expensesLogId',
     isAuth,
-    [param('expensesLogId').isInt()],
+    [param('expensesLogId').isInt({ min: 1, allow_leading_zeroes: false })],
     validationError,
     expensesLogController.getById
 );
@@ -33,12 +34,12 @@ router.post(
     '/',
     isAuth,
     [
-        body('price').isDecimal(),
-        body('mileage').isDecimal(),
+        body('price').isFloat({min: 0}),
+        body('mileage').isFloat({min: 0}),
         body('dateTime').isISO8601({strict: true, strictSeparator: true}),
         body('comment').optional({ nullable: true }).trim().escape().isString(),
-        body('typeId').isInt(),
-        body('vehicleId').isInt(),
+        body('typeId').isInt({ min: 1, allow_leading_zeroes: false }),
+        body('vehicleId').isInt({ min: 1, allow_leading_zeroes: false }),
     ],
     validationError,
     expensesLogController.createExpensesLog
@@ -48,13 +49,13 @@ router.put(
     '/:expensesLogId',
     isAuth,
     [
-        param('expensesLogId').isInt(),
-        body('price').isDecimal(),
-        body('mileage').isDecimal(),
+        param('expensesLogId').isInt({ min: 1, allow_leading_zeroes: false }),
+        body('price').isFloat({min: 0}),
+        body('mileage').isFloat({min: 0}),
         body('dateTime').isISO8601({strict: true, strictSeparator: true}),
         body('comment').optional({ nullable: true }).trim().escape().isString(),
-        body('typeId').isInt(),
-        body('vehicleId').isInt(),
+        body('typeId').isInt({ min: 1, allow_leading_zeroes: false }),
+        body('vehicleId').isInt({ min: 1, allow_leading_zeroes: false }),
     ],
     validationError,
     expensesLogController.updateExpensesLog
@@ -63,7 +64,7 @@ router.put(
 router.delete(
     '/:expensesLogId',
     isAuth,
-    [param('expensesLogId').isInt()],
+    [param('expensesLogId').isInt({ min: 1, allow_leading_zeroes: false })],
     validationError,
     expensesLogController.deleteExpensesLog
 );

@@ -4,13 +4,14 @@ import { body, param } from 'express-validator';
 import validationError from '../middleware/validationError';
 import * as vehicleFuelController from '../controllers/vehicleFuel';
 import isAuth from '../middleware/is-auth';
+import { ALL_FUEL_TYPES } from '../models/fuelTypeEnum';
 
 const router = express.Router();
 
 router.get(
     '/byVehicle/:vehicleId',
     isAuth,
-    [param('vehicleId').isInt()],
+    [param('vehicleId').isInt({ min: 1, allow_leading_zeroes: false })],
     validationError,
     vehicleFuelController.getByVehicle
 );
@@ -18,7 +19,7 @@ router.get(
 router.get(
     '/:vehicleFuelId',
     isAuth,
-    [param('vehicleFuelId').isInt()],
+    [param('vehicleFuelId').isInt({ min: 1, allow_leading_zeroes: false })],
     validationError,
     vehicleFuelController.getById
 );
@@ -27,15 +28,8 @@ router.post(
     '/',
     isAuth,
     [
-        body('fuel').isIn([
-            'GASOLINE',
-            'DIESEL',
-            'LPG',
-            'CNG',
-            'HYDROGEN',
-            'ELECTRICITY',
-        ]),
-        body('vehicleId').isInt(),
+        body('fuel').isIn(ALL_FUEL_TYPES),
+        body('vehicleId').isInt({ min: 1, allow_leading_zeroes: false }),
     ],
     validationError,
     vehicleFuelController.createVehicleFuel
@@ -45,16 +39,9 @@ router.put(
     '/:vehicleFuelId',
     isAuth,
     [
-        param('vehicleFuelId').isInt(),
-        body('fuel').isIn([
-            'GASOLINE',
-            'DIESEL',
-            'LPG',
-            'CNG',
-            'HYDROGEN',
-            'ELECTRICITY',
-        ]),
-        body('vehicleId').isInt(),
+        param('vehicleFuelId').isInt({ min: 1, allow_leading_zeroes: false }),
+        body('fuel').isIn(ALL_FUEL_TYPES),
+        body('vehicleId').isInt({ min: 1, allow_leading_zeroes: false }),
     ],
     validationError,
     vehicleFuelController.updateVehicleFuel
@@ -63,7 +50,7 @@ router.put(
 router.delete(
     '/:vehicleFuelId',
     isAuth,
-    [param('vehicleFuelId').isInt()],
+    [param('vehicleFuelId').isInt({ min: 1, allow_leading_zeroes: false })],
     validationError,
     vehicleFuelController.deleteVehicleFuel
 );

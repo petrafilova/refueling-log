@@ -18,7 +18,7 @@ interface ExpenseLogAttributes {
     price: number;
     mileage: number;
     dateTime: Date;
-    comment: string;
+    comment: string | null;
     typeId: number;
     vehicleId: number;
 }

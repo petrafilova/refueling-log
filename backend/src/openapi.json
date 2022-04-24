@@ -335,7 +335,8 @@
                         "name": "vehicleId",
                         "schema": {
                             "type": "integer",
-                            "format": "int32"
+                            "format": "int32",
+                            "minimum": 1
                         },
                         "required": true
                     }
@@ -373,7 +374,8 @@
                         "name": "vehicleId",
                         "schema": {
                             "type": "integer",
-                            "format": "int32"
+                            "format": "int32",
+                            "minimum": 1
                         },
                         "required": true
                     }
@@ -424,7 +426,8 @@
                         "name": "vehicleId",
                         "schema": {
                             "type": "integer",
-                            "format": "int32"
+                            "format": "int32",
+                            "minimum": 1
                         },
                         "required": true
                     }
@@ -493,7 +496,8 @@
                         "name": "vehicleId",
                         "schema": {
                             "type": "integer",
-                            "format": "int32"
+                            "format": "int32",
+                            "minimum": 1
                         },
                         "required": true
                     }
@@ -533,7 +537,8 @@
                         "name": "vehicleFuelId",
                         "schema": {
                             "type": "integer",
-                            "format": "int32"
+                            "format": "int32",
+                            "minimum": 1
                         },
                         "required": true
                     }
@@ -571,7 +576,8 @@
                         "name": "vehicleFuelId",
                         "schema": {
                             "type": "integer",
-                            "format": "int32"
+                            "format": "int32",
+                            "minimum": 1
                         },
                         "required": true
                     }
@@ -622,7 +628,8 @@
                         "name": "vehicleFuelId",
                         "schema": {
                             "type": "integer",
-                            "format": "int32"
+                            "format": "int32",
+                            "minimum": 1
                         },
                         "required": true
                     }
@@ -700,7 +707,8 @@
                         "name": "fuelLogId",
                         "schema": {
                             "type": "integer",
-                            "format": "int32"
+                            "format": "int32",
+                            "minimum": 1
                         },
                         "required": true
                     }
@@ -738,7 +746,8 @@
                         "name": "fuelLogId",
                         "schema": {
                             "type": "integer",
-                            "format": "int32"
+                            "format": "int32",
+                            "minimum": 1
                         },
                         "required": true
                     }
@@ -789,7 +798,8 @@
                         "name": "fuelLogId",
                         "schema": {
                             "type": "integer",
-                            "format": "int32"
+                            "format": "int32",
+                            "minimum": 1
                         },
                         "required": true
                     }
@@ -822,7 +832,8 @@
                         "name": "vehicleFuelId",
                         "schema": {
                             "type": "integer",
-                            "format": "int32"
+                            "format": "int32",
+                            "minimum": 1
                         },
                         "required": true
                     }
@@ -911,7 +922,8 @@
                         "name": "expensesLogId",
                         "schema": {
                             "type": "integer",
-                            "format": "int32"
+                            "format": "int32",
+                            "minimum": 1
                         },
                         "required": true
                     }
@@ -949,7 +961,8 @@
                         "name": "expensesLogId",
                         "schema": {
                             "type": "integer",
-                            "format": "int32"
+                            "format": "int32",
+                            "minimum": 1
                         },
                         "required": true
                     }
@@ -1000,7 +1013,8 @@
                         "name": "expensesLogId",
                         "schema": {
                             "type": "integer",
-                            "format": "int32"
+                            "format": "int32",
+                            "minimum": 1
                         },
                         "required": true
                     }
@@ -1033,7 +1047,8 @@
                         "name": "vehicleId",
                         "schema": {
                             "type": "integer",
-                            "format": "int32"
+                            "format": "int32",
+                            "minimum": 1
                         },
                         "required": true
                     }
@@ -1170,7 +1185,8 @@
                         "name": "expensesTypeId",
                         "schema": {
                             "type": "integer",
-                            "format": "int32"
+                            "format": "int32",
+                            "minimum": 1
                         },
                         "required": true
                     }
@@ -1221,7 +1237,8 @@
                         "name": "expensesTypeId",
                         "schema": {
                             "type": "integer",
-                            "format": "int32"
+                            "format": "int32",
+                            "minimum": 1
                         },
                         "required": true
                     }
@@ -1257,7 +1274,8 @@
                         "name": "vehicleId",
                         "schema": {
                             "type": "integer",
-                            "format": "int32"
+                            "format": "int32",
+                            "minimum": 1
                         },
                         "required": true
                     }
@@ -1297,7 +1315,8 @@
                         "name": "vehicleId",
                         "schema": {
                             "type": "integer",
-                            "format": "int32"
+                            "format": "int32",
+                            "minimum": 1
                         },
                         "required": true
                     }
@@ -1359,7 +1378,8 @@
                         "name": "vehicleId",
                         "schema": {
                             "type": "integer",
-                            "format": "int32"
+                            "format": "int32",
+                            "minimum": 1
                         },
                         "required": true
                     }
@@ -1425,7 +1445,8 @@
                         "name": "vehicleId",
                         "schema": {
                             "type": "integer",
-                            "format": "int32"
+                            "format": "int32",
+                            "minimum": 1
                         },
                         "required": true
                     }
@@ -1492,17 +1513,51 @@
             }
         },
         "schemas": {
+            "ErrorTypeEnum": {
+                "type": "string",
+                "enum": [
+                    "GENERAL_ERROR",
+                    "DATABASE_ERROR",
+                    "NOT_FOUND",
+                    "VALIDATION_FAILED",
+                    "INVALID_CREDENTIALS",
+                    "UNIQUE_CONSTRAINT_ERROR",
+                    "ACCOUNT_DOESNT_EXIST",
+                    "UNABLE_TO_SENT_REG_EMAIL",
+                    "EMAIL_IN_USE",
+                    "CONSTRAINT_FAILED",
+                    "EXPIRED_TOKEN",
+                    "INVALID_TOKEN"
+                ]
+            },
+            "FuelTypeEnum": {
+                "type": "string",
+                "enum": [
+                    "GASOLINE",
+                    "DIESEL",
+                    "LPG",
+                    "CNG",
+                    "HYDROGEN",
+                    "ELECTRICITY"
+                ]
+            },
+            "SortOrderEnum": {
+                "type": "string",
+                "enum": ["ASC", "DESC"]
+            },
             "LoginRequest": {
                 "type": "object",
                 "required": ["username", "password"],
                 "properties": {
                     "username": {
                         "type": "string",
+                        "minLength": 1,
                         "maxLength": 50
                     },
                     "password": {
                         "type": "string",
                         "format": "password",
+                        "minLength": 1,
                         "maxLength": 250
                     }
                 }
@@ -1526,6 +1581,7 @@
                     "email": {
                         "type": "string",
                         "format": "email",
+                        "minLength": 6,
                         "maxLength": 320
                     }
                 }
@@ -1536,12 +1592,14 @@
                 "properties": {
                     "username": {
                         "type": "string",
+                        "minLength": 1,
                         "maxLength": 50,
                         "description": "Username of user"
                     },
                     "password": {
                         "type": "string",
                         "format": "password",
+                        "minLength": 1,
                         "maxLength": 250,
                         "description": "Old password to verify this user"
                     },
@@ -1559,10 +1617,12 @@
                 "required": ["token", "refreshToken", "username"],
                 "properties": {
                     "token": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "bearer"
                     },
                     "refreshToken": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "bearer"
                     },
                     "username": {
                         "type": "string",
@@ -1578,21 +1638,7 @@
                         "type": "string"
                     },
                     "code": {
-                        "type": "string",
-                        "enum": [
-                            "GENERAL_ERROR",
-                            "DATABASE_ERROR",
-                            "NOT_FOUND",
-                            "VALIDATION_FAILED",
-                            "INVALID_CREDENTIALS",
-                            "UNIQUE_CONSTRAINT_ERROR",
-                            "ACCOUNT_DOESNT_EXIST",
-                            "UNABLE_TO_SENT_REG_EMAIL",
-                            "EMAIL_IN_USE",
-                            "CONSTRAINT_FAILED",
-                            "EXPIRED_TOKEN",
-                            "INVALID_TOKEN"
-                        ]
+                        "$ref": "#/components/schemas/ErrorTypeEnum"
                     },
                     "data": {
                         "type": "array",
@@ -1618,18 +1664,22 @@
                 "properties": {
                     "id": {
                         "type": "integer",
-                        "format": "int32"
+                        "format": "int32",
+                        "minimum": 1
                     },
                     "brand": {
                         "type": "string",
+                        "minLength": 1,
                         "maxLength": 20
                     },
                     "model": {
                         "type": "string",
+                        "minLength": 1,
                         "maxLength": 60
                     },
                     "licensePlateNo": {
                         "type": "string",
+                        "minLength": 1,
                         "maxLength": 10
                     }
                 }
@@ -1640,14 +1690,17 @@
                 "properties": {
                     "brand": {
                         "type": "string",
+                        "minLength": 1,
                         "maxLength": 20
                     },
                     "model": {
                         "type": "string",
+                        "minLength": 1,
                         "maxLength": 60
                     },
                     "licensePlateNo": {
                         "type": "string",
+                        "minLength": 1,
                         "maxLength": 10
                     },
                     "dateOfReg": {
@@ -1674,18 +1727,22 @@
                 "properties": {
                     "id": {
                         "type": "integer",
-                        "format": "int32"
+                        "format": "int32",
+                        "minimum": 1
                     },
                     "brand": {
                         "type": "string",
+                        "minLength": 1,
                         "maxLength": 20
                     },
                     "model": {
                         "type": "string",
+                        "minLength": 1,
                         "maxLength": 60
                     },
                     "licensePlateNo": {
                         "type": "string",
+                        "minLength": 1,
                         "maxLength": 10
                     },
                     "dateOfReg": {
@@ -1719,18 +1776,11 @@
                 "properties": {
                     "id": {
                         "type": "integer",
-                        "format": "int32"
+                        "format": "int32",
+                        "minimum": 1
                     },
                     "fuel": {
-                        "type": "string",
-                        "enum": [
-                            "GASOLINE",
-                            "DIESEL",
-                            "LPG",
-                            "CNG",
-                            "HYDROGEN",
-                            "ELECTRICITY"
-                        ]
+                        "$ref": "#/components/schemas/FuelTypeEnum"
                     }
                 }
             },
@@ -1740,22 +1790,16 @@
                 "properties": {
                     "id": {
                         "type": "integer",
-                        "format": "int32"
+                        "format": "int32",
+                        "minimum": 1
                     },
                     "fuel": {
-                        "type": "string",
-                        "enum": [
-                            "GASOLINE",
-                            "DIESEL",
-                            "LPG",
-                            "CNG",
-                            "HYDROGEN",
-                            "ELECTRICITY"
-                        ]
+                        "$ref": "#/components/schemas/FuelTypeEnum"
                     },
                     "vehicleId": {
                         "type": "integer",
-                        "format": "int32"
+                        "format": "int32",
+                        "minimum": 1
                     },
                     "createdAt": {
                         "type": "string",
@@ -1774,19 +1818,12 @@
                 "required": ["fuel", "vehicleId"],
                 "properties": {
                     "fuel": {
-                        "type": "string",
-                        "enum": [
-                            "GASOLINE",
-                            "DIESEL",
-                            "LPG",
-                            "CNG",
-                            "HYDROGEN",
-                            "ELECTRICITY"
-                        ]
+                        "$ref": "#/components/schemas/FuelTypeEnum"
                     },
                     "vehicleId": {
                         "type": "integer",
-                        "format": "int32"
+                        "format": "int32",
+                        "minimum": 1
                     }
                 }
             },
@@ -1800,16 +1837,17 @@
                     "page": {
                         "type": "integer",
                         "format": "int32",
+                        "minLength": 0,
                         "default": 0
                     },
                     "pageSize": {
                         "type": "integer",
                         "format": "int32",
+                        "minLength": 1,
                         "default": 10
                     },
                     "order": {
-                        "type": "string",
-                        "enum": ["ASC", "DESC"],
+                        "$ref": "#/components/schemas/SortOrderEnum",
                         "default": "DESC"
                     }
                 }
@@ -1820,17 +1858,20 @@
                 "properties": {
                     "id": {
                         "type": "integer",
-                        "format": "int32"
+                        "format": "int32",
+                        "minimum": 1
                     },
                     "quantity": {
                         "type": "number",
                         "format": "double",
-                        "example": "23.23"
+                        "example": "23.23",
+                        "minimum": 0
                     },
                     "totalPrice": {
                         "type": "number",
                         "format": "double",
-                        "example": "34.26"
+                        "example": "34.26",
+                        "minimum": 0
                     },
                     "dateTime": {
                         "type": "string",
@@ -1856,27 +1897,32 @@
                 "properties": {
                     "id": {
                         "type": "integer",
-                        "format": "int32"
+                        "format": "int32",
+                        "minimum": 1
                     },
                     "quantity": {
                         "type": "number",
                         "format": "double",
-                        "example": "23.23"
+                        "example": "23.23",
+                        "minimum": 0
                     },
                     "unitPrice": {
                         "type": "number",
                         "format": "double",
-                        "example": "1.47"
+                        "example": "1.47",
+                        "minimum": 0
                     },
                     "totalPrice": {
                         "type": "number",
                         "format": "double",
-                        "example": "34.26"
+                        "example": "34.26",
+                        "minimum": 0
                     },
                     "mileage": {
                         "type": "number",
                         "format": "double",
-                        "example": "65669.34"
+                        "example": "65669.34",
+                        "minimum": 0
                     },
                     "dateTime": {
                         "type": "string",
@@ -1892,11 +1938,13 @@
                     "consumption": {
                         "type": "number",
                         "format": "double",
-                        "description": "Consuption of fuel per 100km calculated by backend"
+                        "description": "Consuption of fuel per 100km calculated by backend",
+                        "minimum": 0
                     },
                     "vehicleFuelId": {
                         "type": "integer",
-                        "format": "int32"
+                        "format": "int32",
+                        "minimum": 1
                     },
                     "createdAt": {
                         "type": "string",
@@ -1926,22 +1974,26 @@
                     "quantity": {
                         "type": "number",
                         "format": "double",
-                        "example": "23.23"
+                        "example": "23.23",
+                        "minimum": 0
                     },
                     "unitPrice": {
                         "type": "number",
                         "format": "double",
-                        "example": "1.47"
+                        "example": "1.47",
+                        "minimum": 0
                     },
                     "totalPrice": {
                         "type": "number",
                         "format": "double",
-                        "example": "34.26"
+                        "example": "34.26",
+                        "minimum": 0
                     },
                     "mileage": {
                         "type": "number",
                         "format": "double",
-                        "example": "65669.34"
+                        "example": "65669.34",
+                        "minimum": 0
                     },
                     "dateTime": {
                         "type": "string",
@@ -1956,7 +2008,8 @@
                     },
                     "vehicleFuelId": {
                         "type": "integer",
-                        "format": "int32"
+                        "format": "int32",
+                        "minimum": 1
                     }
                 }
             },
@@ -1970,12 +2023,14 @@
                 "properties": {
                     "id": {
                         "type": "integer",
-                        "format": "int32"
+                        "format": "int32",
+                        "minimum": 1
                     },
                     "price": {
                         "type": "number",
                         "format": "double",
-                        "example": "23.23"
+                        "example": "23.23",
+                        "minimum": 0
                     },
                     "dateTime": {
                         "type": "string",
@@ -1984,7 +2039,8 @@
                     },
                     "typeId": {
                         "type": "integer",
-                        "format": "int32"
+                        "format": "int32",
+                        "minimum": 1
                     }
                 }
             },
@@ -2001,17 +2057,20 @@
                 "properties": {
                     "id": {
                         "type": "integer",
-                        "format": "int32"
+                        "format": "int32",
+                        "minimum": 1
                     },
                     "price": {
                         "type": "number",
                         "format": "double",
-                        "example": "23.23"
+                        "example": "23.23",
+                        "minimum": 0
                     },
                     "mileage": {
                         "type": "number",
                         "format": "double",
-                        "example": "65669.34"
+                        "example": "65669.34",
+                        "minimum": 0
                     },
                     "dateTime": {
                         "type": "string",
@@ -2023,11 +2082,13 @@
                     },
                     "typeId": {
                         "type": "integer",
-                        "format": "int32"
+                        "format": "int32",
+                        "minimum": 1
                     },
                     "vehicleId": {
                         "type": "integer",
-                        "format": "int32"
+                        "format": "int32",
+                        "minimum": 1
                     },
                     "createdAt": {
                         "type": "string",
@@ -2054,12 +2115,14 @@
                     "price": {
                         "type": "number",
                         "format": "double",
-                        "example": "23.23"
+                        "example": "23.23",
+                        "minimum": 0
                     },
                     "mileage": {
                         "type": "number",
                         "format": "double",
-                        "example": "65669.34"
+                        "example": "65669.34",
+                        "minimum": 0
                     },
                     "dateTime": {
                         "type": "string",
@@ -2071,11 +2134,13 @@
                     },
                     "typeId": {
                         "type": "integer",
-                        "format": "int32"
+                        "format": "int32",
+                        "minimum": 1
                     },
                     "vehicleId": {
                         "type": "integer",
-                        "format": "int32"
+                        "format": "int32",
+                        "minimum": 1
                     }
                 }
             },
@@ -2089,10 +2154,12 @@
                 "properties": {
                     "id": {
                         "type": "integer",
-                        "format": "int32"
+                        "format": "int32",
+                        "minimum": 1
                     },
                     "name": {
                         "type": "string",
+                        "minLength": 1,
                         "maxLength": 30
                     }
                 }
@@ -2103,6 +2170,7 @@
                 "properties": {
                     "name": {
                         "type": "string",
+                        "minLength": 1,
                         "maxLength": 30
                     }
                 }
@@ -2117,7 +2185,8 @@
                     "mileage": {
                         "type": "number",
                         "format": "double",
-                        "example": "65669.34"
+                        "example": "65669.34",
+                        "minimum": 0
                     },
                     "costOfFuel": {
                         "type": "array",
@@ -2127,18 +2196,11 @@
                                 "price": {
                                     "type": "number",
                                     "format": "double",
-                                    "example": "23.23"
+                                    "example": "23.23",
+                                    "minimum": 0
                                 },
                                 "fuel": {
-                                    "type": "string",
-                                    "enum": [
-                                        "GASOLINE",
-                                        "DIESEL",
-                                        "LPG",
-                                        "CNG",
-                                        "HYDROGEN",
-                                        "ELECTRICITY"
-                                    ]
+                                    "$ref": "#/components/schemas/FuelTypeEnum"
                                 }
                             }
                         }
@@ -2147,7 +2209,8 @@
                         "type": "number",
                         "format": "double",
                         "example": "23.23",
-                        "description": "Total costs of all fuels"
+                        "description": "Total costs of all fuels",
+                        "minimum": 0
                     },
                     "expenses": {
                         "type": "array",
@@ -2157,7 +2220,8 @@
                                 "price": {
                                     "type": "number",
                                     "format": "double",
-                                    "example": "23.23"
+                                    "example": "23.23",
+                                    "minimum": 0
                                 },
                                 "type": {
                                     "type": "string"
@@ -2169,13 +2233,15 @@
                         "type": "number",
                         "format": "double",
                         "example": "23.23",
-                        "description": "Total expenses"
+                        "description": "Total expenses",
+                        "minimum": 0
                     },
                     "sum": {
                         "type": "number",
                         "format": "double",
                         "example": "23.23",
-                        "description": "Sum of expenses and fuel costs"
+                        "description": "Sum of expenses and fuel costs",
+                        "minimum": 0
                     }
                 }
             },
@@ -2194,7 +2260,8 @@
                                 "price": {
                                     "type": "number",
                                     "format": "double",
-                                    "example": "23.23"
+                                    "example": "23.23",
+                                    "minimum": 0
                                 },
                                 "date": {
                                     "type": "string",
@@ -2209,15 +2276,7 @@
                 "type": "object",
                 "properties": {
                     "type": {
-                        "type": "string",
-                        "enum": [
-                            "GASOLINE",
-                            "DIESEL",
-                            "LPG",
-                            "CNG",
-                            "HYDROGEN",
-                            "ELECTRICITY"
-                        ]
+                        "$ref": "#/components/schemas/FuelTypeEnum"
                     },
                     "stats": {
                         "type": "array",
@@ -2232,7 +2291,8 @@
                                 "unitPrice": {
                                     "type": "number",
                                     "format": "double",
-                                    "example": "1.23"
+                                    "example": "1.23",
+                                    "minimum": 0
                                 }
                             }
                         }
@@ -2243,15 +2303,7 @@
                 "type": "object",
                 "properties": {
                     "type": {
-                        "type": "string",
-                        "enum": [
-                            "GASOLINE",
-                            "DIESEL",
-                            "LPG",
-                            "CNG",
-                            "HYDROGEN",
-                            "ELECTRICITY"
-                        ]
+                        "$ref": "#/components/schemas/FuelTypeEnum"
                     },
                     "stats": {
                         "type": "array",
@@ -2266,7 +2318,8 @@
                                 "consumption": {
                                     "type": "number",
                                     "format": "double",
-                                    "example": "7.62"
+                                    "example": "7.62",
+                                    "minimum": 0
                                 }
                             }
                         }

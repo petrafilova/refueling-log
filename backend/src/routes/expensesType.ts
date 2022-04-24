@@ -27,7 +27,7 @@ router.put(
     '/:expensesTypeId',
     isAuth,
     [
-        param('expensesTypeId').isInt(),
+        param('expensesTypeId').isInt({ min: 1, allow_leading_zeroes: false }),
         body('name').trim().escape().isLength({ max: 30 }).notEmpty().isString(),
     ],
     validationError,
@@ -37,7 +37,7 @@ router.put(
 router.delete(
     '/:expensesTypeId',
     isAuth,
-    [param('expensesTypeId').isInt()],
+    [param('expensesTypeId').isInt({ min: 1, allow_leading_zeroes: false })],
     validationError,
     expensesTypeController.deleteExpensesType
 );

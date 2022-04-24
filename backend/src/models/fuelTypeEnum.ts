@@ -1,0 +1,17 @@
+export enum FUEL_TYPE {
+    GASOLINE = 'GASOLINE',
+    DIESEL = 'DIESEL',
+    LPG = 'LPG',
+    CNG = 'CNG',
+    HYDROGEN = 'HYDROGEN',
+    ELECTRICITY = 'ELECTRICITY',
+}
+
+export const ALL_FUEL_TYPES: string[] = [
+    FUEL_TYPE.GASOLINE,
+    FUEL_TYPE.DIESEL,
+    FUEL_TYPE.LPG,
+    FUEL_TYPE.CNG,
+    FUEL_TYPE.HYDROGEN,
+    FUEL_TYPE.ELECTRICITY,
+];

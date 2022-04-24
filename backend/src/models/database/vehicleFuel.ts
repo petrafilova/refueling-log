@@ -9,12 +9,13 @@ import {
     Table,
 } from 'sequelize-typescript';
 import { Optional } from 'sequelize/types';
+import { ALL_FUEL_TYPES, FUEL_TYPE } from '../fuelTypeEnum';
 
 import Vehicle from './vehicle';
 
 interface VehicleFuelAttributes {
     id: number;
-    fuel: 'GASOLINE' | 'DIESEL' | 'LPG' | 'CNG' | 'HYDROGEN' | 'ELECTRICITY';
+    fuel: FUEL_TYPE;
     vehicleId: number;
 }
 
@@ -34,16 +35,9 @@ class VehicleFuel extends Model<
         unique: true,
     })
     @Column({
-        type: DataType.ENUM(
-            'GASOLINE',
-            'DIESEL',
-            'LPG',
-            'CNG',
-            'HYDROGEN',
-            'ELECTRICITY'
-        ),
+        type: DataType.ENUM(...ALL_FUEL_TYPES),
     })
-    fuel: 'GASOLINE' | 'DIESEL' | 'LPG' | 'CNG' | 'HYDROGEN' | 'ELECTRICITY';
+    fuel: FUEL_TYPE;
 
     @AllowNull(false)
     @Index({

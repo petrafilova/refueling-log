@@ -12,7 +12,7 @@ router.get('/', isAuth, vehicleController.getAll);
 router.get(
     '/:vehicleId',
     isAuth,
-    [param('vehicleId').isInt()],
+    [param('vehicleId').isInt({ min: 1, allow_leading_zeroes: false })],
     validationError,
     vehicleController.getById
 );
@@ -61,7 +61,7 @@ router.put(
     '/:vehicleId',
     isAuth,
     [
-        param('vehicleId').isInt(),
+        param('vehicleId').isInt({ min: 1, allow_leading_zeroes: false }),
         body('brand')
             .trim()
             .escape()
@@ -101,7 +101,7 @@ router.put(
 router.delete(
     '/:vehicleId',
     isAuth,
-    [param('vehicleId').isInt()],
+    [param('vehicleId').isInt({ min: 1, allow_leading_zeroes: false })],
     validationError,
     vehicleController.deleteVehicle
 );

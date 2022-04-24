@@ -225,7 +225,7 @@ export const updatePassword = (
             }
 
             await user.update({
-                password: newPassword
+                password: newPassword,
             });
             res.status(204).send();
         })

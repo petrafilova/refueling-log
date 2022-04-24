@@ -20,9 +20,9 @@ interface VehicleAttributes {
     brand: string;
     model: string;
     licensePlateNo: string;
-    dateOfReg: Date;
-    color: string;
-    vin: string;
+    dateOfReg: Date | null;
+    color: string | null;
+    vin: string | null;
     username: string;
 }
 

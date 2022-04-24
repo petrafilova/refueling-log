@@ -51,3 +51,8 @@ If added new dependencies, list of used libraries can be updated using this comm
 `cd backend && npx license-report --only=prod --output=table --config ../license-report.json > ../BACKEND_LIBRARIES_LICENSES && cd ..;`
 
 `cd frontend && npx license-report --only=prod --output=table --config ../license-report.json > ../FRONTEND_LIBRARIES_LICENSES && cd ..;`
+
+## Generate OpenApi 3 client for frontend
+
+1) Go to frontend folder `cd frontend`
+2) Run `npm run generate-openapi`

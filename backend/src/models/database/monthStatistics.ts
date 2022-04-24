@@ -35,6 +35,7 @@ class MonthStatistics extends Model<
     })
     month: number;
 
+    @AllowNull(false)
     @Default(0)
     @Column({
         type: DataType.DECIMAL(10, 2),

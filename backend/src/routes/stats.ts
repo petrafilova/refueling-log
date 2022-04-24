@@ -10,7 +10,7 @@ const router = express.Router();
 router.post(
     '/:vehicleId/total',
     isAuth,
-    [param('vehicleId').isInt()],
+    [param('vehicleId').isInt({ min: 1, allow_leading_zeroes: false })],
     validationError,
     statsController.getTotalExpenses
 );
@@ -19,7 +19,7 @@ router.post(
     '/:vehicleId/expenses',
     isAuth,
     [
-        param('vehicleId').isInt(),
+        param('vehicleId').isInt({ min: 1, allow_leading_zeroes: false }),
         body('dateFrom')
             .default(new Date().getFullYear() - 1 + '-' + new Date().getMonth())
             .custom((value) => {
@@ -73,8 +73,8 @@ router.post(
     '/:vehicleId/fuel',
     isAuth,
     [
-        param('vehicleId').isInt(),
-        body('vehicleFuelId').optional({ nullable: true }).isInt(),
+        param('vehicleId').isInt({ min: 1, allow_leading_zeroes: false }),
+        body('vehicleFuelId').optional({ nullable: true }).isInt({ min: 1, allow_leading_zeroes: false }),
         body('dateFrom')
             .default(new Date().getFullYear() - 1 + '-' + new Date().getMonth())
             .custom((value) => {
@@ -128,8 +128,8 @@ router.post(
     '/:vehicleId/consuption',
     isAuth,
     [
-        param('vehicleId').isInt(),
-        body('vehicleFuelId').optional({ nullable: true }).isInt(),
+        param('vehicleId').isInt({ min: 1, allow_leading_zeroes: false }),
+        body('vehicleFuelId').optional({ nullable: true }).isInt({ min: 1, allow_leading_zeroes: false }),
         body('dateFrom')
             .default(new Date().getFullYear() - 1 + '-' + new Date().getMonth())
             .custom((value) => {

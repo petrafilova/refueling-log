@@ -18,7 +18,7 @@ interface UserAttributes {
     username: string;
     password: string;
     email: string;
-    uuid: string;
+    uuid: string | null;
     confirmed: boolean;
 }
 
