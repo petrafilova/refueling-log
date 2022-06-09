@@ -2,40 +2,37 @@
     text-align: center;
 }
 
-.App > header {
-  animation-name: zoom-in;
-  animation-duration: 2.5s;
-  padding-top: 12px;
+.App-logo {
+    height: 40vmin;
+    pointer-events: none;
 }
 
-.App > header > p {
-  animation-name: fade-in;
-  animation-duration: 2.5s;
-}
-
-@keyframes zoom-in {
-    0% {
-        font-size: 1%;
-        opacity: 0;
-    }
-    45% {
-      font-size: 110%;
-      opacity: 1;
-    }
-    50% {
-        font-size: 100%;
-        opacity: 1;
+@media (prefers-reduced-motion: no-preference) {
+    .App-logo {
+        animation: App-logo-spin infinite 20s linear;
     }
 }
 
-@keyframes fade-in {
-  0% {
-      opacity: 0;
-  }
-  50% {
-    opacity: 0;
-  }
-  100% {
-      opacity: 1;
-  }
+.App-header {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}
+
+.App-link {
+    color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
