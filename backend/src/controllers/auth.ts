@@ -9,6 +9,7 @@ import { CUSTOM_ERROR_CODES } from '../models/errorCodes';
 import { sendMail } from '../util/email';
 import sequelize from '../util/database';
 import { Op } from 'sequelize';
+import decodeAndValidateRefreshToken from '../util/decodeAndValidatRefreshToken';
 
 export const login = (req: Request, res: Response, next: NextFunction) => {
     const username = req.body.username;
@@ -56,28 +57,34 @@ export const refreshToken = (
     res: Response,
     next: NextFunction
 ) => {
-    const username = req.username;
-    User.scope('authScope')
-        .findOne({
-            where: {
-                username: username,
-                confirmed: true,
-            },
-        })
-        .then((user) => {
-            if (!user) {
-                const error = new CustomError();
-                error.code = CUSTOM_ERROR_CODES.INVALID_CREDENTIALS;
-                error.statusCode = 401;
-                throw error;
-            }
-            const token = issueToken(user);
-            const refreshToken = issueRefreshToken(user);
-            res.status(200).json({
-                token: token,
-                refreshToken: refreshToken,
-                username: user.username,
-            });
+    const refreshToken = req.body.refreshToken;
+    decodeAndValidateRefreshToken(refreshToken)
+        .then((username) => {
+            User.scope('authScope')
+                .findOne({
+                    where: {
+                        username: username,
+                        confirmed: true,
+                    },
+                })
+                .then((user) => {
+                    if (!user) {
+                        const error = new CustomError();
+                        error.code = CUSTOM_ERROR_CODES.INVALID_CREDENTIALS;
+                        error.statusCode = 401;
+                        throw error;
+                    }
+                    const token = issueToken(user);
+                    const refreshToken = issueRefreshToken(user);
+                    res.status(200).json({
+                        token: token,
+                        refreshToken: refreshToken,
+                        username: user.username,
+                    });
+                })
+                .catch((err) => {
+                    next(err);
+                });
         })
         .catch((err) => {
             next(err);

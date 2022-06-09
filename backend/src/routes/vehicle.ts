@@ -23,19 +23,16 @@ router.post(
     [
         body('brand')
             .trim()
-            .escape()
             .isLength({ max: 20 })
             .notEmpty()
             .isString(),
         body('model')
             .trim()
-            .escape()
             .isLength({ max: 60 })
             .notEmpty()
             .isString(),
         body('licensePlateNo')
-            .trim()
-            .escape()
+            .trim()       
             .isLength({ max: 10 })
             .notEmpty()
             .isString(),
@@ -43,13 +40,11 @@ router.post(
         body('color')
             .optional({ nullable: true })
             .trim()
-            .escape()
             .isLength({ max: 20 })
             .isString(),
         body('vin')
             .optional({ nullable: true })
             .trim()
-            .escape()
             .isLength({ max: 17 })
             .isString(),
     ],
@@ -64,19 +59,16 @@ router.put(
         param('vehicleId').isInt({ min: 1, allow_leading_zeroes: false }),
         body('brand')
             .trim()
-            .escape()
             .isLength({ max: 20 })
             .notEmpty()
             .isString(),
         body('model')
             .trim()
-            .escape()
             .isLength({ max: 60 })
             .notEmpty()
             .isString(),
         body('licensePlateNo')
             .trim()
-            .escape()
             .isLength({ max: 10 })
             .notEmpty()
             .isString(),
@@ -84,13 +76,11 @@ router.put(
         body('color')
             .optional({ nullable: true })
             .trim()
-            .escape()
             .isLength({ max: 20 })
             .isString(),
         body('vin')
             .optional({ nullable: true })
             .trim()
-            .escape()
             .isLength({ max: 17 })
             .isString(),
     ],

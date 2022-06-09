@@ -17,7 +17,7 @@ router.post(
     '/',
     isAuth,
     [
-        body('name').trim().escape().isLength({ max: 30 }).notEmpty().isString(),
+        body('name').trim().isLength({ max: 30 }).notEmpty().isString(),
     ],
     validationError,
     expensesTypeController.createExpensesType
@@ -28,7 +28,7 @@ router.put(
     isAuth,
     [
         param('expensesTypeId').isInt({ min: 1, allow_leading_zeroes: false }),
-        body('name').trim().escape().isLength({ max: 30 }).notEmpty().isString(),
+        body('name').trim().isLength({ max: 30 }).notEmpty().isString(),
     ],
     validationError,
     expensesTypeController.updateExpensesType

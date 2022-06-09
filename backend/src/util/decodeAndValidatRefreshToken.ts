@@ -1,33 +1,36 @@
-import { NextFunction, Request, Response } from 'express';
-import jwt, { JsonWebTokenError, JwtPayload, NotBeforeError, TokenExpiredError } from 'jsonwebtoken';
+import jwt, {
+    JsonWebTokenError,
+    JwtPayload,
+    NotBeforeError,
+    Secret,
+    TokenExpiredError,
+} from 'jsonwebtoken';
 import CustomError from '../models/customError';
+import User from '../models/database/user';
 import { CUSTOM_ERROR_CODES } from '../models/errorCodes';
 
-const isRefresh = (req: Request, res: Response, next: NextFunction) => {
-    const authHeader = req.get('Authorization');
-    if (!authHeader) {
-        throw invalidCredentialsError();
-    }
-    const splitedToken = authHeader.split(' ');
-    if (splitedToken.length != 2) {
-        throw invalidCredentialsError();
-    }
-
-    const token = splitedToken[1];
+const decodeAndValidateRefreshToken = async (token: string) => {
     try {
         const decodedToken = jwt.verify(
             token,
-            process.env.TOKEN_SIGN_KEY!
+            process.env.TOKEN_SIGN_KEY as Secret
         ) as JwtPayload;
 
         if (!decodedToken || decodedToken.refresh !== true) {
             throw invalidCredentialsError();
         }
 
-        // TODO check if user exists ... could be deleted, meantime refresh token is still valid
+        const employee = await User.findOne({
+            where: {
+                username: decodedToken.username
+            },
+        });
 
-        req.username = decodedToken.username;
-        next();
+        if (!employee) {
+            throw invalidCredentialsError();
+        }
+
+        return decodedToken.username;
     } catch (err) {
         if (err instanceof TokenExpiredError) {
             const error = new CustomError(err.message);
@@ -52,4 +55,4 @@ const invalidCredentialsError = (): CustomError => {
     return error;
 };
 
-export default isRefresh;
+export default decodeAndValidateRefreshToken;

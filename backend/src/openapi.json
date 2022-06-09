@@ -104,6 +104,24 @@
         "/auth/refresh": {
             "post": {
                 "tags": ["auth"],
+                "security": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["refreshToken"],
+                                "properties": {
+                                    "refreshToken": {
+                                        "type": "string",
+                                        "format": "bearer"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "required": true
+                },
                 "responses": {
                     "200": {
                         "description": "Successful token refresh",
