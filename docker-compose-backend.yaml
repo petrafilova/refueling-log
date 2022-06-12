@@ -43,7 +43,7 @@ services:
             DATABASE: refueling
             DATABASE_HOST: db
             DATABASE_PORT: 5432
-            DATABASE_LOGGING: true
+            DATABASE_LOGGING: 'true'
             EMAIL_HOST: email
             EMAIL_PORT: 1025
             EMAIL_USER:
