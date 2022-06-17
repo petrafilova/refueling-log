@@ -49,6 +49,7 @@ services:
             EMAIL_USER:
             EMAIL_PASS:
             EMAIL_FROM: test@noreply.com
+            TOKEN_SIGN_KEY: somesecrettoken
         depends_on:
             - db
             - email
