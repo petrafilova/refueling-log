@@ -1,19 +1,19 @@
 import React, { useRef, useState } from 'react';
-import { register } from '../../lib/api';
+import { register } from '../../lib/api'; 
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
     const userNameInputRef = useRef();
     const passwordInputRef = useRef();
     const emailInputRef = useRef();
-
+    
+    const navigate = useNavigate();
     
     const [userNameIsValid, setUserNameIsValid] = useState(true);
     const [passwordIsValid, setPasswordIsValid] = useState(true);
     const [emailIsValid, setEmailIsValid] = useState(true);
 
-
-
-    const submitHandler = (event) => {
+    const submitHandler = async (event) => {
         event.preventDefault();
         const enteredUserName = userNameInputRef.current.value;
         const enteredPassword = passwordInputRef.current.value;
@@ -49,7 +49,8 @@ const SignUp = () => {
             email: enteredEmail,
         };
 
-        register(regData);
+        const success = await register(regData);
+        success && navigate('/confirm');
 
     };
 
