@@ -6,7 +6,7 @@ const Confirmation = () => {
     const [keyIsValid, setKeyIsValid] = useState(true);
     
     
-    const submitKeyHandler = (event) => {
+    const submitKeyHandler = async (event) => {
         event.preventDefault();
         setKeyIsValid(true);
         const registrationKey = keyInputRef.current.value;
@@ -14,8 +14,9 @@ const Confirmation = () => {
             setKeyIsValid(false);
             return;
         }
-        console.log(registrationKey);
-        confirm(registrationKey);
+        
+        const authData = await confirm(registrationKey);
+        console.log(authData);
     };
 
     return (
