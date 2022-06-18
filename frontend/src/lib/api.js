@@ -44,7 +44,8 @@ export const register = async (regData) => {
         });
         console.log(response);
         if (response.ok) {
-            return alert('Pre dokončenie registrácie zadajte registračný kľúč.');
+            alert('Pre dokončenie registrácie zadajte registračný kľúč.');
+            return true;
         } else {
             const data = await response.json();
             console.log(data);
@@ -54,6 +55,7 @@ export const register = async (regData) => {
     } catch (err) {
         alert(`Nastala chyba pri registrácii. ${err.message}`);
     }
+    return false;
 };
 
 export const login = async (loginData) => {
@@ -86,10 +88,6 @@ export const confirm = async (registrationKey) => {
     try {
         const response = await fetch(`${baseUrl}/auth/confirm/${registrationKey}`, {
             method: 'POST',
-            body: JSON.stringify(registrationKey),
-            headers: {
-                'Content-Type': 'application/json',
-            },
         });
         console.log(response);
         const data = await response.json();
