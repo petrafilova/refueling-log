@@ -20,6 +20,9 @@ declare global {
             EMAIL_USER: string;
             EMAIL_PASS: string;
             EMAIL_FROM: string;
+
+            TOKEN_EXPIRES_IN: string;
+            REFRESH_TOKEN_EXPIRES_IN: string;
         }
     }
 }
