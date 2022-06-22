@@ -1,14 +1,19 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useContext } from 'react';
 import { login } from '../../lib/api';
+import AuthContext from '../../store/auth-context';
+import { useNavigate } from 'react-router-dom';
 
-const SignIp = () => {
+const SignIn = () => {
     const userNameInputRef = useRef();
     const passwordInputRef = useRef();
     
     const [userNameIsValid, setUserNameIsValid] = useState(true);
     const [passwordIsValid, setPasswordIsValid] = useState(true);
+
+    const authCtx = useContext(AuthContext);
+    const navigate = useNavigate();
     
-    const submitHandler = (event) => {
+    const submitHandler = async (event) => {
         event.preventDefault();
         const enteredUserName = userNameInputRef.current.value;
         const enteredPassword = passwordInputRef.current.value;
@@ -33,7 +38,10 @@ const SignIp = () => {
             password: enteredPassword,
         };
 
-        login(loginData);
+        const confirmedData = await login(loginData);
+    
+        authCtx.login(confirmedData.token);
+        confirmedData.token && navigate('/start');
     };
 
     return (
@@ -76,4 +84,4 @@ const SignIp = () => {
     );
 };
 
-export default SignIp;
+export default SignIn;

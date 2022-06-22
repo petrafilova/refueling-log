@@ -1,5 +1,5 @@
 import React from 'react';
-import HomePageContent from '../components/HomePageContent/HomePageContent';
+import HomePageContent from '../components/Layout/HomePageContent';
 
 const HomePage = () => {
     return <HomePageContent />;

@@ -1,10 +1,14 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useContext } from 'react';
 import { confirm } from '../../lib/api';
+import AuthContext from '../../store/auth-context';
+import { useNavigate } from 'react-router-dom';
 
 const Confirmation = () => {
     const keyInputRef = useRef();
     const [keyIsValid, setKeyIsValid] = useState(true);
     
+    const authCtx = useContext(AuthContext);
+    const navigate = useNavigate();
     
     const submitKeyHandler = async (event) => {
         event.preventDefault();
@@ -17,6 +21,8 @@ const Confirmation = () => {
         
         const authData = await confirm(registrationKey);
         console.log(authData);
+        authCtx.login(authData.token);
+        authData.token && navigate('/start');
     };
 
     return (

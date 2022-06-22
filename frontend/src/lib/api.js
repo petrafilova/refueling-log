@@ -72,7 +72,12 @@ export const login = async (loginData) => {
         const data = await response.json();
 
         if (response.ok) {
-            return alert('Prihlásenie prebehlo úspešne');
+            alert('Prihlásenie prebehlo úspešne');
+            return {
+                token: data.token,
+                refreshToken: data.refreshToken,
+                username: data.username,
+            };
         } else {
             console.log(data);
             console.log(data.code);

@@ -1,8 +1,8 @@
 import React from 'react';
-import SignIp from '../components/Auth/SignIn';
+import SignIn from '../components/Auth/SignIn';
 
 const SignInPage = () => {
-    return <SignIp />;
+    return <SignIn />;
     
 };
 
