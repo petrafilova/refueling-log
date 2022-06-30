@@ -21,7 +21,7 @@ const Confirmation = () => {
         
         const authData = await confirm(registrationKey);
         console.log(authData);
-        authCtx.login(authData.token);
+        authCtx.login(authData.token, authData.refreshToken, authData.username);
         authData.token && navigate('/start');
     };
 
@@ -30,14 +30,14 @@ const Confirmation = () => {
             <h1>Potvrdenie registrácie</h1>
             <form onSubmit={submitKeyHandler}>
                 <div className="w3-padding-16">
-                    <label className="w3-text-indigo" htmlFor="text">Prosím zadajte registračný kľúč.</label>
+                    <label className="w3-text-indigo" htmlFor="text">Pre dokončenie registrácie prosím zadajte registračný kľúč.</label>
                     <input className="w3-input w3-border"
                         type="text"
                         id="text"
                         ref={keyInputRef}></input>
                 </div>
                 <div className="w3-padding-16">
-                    <button className="w3-btn w3-indigo" type="submit">Potvrdiť</button>
+                    <button className="w3-button w3-indigo" type="submit">Potvrdiť</button>
                     {!keyIsValid && <p className='w3-red'>Neplatný registračný kľúč.</p>}
                 </div>
             </form>

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext } from 'react';
+import React, { useRef, useState, useContext, useEffect } from 'react';
 import { login } from '../../lib/api';
 import AuthContext from '../../store/auth-context';
 import { useNavigate } from 'react-router-dom';
@@ -6,13 +6,17 @@ import { useNavigate } from 'react-router-dom';
 const SignIn = () => {
     const userNameInputRef = useRef();
     const passwordInputRef = useRef();
-    
+
     const [userNameIsValid, setUserNameIsValid] = useState(true);
     const [passwordIsValid, setPasswordIsValid] = useState(true);
 
     const authCtx = useContext(AuthContext);
     const navigate = useNavigate();
-    
+
+    useEffect(() =>{
+        authCtx.isLoggedIn && navigate('/start');
+    }, [authCtx.isLoggedIn]);
+
     const submitHandler = async (event) => {
         event.preventDefault();
         const enteredUserName = userNameInputRef.current.value;
@@ -39,9 +43,8 @@ const SignIn = () => {
         };
 
         const confirmedData = await login(loginData);
-    
-        authCtx.login(confirmedData.token);
-        confirmedData.token && navigate('/start');
+
+        authCtx.login(confirmedData.token, confirmedData.refreshToken, confirmedData.username);
     };
 
     return (
@@ -75,13 +78,14 @@ const SignIn = () => {
                     {!passwordIsValid && <p className='w3-red'>Neplatné heslo.</p>}
                 </div>
                 <div className="w3-padding-16">
-                    <button className="w3-btn w3-indigo" type="submit">
+                    <button className="w3-button w3-indigo" type="submit">
                         Prihlásiť sa
                     </button>
                 </div>
             </form>
         </div>
     );
+    
 };
 
 export default SignIn;

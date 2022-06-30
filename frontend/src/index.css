@@ -12,6 +12,10 @@ code {
         monospace;
 }
 
-.invalid {
-    color: red
+.dialog {
+    max-width: 500px;
+}
+
+.add-button-margin {
+    margin: 18px 0;
 }

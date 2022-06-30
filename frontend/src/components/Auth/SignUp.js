@@ -104,7 +104,7 @@ const SignUp = () => {
                     {!emailIsValid && <p className='w3-red'>Používateľského meno musí obsahovať: min. 6 znakov, max. 320 znakov.</p>}
                 </div>
                 <div className="w3-padding-16">
-                    <button className="w3-btn w3-indigo" type="submit">
+                    <button className="w3-button w3-indigo" type="submit">
                         Zaregistrovať sa
                     </button>
                 </div>

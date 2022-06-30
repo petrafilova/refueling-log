@@ -10,22 +10,30 @@ import ProfilePage from './pages/ProfilePage';
 import StartingPage from './pages/StartingPage';
 import AuthContext from './store/auth-context';
 import MainNavigation from './components/Layout/MainNavigation';
+import VehiclePage from './pages/VehiclePage';
+
 
 function App() {
     const authCtx = useContext(AuthContext);
-    const visibleMainNav = authCtx.isLoggedIn;
+    const isLoggedIn = authCtx.isLoggedIn;
     return (
         <Fragment>
-            {visibleMainNav && <MainNavigation />}
-            <Routes>
-                <Route path='/' element={<HomePage />} />
-                <Route path='/signIn' element={<SignInPage />} />
-                <Route path='/signUp' element={<SignUpPage />} />
-                <Route path='/confirm' element={<ConfirmationPage />} />
-                <Route path='/profile' element={<ProfilePage />} />
-                <Route path='/start' element={<StartingPage />} />
-                <Route path='*' element={<Navigate replace to={'/'} />} />
-            </Routes>
+            {isLoggedIn && <MainNavigation />}
+            <main className='w3-container'>
+                <Routes>
+                    <Route path='/' element={<HomePage />} />
+                    <Route path='/signIn' element={<SignInPage />} />
+                    <Route path='/signUp' element={<SignUpPage />} />
+                    <Route path='/confirm' element={<ConfirmationPage />} />
+                    {isLoggedIn && (<Fragment>
+                        <Route path='/profile' element={<ProfilePage />} />
+                        <Route path='/start' element={<StartingPage />} />
+                        <Route path='/vehicle' element={<VehiclePage />} />
+                    </Fragment>)
+                    }
+                    <Route path='*' element={<Navigate replace to={'/'} />} />
+                </Routes>
+            </main>
         </Fragment>
 
     );
