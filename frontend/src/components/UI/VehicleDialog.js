@@ -1,6 +1,7 @@
 import React, { useContext, useRef, useState, useEffect } from 'react';
 import { getVehicleById } from '../../lib/api';
 import AuthContext from '../../store/auth-context';
+import FuelTable from '../VehicleFuel/FuelTable';
 
 const VehicleDialog = (props) => {
     const vehicleId = props.id;
@@ -87,6 +88,7 @@ const VehicleDialog = (props) => {
 
         if (vehicleId) {
             props.onEdit(createdVehicle);
+            
         } else {
             props.onSubmit(createdVehicle);
         }
@@ -130,6 +132,7 @@ const VehicleDialog = (props) => {
                         <input className="w3-input w3-border" type="text" id="vin" ref={vinInputRef}></input>
                     </p>
                     {vinIsInvalid && <p className='w3-red'>Neplatný údaj</p>}
+                    <FuelTable />
                     {vehicleId && <p>
                         <label className="w3-text-indigo" htmlFor="createdAt">vytvorené: </label>
                         <input className="w3-input w3-border" type="text" id="createdAt" readOnly ref={createdAtInputRef}></input>

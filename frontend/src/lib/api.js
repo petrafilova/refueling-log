@@ -204,11 +204,11 @@ export const getVehicles = async (token) => {
     return false;
 };
 
-export const deleteVehicleById = async (id, token) => {
-    console.log(id);
+export const deleteVehicleById = async (vehicleId, token) => {
+    console.log(vehicleId);
     console.log(token);
     try {
-        const response = await fetch(`${baseUrl}/vehicle/${id}`, {
+        const response = await fetch(`${baseUrl}/vehicle/${vehicleId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -231,9 +231,9 @@ export const deleteVehicleById = async (id, token) => {
     return false;
 };
 
-export const getVehicleById = async (id, token) => {
+export const getVehicleById = async (vehicleId, token) => {
     try {
-        const response = await fetch(`${baseUrl}/vehicle/${id}`, {
+        const response = await fetch(`${baseUrl}/vehicle/${vehicleId}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -256,9 +256,9 @@ export const getVehicleById = async (id, token) => {
     return false;
 };
 
-export const updateVehicleById = async (id, editedVehicle, token) => {
+export const updateVehicleById = async (vehicleId, editedVehicle, token) => {
     try {
-        const response = await fetch(`${baseUrl}/vehicle/${id}`, {
+        const response = await fetch(`${baseUrl}/vehicle/${vehicleId}`, {
             method: 'PUT',
             body: JSON.stringify(editedVehicle),
             headers: {
@@ -283,3 +283,140 @@ export const updateVehicleById = async (id, editedVehicle, token) => {
     }
     return false;
 };
+
+//toto fuel
+
+export const createVehicleFuel = async (vehicleFuel, token) => {
+    try {
+        const response = await fetch(`${baseUrl}/vehicleFuel`, {
+            method: 'POST',
+            body: JSON.stringify(vehicleFuel),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        console.log(response);
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log('createVehicleFuel');
+            return data;
+        } else {
+            console.log(data);
+            console.log(data.code);
+            throw new Error(data.code);
+        }
+    } catch (err) {
+        console.log(`Nastala chyba pri vytvorení paliva. ${err.message}`);
+        alert(`Nastala chyba pri vytvorení paliva. ${err.message}`);
+    }
+    return false;
+};
+
+export const listOfVehicleFuels = async (vehicleId, token) => {
+    try {
+        const response = await fetch(`${baseUrl}/vehicleFuel/byVehicle/${vehicleId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        console.log(response);
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log('listOfVehicleFuels');
+            return data;
+        } else {
+            console.log(data);
+            console.log(data.code);
+            throw new Error(data.code);
+        }
+    } catch (err) {
+        console.log(`Nastala chyba pri zobrazení zoznamu palív pre dané vozidlo. ${err.message}`);
+        alert(`Nastala chyba pri zobrazení zoznamu palív pre dané vozidlo. ${err.message}`);
+    }
+    return false;
+};
+
+export const singleVehicleFuel = async (vehicleFuelId, token) => {
+    try {
+        const response = await fetch(`${baseUrl}/vehicleFuel/${vehicleFuelId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        console.log(response);
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log('singleVehicleFuel');
+            return data;
+        } else {
+            console.log(data);
+            console.log(data.code);
+            throw new Error(data.code);
+        }
+    } catch (err) {
+        console.log(`Nastala chyba pri zobrazení paliva pre dané vozidlo. ${err.message}`);
+        alert(`Nastala chyba pri zobrazení paliva pre dané vozidlo. ${err.message}`);
+    }
+    return false;
+};
+
+export const updateVehicleFuel = async (vehicleFuelId, updateFuel, token) => {
+    try {
+        const response = await fetch(`${baseUrl}/vehicleFuel/${vehicleFuelId}`, {
+            method: 'PUT',
+            body: JSON.stringify(updateFuel),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        console.log(response);
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log('updateVehicleFuel');
+            return data;
+        } else {
+            console.log(data);
+            console.log(data.code);
+            throw new Error(data.code);
+        }
+    } catch (err) {
+        console.log(`Nastala chyba pri úprave paliva. ${err.message}`);
+        alert(`Nastala chyba pri úprave paliva. ${err.message}`);
+    }
+    return false;
+};
+
+export const deleteVehicleFuel = async (vehicleFuelId, token) => {
+    try {
+        const response = await fetch(`${baseUrl}/vehicleFuel/${vehicleFuelId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        console.log(response);
+        
+        if (response.ok) {
+            console.log('deleteVehicleFuel');
+            return true;
+        } else {
+            console.log(data);
+            const data = await response.json();
+            console.log(data.code);
+            throw new Error(data.code);
+        }
+    } catch (err) {
+        console.log(`Nastala chyba pri zvymazaní paliva. ${err.message}`);
+        alert(`Nastala chyba pri vymazaní paliva. ${err.message}`);
+    }
+    return false;
+};
+

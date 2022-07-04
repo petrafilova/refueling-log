@@ -19,3 +19,7 @@ code {
 .add-button-margin {
     margin: 18px 0;
 }
+
+.flex {
+    display: flex;
+}
