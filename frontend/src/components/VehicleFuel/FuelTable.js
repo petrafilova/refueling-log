@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil } from '@fortawesome/free-solid-svg-icons';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import FuelItem from './FuelItem';
+import { FuelTypes } from '../../lib/fuelNameFormatter';
+import { formatFuelName } from '../../lib/fuelNameFormatter';
 
 const FuelTable = (props) => {
 
-    const [fuel, setFuel] = useState();
+    const [fuel, setFuel] = useState('');
+    const [editedFuelType, setEditedFuelType] = useState('');
 
     const selectChangeHandler = (event) => {
         console.log(event);
@@ -22,30 +26,10 @@ const FuelTable = (props) => {
             console.log(n);
             return n;
         });
+        setFuel('');
     };
 
-    const formatFuelName = (fuelType) => {
-        let fuel;
-        switch (fuelType) {
-            case 'GASOLINE':
-                fuel = 'benzín';
-                break;
-            case 'DIESEL':
-                fuel = 'nafta';
-                break;
-            case 'HYDROGEN':
-                fuel = 'vodík';
-                break;
-            case 'ELECTRICITY':
-                fuel = 'elektrika';
-                break;
-            default:
-                fuel = fuelType;
-        }
-        return fuel;
-    };
-
-    const deleteFuelFromList = (nameOfFuel) => {
+    const deleteFuel = (nameOfFuel) => {
         props.setFuelList((o) => {
             const n = [...o];
             console.log(n);
@@ -60,13 +44,34 @@ const FuelTable = (props) => {
         });
     };
 
+    const editFuel = (nameOfFuel) => {
+        setEditedFuelType(nameOfFuel);
+    };
+
+    const changeFuel = (newFuelType) => {
+        props.setFuelList((o) => {
+            const n = [...o];
+            console.log(n);
+            const index = n.findIndex(x => x.fuel === editedFuelType);
+            n[index].fuel = newFuelType;
+            if (n[index].id) {
+                n[index].status = 'EDITED';
+            }
+            console.log(n);
+            return n;
+        });
+        setEditedFuelType('');
+    };
+
+
+
     const selectedFuels = props.fuelList.filter((f) => f.status !== 'DELETED').map((f) =>
         <tr key={f.fuel}>
             <td>
                 {formatFuelName(f.fuel)}
                 <div className='w3-right'>
-                    <button className='w3-button' aria-label='upraviť' ><FontAwesomeIcon icon={faPencil} /></button>
-                    <button className='w3-button' aria-label='zmazať' ><FontAwesomeIcon onClick={deleteFuelFromList.bind(null, f.fuel)} icon={faTrash} /></button>
+                    <button className='w3-button' aria-label='upraviť' onClick={editFuel.bind(null, f.fuel)}  ><FontAwesomeIcon icon={faPencil} /></button>
+                    <button className='w3-button' aria-label='zmazať' onClick={deleteFuel.bind(null, f.fuel)} ><FontAwesomeIcon icon={faTrash} /></button>
                 </div>
             </td>
         </tr>
@@ -76,30 +81,19 @@ const FuelTable = (props) => {
         <div>
             <label className='w3-text-indigo' htmlFor='fuel'>palivo: </label>
             <div className='flex'>
-                <select className='w3-select w3-border' name='fuel' id='fuel' defaultValue='' onChange={selectChangeHandler}>
+                <select className='w3-select w3-border' name='fuel' id='fuel' value={fuel} onChange={selectChangeHandler}>
                     <option value="" disabled>Vyberte typ paliva</option>
-                    <option value="GASOLINE">{formatFuelName('GASOLINE')}</option>
-                    <option value="DIESEL">{formatFuelName('DIESEL')}</option>
-                    <option value="LPG">LPG</option>
-                    <option value="CNG">CNG</option>
-                    <option value="HYDROGEN">{formatFuelName('HYDROGEN')}</option>
-                    <option value="ELECTRICITY">{formatFuelName('ELECTRICITY')}</option>
+                    {FuelTypes.filter((f) => props.fuelList.findIndex(fl => fl.fuel === f) === -1).map((ft) => <option key={ft} value={ft}>{formatFuelName(ft)}</option>)}
                 </select>
                 <button className='w3-button w3-indigo w3-right' disabled={!fuel} onClick={listOfFuelHandler}>Pridať</button>
             </div>
 
             <table className='w3-table-all w3-section'>
-                {/* <thead>
-                    <tr className="w3-indigo">
-                        <th>Typ paliva</th>
-                        <th className='w3-center'>Upraviť</th>
-                        <th className='w3-center'>Vymazať</th>
-                    </tr>
-                </thead> */}
                 <tbody>
                     {selectedFuels}
                 </tbody>
             </table>
+            {editedFuelType && <FuelItem onCancel={setEditedFuelType.bind(null, '')} onEdit={changeFuel} fuelType={editedFuelType} fuelList={props.fuelList} />}
         </div>
     );
 };

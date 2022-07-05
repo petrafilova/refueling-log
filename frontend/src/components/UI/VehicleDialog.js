@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useState, useEffect } from 'react';
-import { createVehicleFuel, getVehicleById, listOfVehicleFuels, deleteVehicleFuel} from '../../lib/api';
+import { createVehicleFuel, getVehicleById, listOfVehicleFuels, deleteVehicleFuel, updateVehicleFuel} from '../../lib/api';
 import AuthContext from '../../store/auth-context';
 import FuelTable from '../VehicleFuel/FuelTable';
 
@@ -101,6 +101,8 @@ const VehicleDialog = (props) => {
                     await createVehicleFuel({fuel: vehicleFuel[i].fuel, vehicleId:vehicleId }, authCtx.token);
                 } else if (vehicleFuel[i].status === 'DELETED') {
                     await deleteVehicleFuel(vehicleFuel[i].id, authCtx.token);
+                } else if (vehicleFuel[i].status === 'EDITED') {
+                    await updateVehicleFuel(vehicleFuel[i].id, {fuel: vehicleFuel[i].fuel, vehicleId: vehicleId}, authCtx.token);
                 }
             }
         } else { 
