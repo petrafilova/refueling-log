@@ -284,8 +284,6 @@ export const updateVehicleById = async (vehicleId, editedVehicle, token) => {
     return false;
 };
 
-//toto fuel
-
 export const createVehicleFuel = async (vehicleFuel, token) => {
     try {
         const response = await fetch(`${baseUrl}/vehicleFuel`, {

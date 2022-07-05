@@ -1,7 +1,8 @@
 import React, { useContext, useRef, useState, useEffect } from 'react';
-import { getVehicleById } from '../../lib/api';
+import { createVehicleFuel, getVehicleById, listOfVehicleFuels, deleteVehicleFuel} from '../../lib/api';
 import AuthContext from '../../store/auth-context';
 import FuelTable from '../VehicleFuel/FuelTable';
+
 
 const VehicleDialog = (props) => {
     const vehicleId = props.id;
@@ -25,6 +26,8 @@ const VehicleDialog = (props) => {
     const [colorIsInvalid, setColorIsInvalid] = useState(false);
     const [vinIsInvalid, setVinIsInvalid] = useState(false);
 
+    const [vehicleFuel, setVehicleFuel] = useState([]);
+
     useEffect(() => {
         if (vehicleId) {
             const getData = async () => {
@@ -35,14 +38,19 @@ const VehicleDialog = (props) => {
                 dateOfRegInputRef.current.value = data.dateOfReg;
                 colorInputRef.current.value = data.color;
                 vinInputRef.current.value = data.vin;
-                createdAtInputRef.current.value = data.createdAt;
-                updatedAtInputRef.current.value = data.updatedAt;
+                createdAtInputRef.current.value = new Date(data.createdAt).toLocaleString();
+                updatedAtInputRef.current.value = new Date(data.updatedAt).toLocaleString();
             };
             getData();
+            const getFuels = async () => {
+                const fuels = await listOfVehicleFuels(vehicleId, authCtx.token);
+                setVehicleFuel(fuels);
+            };
+            getFuels();
         }
     }, [vehicleId]);
 
-    const submitHandler = () => {
+    const submitHandler = async () => {
         setBrandIsInvalid(false);
         setModelIsInvalid(false);
         setLicenseIsInvalid(false);
@@ -87,10 +95,21 @@ const VehicleDialog = (props) => {
         };
 
         if (vehicleId) {
-            props.onEdit(createdVehicle);
-            
-        } else {
-            props.onSubmit(createdVehicle);
+            await props.onEdit(createdVehicle);
+            for (let i = 0; i < vehicleFuel.length; i++) {
+                if(!vehicleFuel[i].id) {
+                    await createVehicleFuel({fuel: vehicleFuel[i].fuel, vehicleId:vehicleId }, authCtx.token);
+                } else if (vehicleFuel[i].status === 'DELETED') {
+                    await deleteVehicleFuel(vehicleFuel[i].id, authCtx.token);
+                }
+            }
+        } else { 
+            const createdId = await props.onSubmit(createdVehicle);
+            if (createdId) {
+                for (let i = 0; i < vehicleFuel.length; i++) {
+                    await createVehicleFuel({fuel: vehicleFuel[i].fuel, vehicleId:createdId }, authCtx.token);
+                }
+            }
         }
 
     };
@@ -132,7 +151,7 @@ const VehicleDialog = (props) => {
                         <input className="w3-input w3-border" type="text" id="vin" ref={vinInputRef}></input>
                     </p>
                     {vinIsInvalid && <p className='w3-red'>Neplatný údaj</p>}
-                    <FuelTable />
+                    <FuelTable setFuelList={setVehicleFuel} fuelList={vehicleFuel}/>
                     {vehicleId && <p>
                         <label className="w3-text-indigo" htmlFor="createdAt">vytvorené: </label>
                         <input className="w3-input w3-border" type="text" id="createdAt" readOnly ref={createdAtInputRef}></input>

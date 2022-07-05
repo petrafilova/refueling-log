@@ -18,9 +18,9 @@ const AddVehicle = (props) => {
     const submitHandler = async (createdVehicle) => {
         const success = await createVehicle(createdVehicle, authCtx.token);
         console.log(success);
-        !success && setCreateVehicleDialogIsVisible(true);
         success && setCreateVehicleDialogIsVisible(false);
         props.reloadVehicles();
+        return success ? success.id : success;
     };
 
     return (
