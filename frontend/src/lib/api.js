@@ -418,3 +418,144 @@ export const deleteVehicleFuel = async (vehicleFuelId, token) => {
     return false;
 };
 
+// refueling log
+
+export const listOfFuelLogs = async (vehicleFuelId, token, display) => {
+    console.log(vehicleFuelId, token, display);
+    try {
+        const response = await fetch(`${baseUrl}/fuelLog/byVehicleFuel/${vehicleFuelId}`, {
+            method: 'POST',
+            body: JSON.stringify(display),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        console.log(response);
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log('listOfFuelLogs');
+            return data;
+        } else {
+            console.log(data);
+            console.log(data.code);
+            throw new Error(data.code);
+        }
+    } catch (err) {
+        console.log(`Nastala chyba pri zobrazení záznamov tankovania. ${err.message}`);
+        alert(`Nastala chyba pri zobrazení záznamov tankovania. ${err.message}`);
+    }
+    return false;
+};
+
+export const createFuelLog = async (fuelLog, token) => {
+    console.log(fuelLog, token);
+    try {
+        const response = await fetch(`${baseUrl}/fuelLog`, {
+            method: 'POST',
+            body: JSON.stringify(fuelLog),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        console.log(response);
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log('createdFuelLog');
+            return data;
+        } else {
+            console.log(data);
+            console.log(data.code);
+            throw new Error(data.code);
+        }
+    } catch (err) {
+        console.log(`Nastala chyba pri vytvorení záznamu tankovania. ${err.message}`);
+        alert(`Nastala chyba pri vytvorení záznamu tankovania. ${err.message}`);
+    }
+    return false;
+};
+
+export const getSingleFuelLog = async (fuelLogId, token) => {
+    try {
+        const response = await fetch(`${baseUrl}/fuelLog/${fuelLogId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        console.log(response);
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log('gettedSingleFuelLog');
+            return data;
+        } else {
+            console.log(data);
+            console.log(data.code);
+            throw new Error(data.code);
+        }
+    } catch (err) {
+        console.log(`Nastala chyba pri zobrazení záznamu pre dané palivo. ${err.message}`);
+        alert(`Nastala chyba pri zobrazení záznamu pre dané palivo. ${err.message}`);
+    }
+    return false;
+};
+
+export const updateFuelLog = async (fuelLogId, updatedData, token) => {
+    try {
+        const response = await fetch(`${baseUrl}/fuelLog/${fuelLogId}`, {
+            method: 'PUT',
+            body: JSON.stringify(updatedData),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        console.log(response);
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log('updatedFuelLog');
+            return data;
+        } else {
+            console.log(data);
+            console.log(data.code);
+            throw new Error(data.code);
+        }
+    } catch (err) {
+        console.log(`Nastala chyba pri úprave záznamu tankovania. ${err.message}`);
+        alert(`Nastala chyba pri úprave záznamu tankovania. ${err.message}`);
+    }
+    return false;
+};
+
+export const deleteFuelLog = async (fuelLogId, token) => {
+    try {
+        const response = await fetch(`${baseUrl}/fuelLog/${fuelLogId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        console.log(response);
+        
+        if (response.ok) {
+            console.log('deletedFuelLog');
+            return true;
+        } else {
+            const data = await response.json();
+            console.log(data);
+            console.log(data.code);
+            throw new Error(data.code);
+        }
+    } catch (err) {
+        console.log(`Nastala chyba pri vymazaní záznamu tankovania. ${err.message}`);
+        alert(`Nastala chyba pri vymazaní záznamu tankovania. ${err.message}`);
+    }
+    return false;
+};
+
+

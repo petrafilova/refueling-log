@@ -13,7 +13,7 @@ const MainNavigation = () => {
         <header>
             <nav className="w3-bar w3-indigo">
                 <Link className="w3-bar-item w3-button" to='/profile'>something1</Link>
-                <Link className="w3-bar-item w3-button" to='/profile'>something2</Link>
+                <Link className="w3-bar-item w3-button" to='/refueling'>Tankovanie</Link>
                 <Link className="w3-bar-item w3-button" to='/vehicle'>Vozidlo</Link>
                 <Link className="w3-bar-item w3-button" to='/profile'>Profil</Link>
                 <button className='w3-button w3-right' type='button' onClick={logout}>Odhlásiť sa</button>

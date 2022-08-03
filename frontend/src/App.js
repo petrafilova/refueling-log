@@ -11,6 +11,7 @@ import StartingPage from './pages/StartingPage';
 import AuthContext from './store/auth-context';
 import MainNavigation from './components/Layout/MainNavigation';
 import VehiclePage from './pages/VehiclePage';
+import RefuelingPage from './pages/RefuelingPage';
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
                         <Route path='/profile' element={<ProfilePage />} />
                         <Route path='/start' element={<StartingPage />} />
                         <Route path='/vehicle' element={<VehiclePage />} />
+                        <Route path='/refueling' element={<RefuelingPage />} />
                     </Fragment>)
                     }
                     <Route path='*' element={<Navigate replace to={'/'} />} />
