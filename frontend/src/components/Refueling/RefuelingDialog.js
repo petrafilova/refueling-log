@@ -1,8 +1,9 @@
 import React, { useRef, useState, useContext, useEffect } from 'react';
-import { getSingleFuelLog } from '../../lib/api';
+import { getSingleFuelLog, createFuelLog, updateFuelLog } from '../../lib/api';
 import AuthContext from '../../store/auth-context';
 
 const RefuelingDialog = (props) => {
+
 
     console.log('RefuelingDialog', props);
 
@@ -30,7 +31,7 @@ const RefuelingDialog = (props) => {
 
     const fullChanged = (event) => {
         setFull(event.target.value === 'false' ? false : true);
-    
+
     };
 
     const prevMissingChanged = (event) => {
@@ -55,7 +56,7 @@ const RefuelingDialog = (props) => {
         return formattedDate;
     };
 
-    const submitHandler = () => {
+    const submitHandler = async () => {
         setQuantityIsValid(true);
         setUnitPriceIsValid(true);
         setTotalPriceIsValid(true);
@@ -93,7 +94,7 @@ const RefuelingDialog = (props) => {
             return;
         }
 
-        props.setFuelLog({
+        const fuelLog = {
             quantity: quantityInput,
             unitPrice: unitPriceInput,
             totalPrice: totalPriceInput,
@@ -102,19 +103,28 @@ const RefuelingDialog = (props) => {
             full: full,
             previousMissing: prevMissing,
             vehicleFuelId: props.fuelId,
-        });
+        };
+
+
+        console.log('fuelLog', fuelLog);
+        
+        if (props.singleFuelLogId) {
+            await updateFuelLog(props.singleFuelLogId, fuelLog, authCtx.token);
+        } else {
+            await createFuelLog(fuelLog, authCtx.token);
+        }
 
         props.onCancel();
 
     };
 
-    useEffect(()=>{
+    useEffect(() => {
         if (props.singleFuelLogId) {
             console.log('useEffect - singlefuelLog', props.singleFuelLogId);
             const getData = async () => {
-                const data =  await getSingleFuelLog(props.singleFuelLogId, authCtx.token);
+                const data = await getSingleFuelLog(props.singleFuelLogId, authCtx.token);
                 console.log(data);
-                
+
                 quantityInputRef.current.value = data.quantity;
                 unitPriceInputRef.current.value = data.unitPrice;
                 totalPriceInputRef.current.value = data.totalPrice;
@@ -132,7 +142,7 @@ const RefuelingDialog = (props) => {
             getData();
         }
     }, [props.singleFuelLogId, authCtx.token]);
-   
+
 
     return (
         <div className="w3-modal w3-show">
