@@ -558,4 +558,114 @@ export const deleteFuelLog = async (fuelLogId, token) => {
     return false;
 };
 
+// expense type
+
+export const listOfExpensesTypes = async (token) => {
+    try {
+        const response = await fetch(`${baseUrl}/expenseType`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        console.log(response);
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log('listOfExpensesTypes');
+            return data;
+        } else {
+            console.log(data);
+            console.log(data.code);
+            throw new Error(data.code);
+        }
+    } catch (err) {
+        console.log(`Nastala chyba pri zobrazení druhov výdavkov. ${err.message}`);
+        alert(`Nastala chyba pri zobrazení druhov výdavkov. ${err.message}`);
+    }
+    return false;
+};
+
+export const createExpensesType = async (nameOfExpenseType, token) => {
+    console.log(nameOfExpenseType, token);
+    try {
+        const response = await fetch(`${baseUrl}/expenseType`, {
+            method: 'POST',
+            body: JSON.stringify(nameOfExpenseType),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        console.log(response);
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log('createdExpensesType');
+            return data;
+        } else {
+            console.log(data);
+            console.log(data.code);
+            throw new Error(data.code);
+        }
+    } catch (err) {
+        console.log(`Nastala chyba pri vytvorení druhu výdavku. ${err.message}`);
+        alert(`Nastala chyba pri vytvorení druhu výdavku. ${err.message}`);
+    }
+    return false;
+};
+
+export const updateExpenseType = async (expenseTypeId, updatedData, token) => {
+    try {
+        const response = await fetch(`${baseUrl}/expenseType/${expenseTypeId}`, {
+            method: 'PUT',
+            body: JSON.stringify(updatedData),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        console.log(response);
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log('updatedExpenseType');
+            return data;
+        } else {
+            console.log(data);
+            console.log(data.code);
+            throw new Error(data.code);
+        }
+    } catch (err) {
+        console.log(`Nastala chyba pri úprave druhu výdavku. ${err.message}`);
+        alert(`Nastala chyba pri úprave druhu výdavku. ${err.message}`);
+    }
+    return false;
+};
+
+export const deleteExpenseType = async (expenseTypeId, token) => {
+    try {
+        const response = await fetch(`${baseUrl}/ExpenseType/${expenseTypeId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        console.log(response);
+        
+        if (response.ok) {
+            console.log('deletedExpenseType');
+            return true;
+        } else {
+            const data = await response.json();
+            console.log(data);
+            console.log(data.code);
+            throw new Error(data.code);
+        }
+    } catch (err) {
+        console.log(`Nastala chyba pri vymazaní druhu výdavku. ${err.message}`);
+        alert(`Nastala chyba pri vymazaní druhu výdavku. ${err.message}`);
+    }
+    return false;
+};
 

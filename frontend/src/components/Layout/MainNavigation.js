@@ -12,7 +12,7 @@ const MainNavigation = () => {
     return (
         <header>
             <nav className="w3-bar w3-indigo">
-                <Link className="w3-bar-item w3-button" to='/profile'>something1</Link>
+                <Link className="w3-bar-item w3-button" to='/expense'>Výdavky</Link>
                 <Link className="w3-bar-item w3-button" to='/refueling'>Tankovanie</Link>
                 <Link className="w3-bar-item w3-button" to='/vehicle'>Vozidlo</Link>
                 <Link className="w3-bar-item w3-button" to='/profile'>Profil</Link>
