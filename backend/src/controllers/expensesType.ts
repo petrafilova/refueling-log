@@ -30,24 +30,24 @@ export const createExpensesType = async (
     res: Response,
     next: NextFunction
 ) => {
+    const t = await sequelize.transaction();
     try {
-        await sequelize.transaction(async (t) => {
-            const expenseType = await ExpensesType.create(
-                { ...req.body, username: req.username },
-                {
-                    fields: ['name', 'username'],
-                    transaction: t,
-                }
-            );
-
-            const result = await ExpensesType.findByPk(expenseType.id, {
-                attributes: ['id', 'name'],
+        const expenseType = await ExpensesType.create(
+            { ...req.body, username: req.username },
+            {
+                fields: ['name', 'username'],
                 transaction: t,
-            });
+            }
+        );
 
-            res.status(201).json(result);
+        const result = await ExpensesType.findByPk(expenseType.id, {
+            attributes: ['id', 'name'],
+            transaction: t,
         });
+        await t.commit();
+        res.status(201).json(result);
     } catch (err) {
+        await t.rollback();
         next(err);
     }
 };
@@ -57,37 +57,38 @@ export const updateExpensesType = async (
     res: Response,
     next: NextFunction
 ) => {
+    const t = await sequelize.transaction();
     try {
-        await sequelize.transaction(async (t) => {
-            const expensesType = await ExpensesType.findOne({
-                where: {
-                    id: req.params.expensesTypeId,
-                    username: req.username,
-                },
-                attributes: ['id', 'name'],
-                transaction: t,
-            });
-
-            if (!expensesType) {
-                const error = new CustomError();
-                error.code = CUSTOM_ERROR_CODES.NOT_FOUND;
-                error.statusCode = 404;
-                throw error;
-            }
-
-            const result = await expensesType.update(
-                req.body,
-                {
-                    fields: ['name'],
-                },
-                {
-                    transaction: t,
-                }
-            );
-
-            res.status(200).json(result);
+        const expensesType = await ExpensesType.findOne({
+            where: {
+                id: req.params.expensesTypeId,
+                username: req.username,
+            },
+            attributes: ['id', 'name'],
+            transaction: t,
         });
+
+        if (!expensesType) {
+            const error = new CustomError();
+            error.code = CUSTOM_ERROR_CODES.NOT_FOUND;
+            error.statusCode = 404;
+            throw error;
+        }
+
+        const result = await expensesType.update(
+            req.body,
+            {
+                fields: ['name'],
+            },
+            {
+                transaction: t,
+            }
+        );
+
+        await t.commit();
+        res.status(200).json(result);
     } catch (err) {
+        await t.rollback();
         next(err);
     }
 };

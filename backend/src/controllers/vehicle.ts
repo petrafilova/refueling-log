@@ -51,31 +51,31 @@ export const createVehicle = async (
     res: Response,
     next: NextFunction
 ) => {
+    const t = await sequelize.transaction();
     try {
-        await sequelize.transaction(async (t) => {
-            const vehicle = await Vehicle.create(
-                { ...req.body, username: req.username },
-                {
-                    fields: [
-                        'brand',
-                        'model',
-                        'licensePlateNo',
-                        'dateOfReg',
-                        'color',
-                        'vin',
-                        'username',
-                    ],
-                    transaction: t,
-                }
-            );
-
-            const result = await Vehicle.findByPk(vehicle.id, {
+        const vehicle = await Vehicle.create(
+            { ...req.body, username: req.username },
+            {
+                fields: [
+                    'brand',
+                    'model',
+                    'licensePlateNo',
+                    'dateOfReg',
+                    'color',
+                    'vin',
+                    'username',
+                ],
                 transaction: t,
-            });
+            }
+        );
 
-            res.status(201).json(result);
+        const result = await Vehicle.findByPk(vehicle.id, {
+            transaction: t,
         });
+        await t.commit();
+        res.status(201).json(result);
     } catch (err) {
+        await t.rollback();
         next(err);
     }
 };
@@ -85,40 +85,40 @@ export const updateVehicle = async (
     res: Response,
     next: NextFunction
 ) => {
+    const t = await sequelize.transaction();
     try {
-        await sequelize.transaction(async (t) => {
-            const vehicle = await Vehicle.findOne({
-                where: {
-                    id: req.params.vehicleId,
-                    username: req.username,
-                },
-                transaction: t,
-            });
-
-            if (!vehicle) {
-                const error = new CustomError();
-                error.code = CUSTOM_ERROR_CODES.NOT_FOUND;
-                error.statusCode = 404;
-                throw error;
-            }
-            const result = await vehicle.update(
-                req.body,
-                {
-                    fields: [
-                        'brand',
-                        'model',
-                        'licensePlateNo',
-                        'dateOfReg',
-                        'color',
-                        'vin',
-                    ],
-                },
-                { transaction: t }
-            );
-
-            res.status(200).json(result);
+        const vehicle = await Vehicle.findOne({
+            where: {
+                id: req.params.vehicleId,
+                username: req.username,
+            },
+            transaction: t,
         });
+
+        if (!vehicle) {
+            const error = new CustomError();
+            error.code = CUSTOM_ERROR_CODES.NOT_FOUND;
+            error.statusCode = 404;
+            throw error;
+        }
+        const result = await vehicle.update(
+            req.body,
+            {
+                fields: [
+                    'brand',
+                    'model',
+                    'licensePlateNo',
+                    'dateOfReg',
+                    'color',
+                    'vin',
+                ],
+            },
+            { transaction: t }
+        );
+        await t.commit();
+        res.status(200).json(result);
     } catch (err) {
+        await t.rollback();
         next(err);
     }
 };

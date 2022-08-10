@@ -108,67 +108,68 @@ export const updateFuelLog = async (
     const fuelLogId = +req.params.fuelLogId;
     const vehicleFuelId = +req.body.vehicleFuelId;
     const dateTime = new Date(req.body.dateTime);
+    const t = await sequelize.transaction();
     try {
-        await sequelize.transaction(async (t) => {
-            let fuelLog = await FuelLog.findByPk(fuelLogId);
+        let fuelLog = await FuelLog.findByPk(fuelLogId);
 
-            if (!fuelLog) {
-                const error = new CustomError();
-                error.code = CUSTOM_ERROR_CODES.NOT_FOUND;
-                error.statusCode = 404;
-                throw error;
-            }
+        if (!fuelLog) {
+            const error = new CustomError();
+            error.code = CUSTOM_ERROR_CODES.NOT_FOUND;
+            error.statusCode = 404;
+            throw error;
+        }
 
-            await checkVehicleFuelOwnership(
-                req.username!,
-                fuelLog.vehicleFuelId,
+        await checkVehicleFuelOwnership(
+            req.username!,
+            fuelLog.vehicleFuelId,
+            t
+        );
+        await checkVehicleFuelOwnership(req.username!, vehicleFuelId, t);
+
+        const originVehicleFuelId = +fuelLog.vehicleFuelId;
+        const originDateTime = fuelLog.dateTime;
+
+        fuelLog = await fuelLog.update(req.body, {
+            fields: [
+                'quantity',
+                'unitPrice',
+                'totalPrice',
+                'mileage',
+                'dateTime',
+                'full',
+                'previousMissing',
+                'vehicleFuelId',
+            ],
+            transaction: t,
+        });
+
+        const result = await updateconsumptionOfFuelLog(fuelLog, t);
+        const nextFull = await findNextFullLog(
+            fuelLog.vehicleFuelId,
+            fuelLog.dateTime,
+            t
+        ); // find next full fuel log
+        if (nextFull) {
+            await updateconsumptionOfFuelLog(nextFull, t); // update next full fuel log
+        }
+
+        if (
+            vehicleFuelId !== originVehicleFuelId ||
+            dateTime.getTime() !== originDateTime.getTime()
+        ) {
+            const nextFullOrigin = await findNextFullLog(
+                originVehicleFuelId,
+                originDateTime,
                 t
             );
-            await checkVehicleFuelOwnership(req.username!, vehicleFuelId, t);
-
-            const originVehicleFuelId = +fuelLog.vehicleFuelId;
-            const originDateTime = fuelLog.dateTime;
-
-            fuelLog = await fuelLog.update(req.body, {
-                fields: [
-                    'quantity',
-                    'unitPrice',
-                    'totalPrice',
-                    'mileage',
-                    'dateTime',
-                    'full',
-                    'previousMissing',
-                    'vehicleFuelId',
-                ],
-                transaction: t,
-            });
-
-            const result = await updateconsumptionOfFuelLog(fuelLog, t);
-            const nextFull = await findNextFullLog(
-                fuelLog.vehicleFuelId,
-                fuelLog.dateTime,
-                t
-            ); // find next full fuel log
-            if (nextFull) {
-                await updateconsumptionOfFuelLog(nextFull, t); // update next full fuel log
+            if (nextFullOrigin) {
+                await updateconsumptionOfFuelLog(nextFullOrigin, t); // update next full fuel log
             }
-
-            if (
-                vehicleFuelId !== originVehicleFuelId ||
-                dateTime.getTime() !== originDateTime.getTime()
-            ) {
-                const nextFullOrigin = await findNextFullLog(
-                    originVehicleFuelId,
-                    originDateTime,
-                    t
-                );
-                if (nextFullOrigin) {
-                    await updateconsumptionOfFuelLog(nextFullOrigin, t); // update next full fuel log
-                }
-            }
-            res.status(200).json(result);
-        });
+        }
+        await t.commit();
+        res.status(200).json(result);
     } catch (err) {
+        await t.rollback();
         console.error(err);
         next(err);
     }
@@ -180,40 +181,41 @@ export const deleteFuelLog = async (
     next: NextFunction
 ) => {
     const fuelLogId = +req.params.fuelLogId;
+    const t = await sequelize.transaction();
     try {
-        await sequelize.transaction(async (t) => {
-            const fuelLog = await FuelLog.findByPk(fuelLogId);
-            if (!fuelLog) {
-                const error = new CustomError();
-                error.code = CUSTOM_ERROR_CODES.NOT_FOUND;
-                error.statusCode = 404;
-                throw error;
-            }
+        const fuelLog = await FuelLog.findByPk(fuelLogId);
+        if (!fuelLog) {
+            const error = new CustomError();
+            error.code = CUSTOM_ERROR_CODES.NOT_FOUND;
+            error.statusCode = 404;
+            throw error;
+        }
 
-            await checkVehicleFuelOwnership(
-                req.username!,
-                fuelLog.vehicleFuelId,
-                t
-            );
+        await checkVehicleFuelOwnership(
+            req.username!,
+            fuelLog.vehicleFuelId,
+            t
+        );
 
-            await FuelLog.destroy({
-                where: {
-                    id: fuelLogId,
-                },
-                transaction: t,
-            });
-
-            const nextFullLog = await findNextFullLog(
-                fuelLog.vehicleFuelId,
-                fuelLog.dateTime,
-                t
-            );
-            if (nextFullLog) {
-                await updateconsumptionOfFuelLog(nextFullLog, t); // update next full fuel log
-            }
-            res.status(204).send();
+        await FuelLog.destroy({
+            where: {
+                id: fuelLogId,
+            },
+            transaction: t,
         });
+
+        const nextFullLog = await findNextFullLog(
+            fuelLog.vehicleFuelId,
+            fuelLog.dateTime,
+            t
+        );
+        if (nextFullLog) {
+            await updateconsumptionOfFuelLog(nextFullLog, t); // update next full fuel log
+        }
+        await t.commit();
+        res.status(204).send();
     } catch (err) {
+        await t.rollback();
         next(err);
     }
 };
