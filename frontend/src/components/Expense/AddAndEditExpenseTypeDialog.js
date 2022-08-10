@@ -8,10 +8,10 @@ const AddAndEditExpenseTypeDialog = (props) => {
     const nameInputRef = useRef();
 
     useEffect (()=>{
-        if (props.expenseType.id) {
+        if (props.expenseType.name) {
             nameInputRef.current.value = props.expenseType.name;
         }
-    }, [props.expenseType, nameInputRef]);
+    }, [props.expenseType.name, nameInputRef]);
 
     const newExpenseTypeHandler = async () => {
         const nameInput = nameInputRef.current.value;

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useCallback } from 'react';
+import React, { useContext, useState, useEffect, useCallback, Fragment } from 'react';
 import { getVehicles, updateVehicleById } from '../../lib/api';
 import AuthContext from '../../store/auth-context';
 import VehicleItem from './VehicleItem';
@@ -65,7 +65,7 @@ const Vehicles = () => {
     };
 
     return (
-        <div>
+        <Fragment>
             <div className='w3-bar'>
                 <h1 className='w3-left'>Zoznam vozidiel</h1>
                 <AddVehicle reloadVehicles={loadVehicles} />
@@ -86,7 +86,7 @@ const Vehicles = () => {
             </table>
             {deleteId && <ModalDialog text={'Naozaj chcete odstrániť položku?'} onCancel={cancel} onSubmit={deleteVehicleItem} />}
             {editId && <VehicleDialog id={editId} onCancel={cancel} onEdit={editItem}/>}
-        </div>
+        </Fragment>
     );
 };
 

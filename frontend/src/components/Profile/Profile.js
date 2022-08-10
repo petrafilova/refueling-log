@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import ChangePassword from '../Auth/ChangePassword';
 import DeleteUser from '../Auth/DeleteUser';
 
 const Profile = () => {
     return (
-        <div>
+        <Fragment>
             <h1>Profil</h1>
             <ChangePassword  />
             <DeleteUser />
-        </div>
+        </Fragment>
     );
 };
 

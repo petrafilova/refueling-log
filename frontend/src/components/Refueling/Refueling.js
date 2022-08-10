@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useCallback } from 'react';
+import React, { useEffect, useState, useContext, useCallback, Fragment } from 'react';
 import { listOfFuelLogs, deleteFuelLog} from '../../lib/api';
 // import AddRefuelingRecord from './AddRefuelingRecord';
 import RefuelingTable from './RefuelingTable';
@@ -68,7 +68,7 @@ const Refueling = () => {
     };
 
     return (
-        <div>
+        <Fragment>
             <div className='w3-bar'>
                 <h1 className='w3-left'>Záznamy tankovania</h1>
             </div>
@@ -84,7 +84,7 @@ const Refueling = () => {
             </div>
             {editDialogIsVisible && <RefuelingDialog fuelId={fuelId} onCancel={cancel} singleFuelLogId={fuelLogId} />}
             {deleteDialogIsVisible && <ModalDialog text={'Naozaj si prajete vymazať záznam?'} onCancel={cancelDeleteDialog} onSubmit={deleteSingleFuelLog} />}
-        </div>
+        </Fragment>
     );
 };
 

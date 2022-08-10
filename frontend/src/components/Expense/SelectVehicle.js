@@ -3,17 +3,16 @@ import AuthContext from '../../store/auth-context';
 import { getVehicles } from '../../lib/api';
 
 
-const SelectVehicle = () => {
+const SelectVehicle = (props) => {
     const authCtx = useContext(AuthContext);
     const [listOfVehicles, setListOfVehicles] = useState([]);
-    const [chosenVehicle, setChosenVehicle] = useState();
 
     useEffect(() => {
         (async () => {
             const vehicles = await getVehicles(authCtx.token);
             setListOfVehicles(vehicles);
             if (vehicles.length > 0) {
-                setChosenVehicle(vehicles[0].id);
+                props.setChosenVehicle(vehicles[0].id);
             }
         })();
     }, [authCtx.token]);
@@ -21,10 +20,8 @@ const SelectVehicle = () => {
     console.log(listOfVehicles);
 
     const selectVehicleHandler = (event) => {
-        setChosenVehicle(event.target.value);
+        props.setChosenVehicle(event.target.value);
     };
-
-    console.log(chosenVehicle);
 
     return (
         <div className='w3-section'>

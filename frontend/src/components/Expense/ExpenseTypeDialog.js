@@ -21,7 +21,6 @@ const ExpenseTypeDialog = (props) => {
 
     useEffect(() => {
         list();
-        console.log(listOfExpenses);
     }, [list]);
 
     console.log(listOfExpenses);
@@ -40,8 +39,9 @@ const ExpenseTypeDialog = (props) => {
         setAddAndEditExpenseDialog(true);
     };
 
-    const cancelAddExpenseDialog = () => {
+    const cancelAddAndEditExpenseDialog = () => {
         setAddAndEditExpenseDialog(false);
+        setExpenseType({id: '', name: ''});
         list();
     };
 
@@ -73,7 +73,7 @@ const ExpenseTypeDialog = (props) => {
                 </p>
             </footer>
         </div>
-        {addAndEditExpenseDialog && <AddAndEditExpenseTypeDialog onCancel={cancelAddExpenseDialog} expenseType={expenseType}/>}
+        {addAndEditExpenseDialog && <AddAndEditExpenseTypeDialog onCancel={cancelAddAndEditExpenseDialog} expenseType={expenseType}/>}
         {confirmDeletion && <ModalDialog text={`Naozaj chcete vymazať typ paliva "${expenseType.name}"?`} onCancel={cancelConfirmation} onSubmit={deleteExpenseTypeById}/>}
     </div>);
 };

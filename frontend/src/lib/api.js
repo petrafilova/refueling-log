@@ -669,3 +669,144 @@ export const deleteExpenseType = async (expenseTypeId, token) => {
     return false;
 };
 
+// expense-log
+
+export const listOfExpenseLogs = async (vehicleId, token, display) => {
+    console.log(vehicleId, token, display);
+    try {
+        const response = await fetch(`${baseUrl}/expenseLog/byVehicle/${vehicleId}`, {
+            method: 'POST',
+            body: JSON.stringify(display),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        console.log(response);
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log('listOfExpenseLogs');
+            return data;
+        } else {
+            console.log(data);
+            console.log(data.code);
+            throw new Error(data.code);
+        }
+    } catch (err) {
+        console.log(`Nastala chyba pri zobrazení záznamov výdavkov. ${err.message}`);
+        alert(`Nastala chyba pri zobrazení záznamov výdavkov. ${err.message}`);
+    }
+    return false;
+};
+
+export const createExpenseLog = async (expenseLog, token) => {
+    console.log(expenseLog, token);
+    try {
+        const response = await fetch(`${baseUrl}/expenseLog`, {
+            method: 'POST',
+            body: JSON.stringify(expenseLog),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        console.log(response);
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log('createdExpenseLog');
+            return data;
+        } else {
+            console.log(data);
+            console.log(data.code);
+            throw new Error(data.code);
+        }
+    } catch (err) {
+        console.log(`Nastala chyba pri vytvorení výdavku. ${err.message}`);
+        alert(`Nastala chyba pri vytvorení výdavku. ${err.message}`);
+    }
+    return false;
+};
+
+export const getSingleExpenseLog = async (expensesLogId, token) => {
+    try {
+        const response = await fetch(`${baseUrl}/expenseLog/${expensesLogId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        console.log(response);
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log('gettedSingExpenseLog');
+            return data;
+        } else {
+            console.log(data);
+            console.log(data.code);
+            throw new Error(data.code);
+        }
+    } catch (err) {
+        console.log(`Nastala chyba pri zobrazení záznamu pre daný výdavok. ${err.message}`);
+        alert(`Nastala chyba pri zobrazení záznamu pre daný výdavok. ${err.message}`);
+    }
+    return false;
+};
+
+export const updateExpenseLog = async (expensesLogId, updatedData, token) => {
+    try {
+        const response = await fetch(`${baseUrl}/expenseLog/${expensesLogId}`, {
+            method: 'PUT',
+            body: JSON.stringify(updatedData),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        console.log(response);
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log('updatedExpenseLog');
+            return data;
+        } else {
+            console.log(data);
+            console.log(data.code);
+            throw new Error(data.code);
+        }
+    } catch (err) {
+        console.log(`Nastala chyba pri úprave výdavku. ${err.message}`);
+        alert(`Nastala chyba pri úprave výdavku. ${err.message}`);
+    }
+    return false;
+};
+
+export const deleteExpenseLog = async (expensesLogId, token) => {
+    try {
+        const response = await fetch(`${baseUrl}/expenseLog/${expensesLogId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        console.log(response);
+        
+        if (response.ok) {
+            console.log('deletedExpenseLog');
+            return true;
+        } else {
+            const data = await response.json();
+            console.log(data);
+            console.log(data.code);
+            throw new Error(data.code);
+        }
+    } catch (err) {
+        console.log(`Nastala chyba pri vymazaní výdavku. ${err.message}`);
+        alert(`Nastala chyba pri vymazaní výdavku. ${err.message}`);
+    }
+    return false;
+};
+
+// stats

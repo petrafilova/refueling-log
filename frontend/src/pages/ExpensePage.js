@@ -2,7 +2,7 @@ import React from 'react';
 import Expense from '../components/Expense/Expense';
 
 const ExpensePage = () => {
-    return <Expense />;
+    return <Expense/>;
 };
 
 export default ExpensePage;
