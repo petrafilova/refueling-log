@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext, useCallback, Fragment } from 'react';
 import { listOfFuelLogs, deleteFuelLog} from '../../lib/api';
-// import AddRefuelingRecord from './AddRefuelingRecord';
 import RefuelingTable from './RefuelingTable';
 import Selection from './Selection';
 import AuthContext from '../../store/auth-context';

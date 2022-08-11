@@ -3,9 +3,10 @@ import SelectVehicle from './SelectVehicle';
 import ExpenseTypeDialog from './ExpenseTypeDialog';
 import ListOfExpenses from './ListOfExpenses';
 import AuthContext from '../../store/auth-context';
-import { listOfExpenseLogs } from '../../lib/api';
+import { listOfExpenseLogs, deleteExpenseLog } from '../../lib/api';
 import SelectExpenseType from './SelectExpenseType';
 import ExpenseDialog from './ExpenseDialog';
+import ModalDialog from '../UI/ModalDialog';
 
 
 const Expense = () => {
@@ -14,7 +15,10 @@ const Expense = () => {
     const [list, setList] = useState([]);
     const [chosenVehicle, setChosenVehicle] = useState();
     const [chosenType, setChosenType] = useState();
+    const [singleExpenseId, setSingleExpenseId] = useState();
+    const [modalDialog, setModalDialog] = useState(false);
 
+    console.log(list);
 
     const authCtx = useContext(AuthContext);
 
@@ -26,12 +30,41 @@ const Expense = () => {
         setExpenseDialog(true);
     };
 
+    const editExpense = (id) => {
+        setExpenseDialog(true);
+        if (id) {
+            setSingleExpenseId(id);
+        }
+    };
+
+    const deleteExpense = (id) => {
+        setModalDialog(true);
+        if (id) {
+            setSingleExpenseId(id);
+        }
+    };
+
+    const deleteSingleExpense = async() => {
+        await deleteExpenseLog(singleExpenseId, authCtx.token);
+        setSingleExpenseId('');
+        setModalDialog(false);
+        getListOfExpenses();
+    };
+
+    const cancelDeletion = () => {
+        setSingleExpenseId('');
+        setModalDialog(false);
+    };
+
     const cancelExpenseType = () => {
         setExpenseTypeDialog(false);
     };
 
     const cancelExpense = () => {
         setExpenseDialog(false);
+        if (singleExpenseId) {
+            setSingleExpenseId('');
+        }
     };
 
     const getListOfExpenses = useCallback(() => {
@@ -69,10 +102,10 @@ const Expense = () => {
                 <button className="w3-button w3-indigo add-button-margin" onClick={createExpense}>Pridať záznam o výdavku</button>
             </div>
             {list.length < 1 && <p>Zoznam výdavkov pre dané vozidlo a typ výdavku je prázdny.</p>}
-            {list.length >= 1 && <ListOfExpenses list={list} />}
+            {list.length >= 1 && <ListOfExpenses list={list} editExpense={editExpense} deleteExpense={deleteExpense}/>}
             {expenseTypeDialog && <ExpenseTypeDialog onCancel={cancelExpenseType} />}
-            {expenseDialog && <ExpenseDialog onCancel={cancelExpense} vehicleId={chosenVehicle} expenseId={chosenType} listOfExpenses={getListOfExpenses}/>}
-
+            {expenseDialog && <ExpenseDialog onCancel={cancelExpense} vehicleId={chosenVehicle} expenseId={chosenType} listOfExpenses={getListOfExpenses} singleExpenseId={singleExpenseId}/>}
+            {modalDialog && <ModalDialog text={'Naozaj chcete vymazať výdavok?'} onCancel={cancelDeletion} onSubmit={deleteSingleExpense}/>}
 
 
 

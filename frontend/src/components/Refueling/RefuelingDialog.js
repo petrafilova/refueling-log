@@ -1,6 +1,7 @@
 import React, { useRef, useState, useContext, useEffect } from 'react';
 import { getSingleFuelLog, createFuelLog, updateFuelLog } from '../../lib/api';
 import AuthContext from '../../store/auth-context';
+import { formatDate } from '../../lib/dateFormatter';
 
 const RefuelingDialog = (props) => {
 
@@ -36,24 +37,6 @@ const RefuelingDialog = (props) => {
 
     const prevMissingChanged = (event) => {
         setPrevMissing(event.target.value === 'true');
-    };
-
-    const padNumber = (num) => {
-        return new String(num).padStart(2, '0');
-    };
-
-    const formatDate = (utcDate) => {
-        const date = new Date(utcDate);
-
-        const year = date.getFullYear();
-        const month = padNumber(date.getMonth() + 1);
-        const day = padNumber(date.getDate());
-        const hours = padNumber(date.getHours());
-        const minutes = padNumber(date.getMinutes());
-
-        const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}`;
-
-        return formattedDate;
     };
 
     const submitHandler = async () => {

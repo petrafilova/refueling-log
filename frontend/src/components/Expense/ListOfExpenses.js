@@ -1,7 +1,7 @@
 import React from 'react';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faPencil } from '@fortawesome/free-solid-svg-icons';
-// import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencil } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const ListOfExpenses = (props) => {
     return(
@@ -21,8 +21,8 @@ const ListOfExpenses = (props) => {
                         <td>{l.typeId}</td>
                         <td>{l.price}</td>
                         <td>{new Date(l.dateTime).toLocaleString()}</td>
-                        {/* <td className='w3-center'><button className='w3-button' aria-label='upraviť' onClick={props.editExpenseType.bind(null, l.id, l.name)}><FontAwesomeIcon icon={faPencil} /></button></td>
-                        <td className='w3-center'><button className='w3-button' aria-label='zmazať' onClick={props.deleteExpenseType.bind(null, l.id, l.name)}><FontAwesomeIcon icon={faTrash} /></button></td> */}
+                        <td className='w3-center'><button className='w3-button' aria-label='upraviť' onClick={props.editExpense.bind(null, l.id)}><FontAwesomeIcon icon={faPencil} /></button></td>
+                        <td className='w3-center'><button className='w3-button' aria-label='zmazať' onClick={props.deleteExpense.bind(null, l.id)}><FontAwesomeIcon icon={faTrash} /></button></td>
                     </tr>)}
             </tbody>
         </table>
