@@ -30,24 +30,24 @@ export const createExpensesType = async (
     res: Response,
     next: NextFunction
 ) => {
-    const t = await sequelize.transaction();
     try {
-        const expenseType = await ExpensesType.create(
-            { ...req.body, username: req.username },
-            {
-                fields: ['name', 'username'],
-                transaction: t,
-            }
-        );
+        const result = await sequelize.transaction(async (t) => {
+            const expenseType = await ExpensesType.create(
+                { ...req.body, username: req.username },
+                {
+                    fields: ['name', 'username'],
+                    transaction: t,
+                }
+            );
 
-        const result = await ExpensesType.findByPk(expenseType.id, {
-            attributes: ['id', 'name'],
-            transaction: t,
+            const result = await ExpensesType.findByPk(expenseType.id, {
+                attributes: ['id', 'name'],
+                transaction: t,
+            });
+            return result;
         });
-        await t.commit();
         res.status(201).json(result);
     } catch (err) {
-        await t.rollback();
         next(err);
     }
 };
@@ -57,65 +57,65 @@ export const updateExpensesType = async (
     res: Response,
     next: NextFunction
 ) => {
-    const t = await sequelize.transaction();
     try {
-        const expensesType = await ExpensesType.findOne({
-            where: {
-                id: req.params.expensesTypeId,
-                username: req.username,
-            },
-            attributes: ['id', 'name'],
-            transaction: t,
-        });
-
-        if (!expensesType) {
-            const error = new CustomError();
-            error.code = CUSTOM_ERROR_CODES.NOT_FOUND;
-            error.statusCode = 404;
-            throw error;
-        }
-
-        const result = await expensesType.update(
-            req.body,
-            {
-                fields: ['name'],
-            },
-            {
+        const result = await sequelize.transaction(async (t) => {
+            const expensesType = await ExpensesType.findOne({
+                where: {
+                    id: req.params.expensesTypeId,
+                    username: req.username,
+                },
+                attributes: ['id', 'name'],
                 transaction: t,
-            }
-        );
+            });
 
-        await t.commit();
-        res.status(200).json(result);
-    } catch (err) {
-        await t.rollback();
-        next(err);
-    }
-};
-
-// TODO check if don't allow delete if in use
-export const deleteExpensesType = (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
-    ExpensesType.destroy({
-        where: {
-            id: req.params.expensesTypeId,
-            username: req.username,
-        },
-    })
-        .then((result) => {
-            if (result > 0) {
-                res.status(204).send();
-            } else {
+            if (!expensesType) {
                 const error = new CustomError();
                 error.code = CUSTOM_ERROR_CODES.NOT_FOUND;
                 error.statusCode = 404;
                 throw error;
             }
-        })
-        .catch((err) => {
-            next(err);
+
+            const result = await expensesType.update(
+                req.body,
+                {
+                    fields: ['name'],
+                },
+                {
+                    transaction: t,
+                }
+            );
+            return result;
         });
+        res.status(200).json(result);
+    } catch (err) {
+        next(err);
+    }
+};
+
+// TODO check if don't allow delete if in use
+export const deleteExpensesType = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        await sequelize.transaction(async (t) => {
+            const result = await ExpensesType.destroy({
+                where: {
+                    id: req.params.expensesTypeId,
+                    username: req.username,
+                },
+                transaction: t,
+            });
+            if (result === 0) {
+                const error = new CustomError();
+                error.code = CUSTOM_ERROR_CODES.NOT_FOUND;
+                error.statusCode = 404;
+                throw error;
+            }
+        });
+        res.status(204).send();
+    } catch (err) {
+        next(err);
+    }
 };

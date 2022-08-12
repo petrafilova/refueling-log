@@ -75,30 +75,30 @@ export const createExpensesLog = async (
     const vehicleId = +req.body.vehicleId;
     const typeId = +req.body.typeId;
     const price = +req.body.price;
-    const t = await sequelize.transaction();
     try {
-        await checkVehicleOwnership(req.username!, vehicleId, t);
-        const expensesLog = await ExpensesLog.create(req.body, {
-            fields: [
-                'price',
-                'mileage',
-                'dateTime',
-                'comment',
-                'typeId',
-                'vehicleId',
-            ],
-            transaction: t,
+        const expensesLog = await sequelize.transaction(async (t) => {
+            await checkVehicleOwnership(req.username!, vehicleId, t);
+            const expensesLog = await ExpensesLog.create(req.body, {
+                fields: [
+                    'price',
+                    'mileage',
+                    'dateTime',
+                    'comment',
+                    'typeId',
+                    'vehicleId',
+                ],
+                transaction: t,
+            });
+
+            const dateTime = new Date(req.body.dateTime);
+            const month = dateTime.getMonth();
+            const year = dateTime.getFullYear();
+
+            await updateStats(month, year, vehicleId, typeId, price, t);
+            return expensesLog;
         });
-
-        const dateTime = new Date(req.body.dateTime);
-        const month = dateTime.getMonth();
-        const year = dateTime.getFullYear();
-
-        await updateStats(month, year, vehicleId, typeId, price, t);
-        await t.commit();
         res.status(201).json(expensesLog);
     } catch (err) {
-        await t.rollback();
         next(err);
     }
 };
@@ -112,61 +112,65 @@ export const updateExpensesLog = async (
     const vehicleId = +req.body.vehicleId;
     const typeId = +req.body.typeId;
     const price = +req.body.price;
-    const t = await sequelize.transaction();
     try {
-        let expensesLog = await ExpensesLog.findByPk(expensesLogId, {
-            transaction: t,
+        const expensesLog = await sequelize.transaction(async (t) => {
+            let expensesLog = await ExpensesLog.findByPk(expensesLogId, {
+                transaction: t,
+            });
+            if (!expensesLog) {
+                const error = new CustomError();
+                error.code = CUSTOM_ERROR_CODES.NOT_FOUND;
+                error.statusCode = 404;
+                throw error;
+            }
+
+            await checkVehicleOwnership(
+                req.username!,
+                expensesLog.vehicleId,
+                t
+            );
+            await checkVehicleOwnership(req.username!, vehicleId, t);
+
+            // it is not always needed to update price but this approach simplifies whole process with just low resource costs
+            const origDateTime = expensesLog.dateTime;
+            const origMonth = origDateTime.getMonth();
+            const origYear = origDateTime.getFullYear();
+            await updateStats(
+                origMonth,
+                origYear,
+                expensesLog.vehicleId,
+                expensesLog.typeId,
+                0 - expensesLog.price, // subtract original amount
+                t
+            );
+
+            const newDateTime = new Date(req.body.dateTime);
+            const newMonth = newDateTime.getMonth();
+            const newYear = newDateTime.getFullYear();
+            await updateStats(
+                newMonth,
+                newYear,
+                vehicleId,
+                typeId,
+                price, // add new amount
+                t
+            );
+
+            expensesLog = await expensesLog.update(req.body, {
+                fields: [
+                    'price',
+                    'mileage',
+                    'dateTime',
+                    'comment',
+                    'typeId',
+                    'vehicleId',
+                ],
+                transaction: t,
+            });
+            return expensesLog;
         });
-        if (!expensesLog) {
-            const error = new CustomError();
-            error.code = CUSTOM_ERROR_CODES.NOT_FOUND;
-            error.statusCode = 404;
-            throw error;
-        }
-
-        await checkVehicleOwnership(req.username!, expensesLog.vehicleId, t);
-        await checkVehicleOwnership(req.username!, vehicleId, t);
-
-        // it is not always needed to update price but this approach simplifies whole process with just low resource costs
-        const origDateTime = expensesLog.dateTime;
-        const origMonth = origDateTime.getMonth();
-        const origYear = origDateTime.getFullYear();
-        await updateStats(
-            origMonth,
-            origYear,
-            expensesLog.vehicleId,
-            expensesLog.typeId,
-            0 - expensesLog.price, // subtract original amount
-            t
-        );
-
-        const newDateTime = new Date(req.body.dateTime);
-        const newMonth = newDateTime.getMonth();
-        const newYear = newDateTime.getFullYear();
-        await updateStats(
-            newMonth,
-            newYear,
-            vehicleId,
-            typeId,
-            price, // add new amount
-            t
-        );
-
-        expensesLog = await expensesLog.update(req.body, {
-            fields: [
-                'price',
-                'mileage',
-                'dateTime',
-                'comment',
-                'typeId',
-                'vehicleId',
-            ],
-            transaction: t,
-        });
-        await t.commit();
         res.status(200).json(expensesLog);
     } catch (err) {
-        await t.rollback();
         next(err);
     }
 };
@@ -177,43 +181,47 @@ export const deleteExpensesLog = async (
     next: NextFunction
 ) => {
     const expensesLogId = +req.params.expensesLogId;
-    const t = await sequelize.transaction();
+
     try {
-        const expensesLog = await ExpensesLog.findByPk(expensesLogId, {
-            transaction: t,
+        await sequelize.transaction(async (t) => {
+            const expensesLog = await ExpensesLog.findByPk(expensesLogId, {
+                transaction: t,
+            });
+
+            if (!expensesLog) {
+                const error = new CustomError();
+                error.code = CUSTOM_ERROR_CODES.NOT_FOUND;
+                error.statusCode = 404;
+                throw error;
+            }
+
+            await checkVehicleOwnership(
+                req.username!,
+                expensesLog.vehicleId,
+                t
+            );
+
+            const origDateTime = expensesLog.dateTime;
+            const origMonth = origDateTime.getMonth();
+            const origYear = origDateTime.getFullYear();
+            await updateStats(
+                origMonth,
+                origYear,
+                expensesLog.vehicleId,
+                expensesLog.typeId,
+                0 - expensesLog.price, // subtract original amount
+                t
+            );
+
+            await ExpensesLog.destroy({
+                where: {
+                    id: expensesLogId,
+                },
+                transaction: t,
+            });
         });
-
-        if (!expensesLog) {
-            const error = new CustomError();
-            error.code = CUSTOM_ERROR_CODES.NOT_FOUND;
-            error.statusCode = 404;
-            throw error;
-        }
-
-        await checkVehicleOwnership(req.username!, expensesLog.vehicleId, t);
-
-        const origDateTime = expensesLog.dateTime;
-        const origMonth = origDateTime.getMonth();
-        const origYear = origDateTime.getFullYear();
-        await updateStats(
-            origMonth,
-            origYear,
-            expensesLog.vehicleId,
-            expensesLog.typeId,
-            0 - expensesLog.price, // subtract original amount
-            t
-        );
-
-        await ExpensesLog.destroy({
-            where: {
-                id: expensesLogId,
-            },
-            transaction: t,
-        });
-        await t.commit();
         res.status(204).send();
     } catch (err) {
-        await t.rollback();
         next(err);
     }
 };

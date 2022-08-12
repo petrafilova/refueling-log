@@ -145,9 +145,8 @@ export const registerAccount = async (
                 error.statusCode = 503; // TODO maybe better code ?
                 throw error;
             }
-
-            res.status(201).send();
         });
+        res.status(201).send();
     } catch (err) {
         next(err);
     }
@@ -159,7 +158,7 @@ export const confirmAccount = async (
     next: NextFunction
 ) => {
     try {
-        await sequelize.transaction(async (t) => {
+        const result = await sequelize.transaction(async (t) => {
             const user = await User.scope('authScope').findOne({
                 where: {
                     uuid: req.params.uuid,
@@ -182,18 +181,19 @@ export const confirmAccount = async (
             const token = issueToken(confirmedUser);
             const refreshToken = issueRefreshToken(confirmedUser);
 
-            res.status(200).json({
+            return {
                 token: token,
                 refreshToken: refreshToken,
                 username: confirmedUser.username,
-            });
+            };
         });
+        res.status(200).json(result);
     } catch (err) {
         next(err);
     }
 };
 
-export const updatePassword = (
+export const updatePassword = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -202,27 +202,27 @@ export const updatePassword = (
     const username = req.body.username;
     const password = req.body.password;
     const newPassword = req.body.newPassword;
-    if (usernameFromToken != username) {
-        const error = new CustomError();
-        error.code = CUSTOM_ERROR_CODES.INVALID_CREDENTIALS;
-        throw error;
-    }
 
-    User.scope('authScope')
-        .findOne({
-            where: {
-                username: username,
-                confirmed: true,
-            },
-        })
-        .then(async (user) => {
+    try {
+        if (usernameFromToken != username) {
+            const error = new CustomError();
+            error.code = CUSTOM_ERROR_CODES.INVALID_CREDENTIALS;
+            throw error;
+        }
+        await sequelize.transaction(async (t) => {
+            const user = await User.scope('authScope').findOne({
+                where: {
+                    username: username,
+                    confirmed: true,
+                },
+                transaction: t,
+            });
             if (!user) {
                 const error = new CustomError();
                 error.code = CUSTOM_ERROR_CODES.INVALID_CREDENTIALS;
                 error.statusCode = 401;
                 throw error;
             }
-
             const isValid = await bcrypt.compare(password, user.password);
             if (!isValid) {
                 const error = new CustomError();
@@ -231,18 +231,23 @@ export const updatePassword = (
                 throw error;
             }
 
-            await user.update({
-                password: newPassword,
-            });
-            res.status(204).send();
-        })
-        .catch((err) => {
-            next(err);
+            await user.update(
+                {
+                    password: newPassword,
+                },
+                {
+                    transaction: t,
+                }
+            );
         });
+        res.status(204).send();
+    } catch (err) {
+        next(err);
+    }
 };
 
 // TODO allow delete user and cascade delete all his data
-export const deleteAccount = (
+export const deleteAccount = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -250,19 +255,21 @@ export const deleteAccount = (
     const usernameFromToken = req.username;
     const username = req.body.username;
     const password = req.body.password;
-    if (usernameFromToken != username) {
-        const error = new CustomError();
-        error.code = CUSTOM_ERROR_CODES.INVALID_CREDENTIALS;
-        throw error;
-    }
-    User.scope('authScope')
-        .findOne({
-            where: {
-                username: username,
-                confirmed: true,
-            },
-        })
-        .then(async (user) => {
+
+    try {
+        if (usernameFromToken != username) {
+            const error = new CustomError();
+            error.code = CUSTOM_ERROR_CODES.INVALID_CREDENTIALS;
+            throw error;
+        }
+        await sequelize.transaction(async (t) => {
+            const user = await User.scope('authScope').findOne({
+                where: {
+                    username: username,
+                    confirmed: true,
+                },
+                transaction: t,
+            });
             if (!user) {
                 const error = new CustomError();
                 error.code = CUSTOM_ERROR_CODES.INVALID_CREDENTIALS;
@@ -278,13 +285,12 @@ export const deleteAccount = (
                 throw error;
             }
 
-            await user.destroy();
-
-            res.status(204).send();
-        })
-        .catch((err) => {
-            next(err);
+            await user.destroy({ transaction: t });
         });
+        res.status(204).send();
+    } catch (err) {
+        next(err);
+    }
 };
 
 const issueToken = (user: User) => {

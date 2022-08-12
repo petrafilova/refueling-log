@@ -51,31 +51,31 @@ export const createVehicle = async (
     res: Response,
     next: NextFunction
 ) => {
-    const t = await sequelize.transaction();
     try {
-        const vehicle = await Vehicle.create(
-            { ...req.body, username: req.username },
-            {
-                fields: [
-                    'brand',
-                    'model',
-                    'licensePlateNo',
-                    'dateOfReg',
-                    'color',
-                    'vin',
-                    'username',
-                ],
-                transaction: t,
-            }
-        );
+        const result = await sequelize.transaction(async (t) => {
+            const vehicle = await Vehicle.create(
+                { ...req.body, username: req.username },
+                {
+                    fields: [
+                        'brand',
+                        'model',
+                        'licensePlateNo',
+                        'dateOfReg',
+                        'color',
+                        'vin',
+                        'username',
+                    ],
+                    transaction: t,
+                }
+            );
 
-        const result = await Vehicle.findByPk(vehicle.id, {
-            transaction: t,
+            const result = await Vehicle.findByPk(vehicle.id, {
+                transaction: t,
+            });
+            return result;
         });
-        await t.commit();
         res.status(201).json(result);
     } catch (err) {
-        await t.rollback();
         next(err);
     }
 };
@@ -85,67 +85,68 @@ export const updateVehicle = async (
     res: Response,
     next: NextFunction
 ) => {
-    const t = await sequelize.transaction();
     try {
-        const vehicle = await Vehicle.findOne({
-            where: {
-                id: req.params.vehicleId,
-                username: req.username,
-            },
-            transaction: t,
-        });
+        const result = await sequelize.transaction(async (t) => {
+            const vehicle = await Vehicle.findOne({
+                where: {
+                    id: req.params.vehicleId,
+                    username: req.username,
+                },
+                transaction: t,
+            });
 
-        if (!vehicle) {
-            const error = new CustomError();
-            error.code = CUSTOM_ERROR_CODES.NOT_FOUND;
-            error.statusCode = 404;
-            throw error;
-        }
-        const result = await vehicle.update(
-            req.body,
-            {
-                fields: [
-                    'brand',
-                    'model',
-                    'licensePlateNo',
-                    'dateOfReg',
-                    'color',
-                    'vin',
-                ],
-            },
-            { transaction: t }
-        );
-        await t.commit();
-        res.status(200).json(result);
-    } catch (err) {
-        await t.rollback();
-        next(err);
-    }
-};
-
-// TODO allow delete vehicle and cascade remove all data
-export const deleteVehicle = (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
-    Vehicle.destroy({
-        where: {
-            id: req.params.vehicleId,
-            username: req.username,
-        },
-    })
-        .then((result) => {
-            if (result > 0) {
-                res.status(204).send();
-            } else {
+            if (!vehicle) {
                 const error = new CustomError();
                 error.code = CUSTOM_ERROR_CODES.NOT_FOUND;
                 error.statusCode = 404;
                 throw error;
             }
-        })
-        .catch((err) => {
-            next(err);
+            const result = await vehicle.update(
+                req.body,
+                {
+                    fields: [
+                        'brand',
+                        'model',
+                        'licensePlateNo',
+                        'dateOfReg',
+                        'color',
+                        'vin',
+                    ],
+                },
+                { transaction: t }
+            );
+            return result;
         });
+        res.status(200).json(result);
+    } catch (err) {
+        next(err);
+    }
+};
+
+// TODO allow delete vehicle and cascade remove all data
+export const deleteVehicle = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        await sequelize.transaction(async (t) => {
+            const result = await Vehicle.destroy({
+                where: {
+                    id: req.params.vehicleId,
+                    username: req.username,
+                },
+                transaction: t,
+            });
+            if (result === 0) {
+                const error = new CustomError();
+                error.code = CUSTOM_ERROR_CODES.NOT_FOUND;
+                error.statusCode = 404;
+                throw error;
+            }
+        });
+        res.status(204).send();
+    } catch (err) {
+        next(err);
+    }
 };
