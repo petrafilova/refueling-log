@@ -25,7 +25,7 @@ const SelectExpenseType = (props) => {
 
     return (
         <div className='w3-section'>
-            <label className='w3-text-indigo' htmlFor='type'>Vyberte typ paliva:</label>
+            <label className='w3-text-indigo' htmlFor='type'>Vyberte typ výdavku:</label>
             <select className='w3-select w3-border' name='type' id='type' onChange={selectTypeHandler}>
                 {listOfTypes.map((l) =>
                     <option key={l.id} value={l.id}>{l.name}</option>

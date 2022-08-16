@@ -31,7 +31,7 @@ const ExpenseDialog = (props) => {
         });
     }
 
-    const ExpenseHandler = async () => {
+    const expenseHandler = async () => {
         setPriceInputIsInvalid(false);
         setMileageInputIsInvalid(false);
         setDateTimeInputIsInvalid(false);
@@ -67,7 +67,7 @@ const ExpenseDialog = (props) => {
             mileage: mileageInput,
             dateTime: new Date(dateTimeInput),
             comment: commentInput,
-            typeId: props.expenseId,
+            typeId: props.expenseTypeId,
             vehicleId: props.vehicleId,
         };
 
@@ -126,7 +126,7 @@ const ExpenseDialog = (props) => {
                 <footer className="w3-container w3-light-grey">
                     <p>
                         <button className="w3-button w3-indigo" onClick={props.onCancel}>Zrušiť</button>
-                        <button className="w3-button w3-indigo w3-right" onClick={ExpenseHandler}>Potvrdiť</button>
+                        <button className="w3-button w3-indigo w3-right" onClick={expenseHandler}>Potvrdiť</button>
                     </p>
                 </footer>
             </div>
