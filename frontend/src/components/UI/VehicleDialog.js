@@ -5,9 +5,8 @@ import FuelTable from '../VehicleFuel/FuelTable';
 
 
 const VehicleDialog = (props) => {
-    const vehicleId = props.id;
     const authCtx = useContext(AuthContext);
-
+    const vehicleId = props.id;
 
     const brandInputRef = useRef();
     const modelInputRef = useRef();
@@ -18,14 +17,12 @@ const VehicleDialog = (props) => {
     const createdAtInputRef = useRef();
     const updatedAtInputRef = useRef();
 
-
     const [brandIsInvalid, setBrandIsInvalid] = useState(false);
     const [modelIsInvalid, setModelIsInvalid] = useState(false);
     const [licenseIsInvalid, setLicenseIsInvalid] = useState(false);
     const [dateIsInvalid, setDateIsInvalid] = useState(false);
     const [colorIsInvalid, setColorIsInvalid] = useState(false);
     const [vinIsInvalid, setVinIsInvalid] = useState(false);
-
     const [vehicleFuel, setVehicleFuel] = useState([]);
 
     useEffect(() => {
@@ -48,7 +45,7 @@ const VehicleDialog = (props) => {
             };
             getFuels();
         }
-    }, [vehicleId]);
+    }, [vehicleId, authCtx.token]);
 
     const submitHandler = async () => {
         setBrandIsInvalid(false);
@@ -65,23 +62,39 @@ const VehicleDialog = (props) => {
         const color = colorInputRef.current.value;
         const vin = vinInputRef.current.value;
 
+        let formIsInvalid = false;
+
         if (brand.trim().length < 1 || brand.trim().length > 20) {
             setBrandIsInvalid(true);
-            return;
-        } else if (model.trim().length < 1 || model.trim().length > 60) {
+            formIsInvalid = true;
+        }
+        
+        if (model.trim().length < 1 || model.trim().length > 60) {
             setModelIsInvalid(true);
-            return;
-        } else if (licensePlateNo.trim().length < 1 || licensePlateNo.trim().length > 10) {
+            formIsInvalid = true;
+        }
+        
+        if (licensePlateNo.trim().length < 1 || licensePlateNo.trim().length > 10) {
             setLicenseIsInvalid(true);
-            return;
-        } else if (color.trim().length > 20) {
+            formIsInvalid = true;
+        }
+        
+        if (color.trim().length > 20) {
             setColorIsInvalid(true);
-            return;
-        } else if (vin.trim().length > 17) {
+            formIsInvalid = true;
+        }
+        
+        if (vin.trim().length > 17) {
             setVinIsInvalid(true);
-            return;
-        } else if (dateOfReg.trim().length === 0) {
+            formIsInvalid = true;
+        }
+        
+        if (dateOfReg.trim().length === 0) {
             setDateIsInvalid(true);
+            formIsInvalid = true;
+        }
+
+        if (formIsInvalid) {
             return;
         }
 
@@ -127,32 +140,32 @@ const VehicleDialog = (props) => {
                         <label className="w3-text-indigo" htmlFor="brand">výrobca: </label>
                         <input className="w3-input w3-border" type="text" id="brand" ref={brandInputRef}></input>
                     </p>
-                    {brandIsInvalid && <p className='w3-red'>Neplatný údaj</p>}
+                    {brandIsInvalid && <p className='w3-red'>Neplatný údaj. Zadajte min 1 a max 20 znakov.</p>}
                     <p>
                         <label className="w3-text-indigo" htmlFor="model">model: </label>
                         <input className="w3-input w3-border" type="text" id="model" ref={modelInputRef}></input>
                     </p>
-                    {modelIsInvalid && <p className='w3-red'>Neplatný údaj</p>}
+                    {modelIsInvalid && <p className='w3-red'>Neplatný údaj. Zadajte min 1 a max 60 znakov.</p>}
                     <p>
                         <label className="w3-text-indigo" htmlFor="licensePlateNo">štátna poznávacia značka: </label>
                         <input className="w3-input w3-border" type="text" id="licensePlateNo" ref={licensePlateNoInputRef}></input>
                     </p>
-                    {licenseIsInvalid && <p className='w3-red'>Neplatný údaj</p>}
+                    {licenseIsInvalid && <p className='w3-red'>Neplatný údaj. Zadajte min 1 a max 10 znakov.</p>}
                     <p>
                         <label className="w3-text-indigo" htmlFor="dateOfReg">dátum registrácie: </label>
                         <input className="w3-input w3-border" type="date" id="dateOfReg" ref={dateOfRegInputRef}></input>
                     </p>
-                    {dateIsInvalid && <p className='w3-red'>Neplatný údaj</p>}
+                    {dateIsInvalid && <p className='w3-red'>Neplatný údaj.</p>}
                     <p>
                         <label className="w3-text-indigo" htmlFor="color">farba: </label>
                         <input className="w3-input w3-border" type="text" id="color" ref={colorInputRef}></input>
                     </p>
-                    {colorIsInvalid && <p className='w3-red'>Neplatný údaj</p>}
+                    {colorIsInvalid && <p className='w3-red'>Neplatný údaj. Zadajte max 20 znakov.</p>}
                     <p>
                         <label className="w3-text-indigo" htmlFor="vin">výrobné číslo: </label>
                         <input className="w3-input w3-border" type="text" id="vin" ref={vinInputRef}></input>
                     </p>
-                    {vinIsInvalid && <p className='w3-red'>Neplatný údaj</p>}
+                    {vinIsInvalid && <p className='w3-red'>Neplatný údaj. Zadajte max 17 znakov.</p>}
                     <FuelTable setFuelList={setVehicleFuel} fuelList={vehicleFuel}/>
                     {vehicleId && <p>
                         <label className="w3-text-indigo" htmlFor="createdAt">vytvorené: </label>

@@ -2,25 +2,23 @@ import React, { useContext, useEffect, useState } from 'react';
 import AuthContext from '../../store/auth-context';
 import { getVehicles } from '../../lib/api';
 
-
 const SelectVehicle = (props) => {
     const authCtx = useContext(AuthContext);
     const [listOfVehicles, setListOfVehicles] = useState([]);
+    const { setChosenVehicle } = props;
 
     useEffect(() => {
         (async () => {
             const vehicles = await getVehicles(authCtx.token);
             setListOfVehicles(vehicles);
             if (vehicles.length > 0) {
-                props.setChosenVehicle(vehicles[0].id);
+                setChosenVehicle(vehicles[0].id);
             }
         })();
-    }, [authCtx.token]);
-
-    console.log(listOfVehicles);
+    }, [authCtx.token, setChosenVehicle]);
 
     const selectVehicleHandler = (event) => {
-        props.setChosenVehicle(event.target.value);
+        setChosenVehicle(event.target.value);
     };
 
     return (
@@ -34,8 +32,5 @@ const SelectVehicle = (props) => {
         </div>
     );
 };
-
-    
-
 
 export default SelectVehicle;

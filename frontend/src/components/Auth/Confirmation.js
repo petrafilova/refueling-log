@@ -4,23 +4,22 @@ import AuthContext from '../../store/auth-context';
 import { useNavigate } from 'react-router-dom';
 
 const Confirmation = () => {
-    const keyInputRef = useRef();
-    const [keyIsValid, setKeyIsValid] = useState(true);
-    
     const authCtx = useContext(AuthContext);
     const navigate = useNavigate();
+    const keyInputRef = useRef();
+    const [keyIsValid, setKeyIsValid] = useState(true);
     
     const submitKeyHandler = async (event) => {
         event.preventDefault();
         setKeyIsValid(true);
         const registrationKey = keyInputRef.current.value;
+        
         if (!registrationKey.trim().length === 36) {
             setKeyIsValid(false);
             return;
         }
-        
+
         const authData = await confirm(registrationKey);
-        console.log(authData);
         authCtx.login(authData.token, authData.refreshToken, authData.username);
         authData.token && navigate('/start');
     };

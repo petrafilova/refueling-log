@@ -7,7 +7,6 @@ import { FuelTypes } from '../../lib/fuelNameFormatter';
 import { formatFuelName } from '../../lib/fuelNameFormatter';
 
 const FuelTable = (props) => {
-
     const [fuel, setFuel] = useState('');
     const [editedFuelType, setEditedFuelType] = useState('');
 
@@ -44,10 +43,6 @@ const FuelTable = (props) => {
         });
     };
 
-    const editFuel = (nameOfFuel) => {
-        setEditedFuelType(nameOfFuel);
-    };
-
     const changeFuel = (newFuelType) => {
         props.setFuelList((o) => {
             const n = [...o];
@@ -63,14 +58,12 @@ const FuelTable = (props) => {
         setEditedFuelType('');
     };
 
-
-
     const selectedFuels = props.fuelList.filter((f) => f.status !== 'DELETED').map((f) =>
         <tr key={f.fuel}>
             <td>
                 {formatFuelName(f.fuel)}
                 <div className='w3-right'>
-                    <button className='w3-button' aria-label='upraviť' onClick={editFuel.bind(null, f.fuel)}  ><FontAwesomeIcon icon={faPencil} /></button>
+                    <button className='w3-button' aria-label='upraviť' onClick={setEditedFuelType.bind(null, f.fuel)}  ><FontAwesomeIcon icon={faPencil} /></button>
                     <button className='w3-button' aria-label='zmazať' onClick={deleteFuel.bind(null, f.fuel)} ><FontAwesomeIcon icon={faTrash} /></button>
                 </div>
             </td>

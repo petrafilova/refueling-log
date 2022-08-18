@@ -4,25 +4,21 @@ import AuthContext from '../../store/auth-context';
 import { useNavigate } from 'react-router-dom';
 
 const SignIn = () => {
+    const authCtx = useContext(AuthContext);
+    const navigate = useNavigate();
     const userNameInputRef = useRef();
     const passwordInputRef = useRef();
-
     const [userNameIsValid, setUserNameIsValid] = useState(true);
     const [passwordIsValid, setPasswordIsValid] = useState(true);
 
-    const authCtx = useContext(AuthContext);
-    const navigate = useNavigate();
-
     useEffect(() =>{
         authCtx.isLoggedIn && navigate('/start');
-    }, [authCtx.isLoggedIn]);
+    }, [authCtx.isLoggedIn, navigate]);
 
     const submitHandler = async (event) => {
         event.preventDefault();
         const enteredUserName = userNameInputRef.current.value;
         const enteredPassword = passwordInputRef.current.value;
-
-        console.log(enteredUserName, enteredPassword);
 
         setUserNameIsValid(true);
         setPasswordIsValid(true);
@@ -43,7 +39,6 @@ const SignIn = () => {
         };
 
         const confirmedData = await login(loginData);
-
         authCtx.login(confirmedData.token, confirmedData.refreshToken, confirmedData.username);
     };
 
@@ -59,7 +54,6 @@ const SignIn = () => {
                         className="w3-input w3-border"
                         type="text"
                         id="text"
-                        // required
                         ref={userNameInputRef}
                     ></input>
                     {!userNameIsValid && <p className='w3-red'>Neplatné používateľského meno.</p>}
@@ -72,7 +66,6 @@ const SignIn = () => {
                         className="w3-input w3-border"
                         type="password"
                         id="password"
-                        // required
                         ref={passwordInputRef}
                     ></input>
                     {!passwordIsValid && <p className='w3-red'>Neplatné heslo.</p>}
@@ -85,7 +78,6 @@ const SignIn = () => {
             </form>
         </div>
     );
-    
 };
 
 export default SignIn;

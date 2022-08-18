@@ -4,13 +4,6 @@ import { faPencil } from '@fortawesome/free-solid-svg-icons';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const ListOfExpenses = (props) => {
-    console.log(props.listOfTypes, props.list);
-    // const pole = [{id: 4, name: 'pneumatiky'}, {id: 32, name: 'poistenie'}, {id: 5, name: 'výmena oleja'}];
-    
-    // const xy = (pole.filter(type => type.id === 32)).name;
-    // console.log(xy.name);
-
-
     return(
         <table className='w3-table-all w3-section'>
             <thead>

@@ -4,10 +4,6 @@ import AuthContext from '../../store/auth-context';
 import { formatDate } from '../../lib/dateFormatter';
 
 const RefuelingDialog = (props) => {
-
-
-    console.log('RefuelingDialog', props);
-
     const authCtx = useContext(AuthContext);
     const [full, setFull] = useState();
     const [prevMissing, setPrevMissing] = useState();
@@ -32,7 +28,6 @@ const RefuelingDialog = (props) => {
 
     const fullChanged = (event) => {
         setFull(event.target.value === 'false' ? false : true);
-
     };
 
     const prevMissingChanged = (event) => {
@@ -54,26 +49,44 @@ const RefuelingDialog = (props) => {
         const mileageInput = mileageInputRef.current.value;
         const dateTimeInput = dateTimeInputRef.current.value;
 
-        if (quantityInput < 0 || quantityInput.trim().length < 1) {
+        let formIsInvalid = false;
+
+        if (quantityInput < 0 || (quantityInput.trim().length === 0)) {
             setQuantityIsValid(false);
-            return;
-        } else if (unitPriceInput < 0 || unitPriceInput.trim().length < 1) {
+            formIsInvalid = true;
+        } 
+         
+        if (unitPriceInput < 0  || (unitPriceInput.trim().length === 0)) {
             setUnitPriceIsValid(false);
-            return;
-        } else if (totalPriceInput < 0 || totalPriceInput.trim().length < 1) {
+            formIsInvalid = true;
+        }
+        
+        if (totalPriceInput < 0  || (totalPriceInput.trim().length === 0)) {
             setTotalPriceIsValid(false);
-            return;
-        } else if (mileageInput < 0 || mileageInput.trim().length < 1) {
+            formIsInvalid = true;
+        }
+        
+        if (mileageInput < 0  || (mileageInput.trim().length === 0)) {
             setMileageIsValid(false);
-            return;
-        } else if (dateTimeInput.trim().length === 0) {
+            formIsInvalid = true;
+        }
+        
+        if (dateTimeInput.trim().length === 0) {
             setDateTimeIsValid(false);
-            return;
-        } else if (full !== true && full !== false) {
+            formIsInvalid = true;
+        }
+        
+        if (full !== true && full !== false) {
             setFullIsValid(false);
-            return;
-        } else if (prevMissing !== true && prevMissing !== false) {
+            formIsInvalid = true;
+        }
+        
+        if (prevMissing !== true && prevMissing !== false) {
             setPrevMissingIsValid(false);
+            formIsInvalid = true;
+        }
+
+        if (formIsInvalid) {
             return;
         }
 
@@ -87,9 +100,6 @@ const RefuelingDialog = (props) => {
             previousMissing: prevMissing,
             vehicleFuelId: props.fuelId,
         };
-
-
-        console.log('fuelLog', fuelLog);
         
         if (props.singleFuelLogId) {
             await updateFuelLog(props.singleFuelLogId, fuelLog, authCtx.token);
@@ -98,7 +108,6 @@ const RefuelingDialog = (props) => {
         }
 
         props.onCancel();
-
     };
 
     useEffect(() => {
@@ -106,8 +115,6 @@ const RefuelingDialog = (props) => {
             console.log('useEffect - singlefuelLog', props.singleFuelLogId);
             const getData = async () => {
                 const data = await getSingleFuelLog(props.singleFuelLogId, authCtx.token);
-                console.log(data);
-
                 quantityInputRef.current.value = data.quantity;
                 unitPriceInputRef.current.value = data.unitPrice;
                 totalPriceInputRef.current.value = data.totalPrice;
@@ -117,15 +124,12 @@ const RefuelingDialog = (props) => {
                 setPrevMissing(data.previousMissing);
                 consumptionInputRef.current.value = data.consumption;
                 vehicleFuelIdInputRef.current.value = data.vehicleFuelId;
-
                 createdAtInputRef.current.value = new Date(data.createdAt).toLocaleString();
                 updatedAtInputRef.current.value = new Date(data.updatedAt).toLocaleString();
-
             };
             getData();
         }
     }, [props.singleFuelLogId, authCtx.token]);
-
 
     return (
         <div className="w3-modal w3-show">
@@ -201,7 +205,6 @@ const RefuelingDialog = (props) => {
             </div>
         </div>
     );
-
 };
 
 export default RefuelingDialog;

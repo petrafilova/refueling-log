@@ -22,8 +22,6 @@ export const AuthContextProvider = (props) => {
         setToken(token);
         setRefreshToken(refreshToken);
         setUserName(username);
-        // console.log(token, refreshToken, username);
-        console.log('ok');
         localStorage.setItem('token', token);
     };
 
@@ -41,13 +39,11 @@ export const AuthContextProvider = (props) => {
         isLoggedIn: userIsLoggedIn,
         login: loginHandler,
         logout: logoutHandler,
-
     };
 
     return (<AuthContext.Provider value={contextValue}>
         {props.children}
     </AuthContext.Provider>);
-
 };
 
 export default AuthContext;

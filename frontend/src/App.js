@@ -1,6 +1,5 @@
 import React, { Fragment, useContext } from 'react';
 import './App.css';
-
 import { Routes, Route, Navigate } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import SignInPage from './pages/SignInPage';
@@ -13,7 +12,7 @@ import MainNavigation from './components/Layout/MainNavigation';
 import VehiclePage from './pages/VehiclePage';
 import RefuelingPage from './pages/RefuelingPage';
 import ExpensePage from './pages/ExpensePage';
-
+import StatisticsPage from './pages/StatisticsPage';
 
 function App() {
     const authCtx = useContext(AuthContext);
@@ -33,13 +32,13 @@ function App() {
                         <Route path='/vehicle' element={<VehiclePage />} />
                         <Route path='/refueling' element={<RefuelingPage />} />
                         <Route path='/expense' element={<ExpensePage />} />
+                        <Route path='/stats' element={<StatisticsPage />} />
                     </Fragment>)
                     }
                     <Route path='*' element={<Navigate replace to={'/'} />} />
                 </Routes>
             </main>
         </Fragment>
-
     );
 }
 

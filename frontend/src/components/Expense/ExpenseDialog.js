@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext } from 'react';
+import React, { useRef, useState, useContext, useEffect } from 'react';
 import { createExpenseLog, getSingleExpenseLog, updateExpenseLog } from '../../lib/api';
 import AuthContext from '../../store/auth-context';
 import { formatDate } from '../../lib/dateFormatter';
@@ -17,20 +17,6 @@ const ExpenseDialog = (props) => {
     const [mileageInputIsInvalid, setMileageInputIsInvalid] = useState(false);
     const [dateTimeInputIsInvalid, setDateTimeInputIsInvalid] = useState(false);
 
-    console.log(props.singleExpenseId);
-
-    if (props.singleExpenseId) {
-        console.log(props.singleExpenseId);
-        getSingleExpenseLog(props.singleExpenseId, authCtx.token).then((data) => {
-            priceInputRef.current.value = data.price;
-            mileageInputRef.current.value = data.mileage;
-            dateTimeInputRef.current.value = formatDate(data.dateTime);
-            commentInputRef.current.value = data.comment;
-            createdAtInputRef.current.value = new Date(data.createdAt).toLocaleString();
-            updatedAtInputRef.current.value = new Date(data.updatedAt).toLocaleString();
-        });
-    }
-
     const expenseHandler = async () => {
         setPriceInputIsInvalid(false);
         setMileageInputIsInvalid(false);
@@ -47,16 +33,16 @@ const ExpenseDialog = (props) => {
             setPriceInputIsInvalid(true);
             formIsInvalid = true;
         }
+
         if (mileageInput <= 0) {
             setMileageInputIsInvalid(true);
             formIsInvalid = true;
         }
+
         if (dateTimeInput.trim().length === 0) {
             setDateTimeInputIsInvalid(true);
             formIsInvalid = true;
         }
-
-
 
         if (formIsInvalid) {
             return;
@@ -78,15 +64,25 @@ const ExpenseDialog = (props) => {
             console.log('som tu?', expenseLog);
         }
 
-
         props.onCancel();
         props.listOfExpenses();
-
-
-
     };
 
-
+    useEffect(() => {
+        if (props.singleExpenseId) {
+            console.log(props.singleExpenseId);
+            const getData = async () => {
+                const data = await getSingleExpenseLog(props.singleExpenseId, authCtx.token);
+                priceInputRef.current.value = data.price;
+                mileageInputRef.current.value = data.mileage;
+                dateTimeInputRef.current.value = formatDate(data.dateTime);
+                commentInputRef.current.value = data.comment;
+                createdAtInputRef.current.value = new Date(data.createdAt).toLocaleString();
+                updatedAtInputRef.current.value = new Date(data.updatedAt).toLocaleString();
+            };
+            getData();
+        }
+    }, [props.singleExpenseId, authCtx.token]);
 
     return (
         <div className="w3-modal w3-show">

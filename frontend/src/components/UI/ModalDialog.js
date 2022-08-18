@@ -1,8 +1,6 @@
 import React from 'react';
 
 const ModalDialog = (props) => {
-
-
     return (
         <div className="w3-modal w3-show">
             <div className="w3-modal-content dialog">

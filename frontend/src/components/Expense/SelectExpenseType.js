@@ -2,25 +2,26 @@ import React, { useContext, useEffect, useState } from 'react';
 import AuthContext from '../../store/auth-context';
 import { listOfExpensesTypes } from '../../lib/api';
 
-
 const SelectExpenseType = (props) => {
     const authCtx = useContext(AuthContext);
     const [listOfTypes, setListOfTypes] = useState([]);
+
+    const { setChosenType } = props;
 
     useEffect(() => {
         (async () => {
             const expensesTypes = await listOfExpensesTypes(authCtx.token);
             setListOfTypes(expensesTypes);
             if (expensesTypes.length > 0) {
-                props.setChosenType(expensesTypes[0].id);
+                console.log('SETUJEM', expensesTypes[0].id);
+                setChosenType(expensesTypes[0].id);
             }
         })();
-    }, [authCtx.token]);
+    }, [authCtx.token, setChosenType]);
 
     const selectTypeHandler = (event) => {
         console.log(event.target.value);
-        props.setChosenType(event.target.value);
-
+        setChosenType(event.target.value);
     };
 
     return (
@@ -34,8 +35,5 @@ const SelectExpenseType = (props) => {
         </div>
     );
 };
-
-    
-
 
 export default SelectExpenseType;

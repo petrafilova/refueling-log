@@ -30,7 +30,6 @@ const ChangePasswordDialog = (props) => {
             return;
         }
 
-        console.log(enteredCurrentPassword, enteredNewPassword);
         props.onSubmit(enteredCurrentPassword, enteredNewPassword);
     };
 
@@ -67,6 +66,5 @@ const ChangePasswordDialog = (props) => {
         </div>
     );
 };
-
 
 export default ChangePasswordDialog;

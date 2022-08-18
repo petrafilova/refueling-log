@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, useCallback, Fragment } from 'react';
-import { listOfFuelLogs, deleteFuelLog} from '../../lib/api';
+import { listOfFuelLogs, deleteFuelLog } from '../../lib/api';
 import RefuelingTable from './RefuelingTable';
 import Selection from './Selection';
 import AuthContext from '../../store/auth-context';
@@ -10,39 +10,34 @@ const Refueling = () => {
     const authCtx = useContext(AuthContext);
     const [fuelId, setFuelId] = useState();
     const [list, setList] = useState([]);
-    
+
     const [fuelLogId, setFuelLogId] = useState(false);
     const [editDialogIsVisible, setEditDialogIsVisible] = useState(false);
     const [deleteDialogIsVisible, setDeleteDialogIsVisible] = useState(false);
 
-    console.log('fuelId', fuelId);
-    console.log('list', list);
-
-    const records = useCallback(() => {
-        listOfFuelLogs(fuelId, authCtx.token, { page: 0, pageSize: 10, order: 'DESC' }).then((data) => {
-            setList(data);
-        });
-    }, [fuelId, authCtx.token]);
+    const records = useCallback((fId, token) => {
+        if (fId && token) {
+            listOfFuelLogs(fId, token, { page: 0, pageSize: 10, order: 'DESC' }).then((data) => {
+                setList(data);
+            });
+        } else {
+            setList([]);
+        }
+    }, []);
 
     useEffect(() => {
-        if (fuelId) {
-            records();
-            console.log(list);
-        }
-    }, [records]);
-
-    console.log('list', list);
+        records(fuelId, authCtx.token);
+    }, [records, fuelId, authCtx.token]);
 
     const editFuelLog = (id) => {
         setFuelLogId(id);
         setEditDialogIsVisible(true);
     };
-    console.log(fuelLogId);
 
     const cancel = () => {
         setEditDialogIsVisible(false);
         setFuelLogId(false);
-        records();
+        records(fuelId, authCtx.token);
     };
 
     const createRecordHandler = () => {
@@ -63,7 +58,7 @@ const Refueling = () => {
         await deleteFuelLog(fuelLogId, authCtx.token);
         setFuelLogId();
         setDeleteDialogIsVisible(false);
-        records();
+        records(fuelId, authCtx.token);
     };
 
     return (

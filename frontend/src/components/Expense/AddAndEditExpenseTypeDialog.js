@@ -3,9 +3,9 @@ import { createExpensesType, updateExpenseType } from '../../lib/api';
 import AuthContext from '../../store/auth-context';
 
 const AddAndEditExpenseTypeDialog = (props) => {
-    const [nameInputIsInvalid, setNameInputIsInvalid] = useState();
     const authCtx = useContext(AuthContext);
     const nameInputRef = useRef();
+    const [nameInputIsInvalid, setNameInputIsInvalid] = useState();
 
     useEffect (()=>{
         if (props.expenseType.name) {
@@ -22,12 +22,13 @@ const AddAndEditExpenseTypeDialog = (props) => {
         }
 
         const nameOfExpenseType = { name: nameInput };
-        console.log(nameInput);
+        
         if (props.expenseType.id) {
             await updateExpenseType(props.expenseType.id, nameOfExpenseType, authCtx.token);
         } else {
             await createExpensesType(nameOfExpenseType, authCtx.token);
         }
+        
         props.onCancel();
     };
 

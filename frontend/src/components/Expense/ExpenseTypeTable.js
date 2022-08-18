@@ -5,7 +5,6 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const ExpenseTypeTable = (props) => {
     return (
-    
         <table className='w3-table-all w3-section'>
             <thead>
                 <tr className="w3-indigo">

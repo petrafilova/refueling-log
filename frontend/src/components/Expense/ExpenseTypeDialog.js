@@ -6,18 +6,16 @@ import ExpenseTypeTable from './ExpenseTypeTable';
 import ModalDialog from '../UI/ModalDialog';
 
 const ExpenseTypeDialog = (props) => {
+    const authCtx = useContext(AuthContext);
     const [addAndEditExpenseDialog, setAddAndEditExpenseDialog] = useState(false);
     const [confirmDeletion, setConfirmDeletion] = useState(false);
-    const authCtx = useContext(AuthContext);
     const [expenseType, setExpenseType] = useState({id: '', name: ''});
-
-    console.log(props.listOfExpenses);
 
     const editET = (id, name) => {
         setExpenseType({id: id, name: name});
         setAddAndEditExpenseDialog(true);
-        
     };
+    
     const deleteET = (id, name) => {
         setExpenseType({id:id, name:name});
         setConfirmDeletion(true);

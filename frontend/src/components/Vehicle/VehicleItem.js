@@ -21,7 +21,6 @@ const VehicleItem = (props) => {
             <td className='w3-center'><button className='w3-button' aria-label='upraviť' onClick={editItemHandler}><FontAwesomeIcon icon={faPencil} /></button></td>
             <td className='w3-center'><button className='w3-button' aria-label='zmazať'onClick={deleteItemHandler}><FontAwesomeIcon icon={faTrash} /></button></td>
         </tr>
-
     );
 };
 

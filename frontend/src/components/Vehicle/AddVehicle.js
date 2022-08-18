@@ -17,7 +17,6 @@ const AddVehicle = (props) => {
 
     const submitHandler = async (createdVehicle) => {
         const success = await createVehicle(createdVehicle, authCtx.token);
-        console.log(success);
         success && setCreateVehicleDialogIsVisible(false);
         props.reloadVehicles();
         return success ? success.id : success;
@@ -25,11 +24,9 @@ const AddVehicle = (props) => {
 
     return (
         <div className='w3-right'>
-
             {createVehicleDialogIsVisible && <VehicleDialog onCancel={cancel} onSubmit={submitHandler} />}
             <button className="w3-button w3-indigo add-button-margin" onClick={showDialog}>Pridať vozidlo</button>
         </div>
-
     );
 };
 

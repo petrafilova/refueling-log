@@ -3,8 +3,7 @@ import StartingContent from '../components/Layout/StartingContent';
 
 
 const StartingPage = () => {
-    return <StartingContent />;
-    
+    return <StartingContent />; 
 };
 
 export default StartingPage;

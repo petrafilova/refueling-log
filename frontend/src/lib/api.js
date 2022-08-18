@@ -186,8 +186,8 @@ export const getVehicles = async (token) => {
                 'Authorization': `Bearer ${token}`,
             },
         });
-        console.log(response);
         const data = await response.json();
+        console.log(data);
 
         if (response.ok) {
             console.log('Zoznam vozidiel');
@@ -406,7 +406,6 @@ export const deleteVehicleFuel = async (vehicleFuelId, token) => {
             console.log('deleteVehicleFuel');
             return true;
         } else {
-            console.log(data);
             const data = await response.json();
             console.log(data.code);
             throw new Error(data.code);

@@ -9,13 +9,15 @@ const Selection = (props) => {
     const [listOfFuels, setListOfFuels] = useState([]);
     const [chosenVehicle, setChosenVehicle] = useState();
 
+    const { onChangeFuel } = props;
+
     useEffect(() => {
         (async () => {
             const vehicles = await getVehicles(authCtx.token);
             setListOfVehicles(vehicles);
             if (vehicles.length > 0) {
                 setChosenVehicle(vehicles[0].id);
-            } 
+            }
         })();
     }, [authCtx.token]);
 
@@ -25,26 +27,19 @@ const Selection = (props) => {
                 const fuels = await listOfVehicleFuels(chosenVehicle, authCtx.token);
                 setListOfFuels(fuels);
                 if (fuels.length > 0) {
-                    props.onChangeFuel(fuels[0].id);
-                } 
+                    onChangeFuel(fuels[0].id);
+                }
             })();
         }
-    }, [authCtx.token, chosenVehicle]);
-
-    console.log(listOfVehicles);
-    console.log(listOfFuels);
+    }, [authCtx.token, chosenVehicle, onChangeFuel]);
 
     const selectVehicleHandler = (event) => {
         setChosenVehicle(event.target.value);
     };
 
-    console.log(chosenVehicle);
-
     const selectFuelHandler = (event) => {
-        props.onChangeFuel(event.target.value);
+        onChangeFuel(event.target.value);
     };
-
-    console.log(props.fuelId);
 
     return (
         <div>

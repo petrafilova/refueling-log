@@ -9,7 +9,6 @@ const FuelItem = (props) => {
         console.log(event);
         setFuel(event.target.value);
     };
-    console.log(fuel);
 
     return (
         <div className="w3-modal w3-show">

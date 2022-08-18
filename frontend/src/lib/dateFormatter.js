@@ -1,5 +1,5 @@
 const padNumber = (num) => {
-    return new String(num).padStart(2, '0');
+    return String(num).padStart(2, '0');
 };
 
 export const formatDate = (utcDate) => {

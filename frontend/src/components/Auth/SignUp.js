@@ -3,11 +3,10 @@ import { register } from '../../lib/api';
 import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
+    const navigate = useNavigate();
     const userNameInputRef = useRef();
     const passwordInputRef = useRef();
     const emailInputRef = useRef();
-    
-    const navigate = useNavigate();
     
     const [userNameIsValid, setUserNameIsValid] = useState(true);
     const [passwordIsValid, setPasswordIsValid] = useState(true);
@@ -19,8 +18,6 @@ const SignUp = () => {
         const enteredPassword = passwordInputRef.current.value;
         const enteredEmail = emailInputRef.current.value;
 
-        console.log(enteredUserName, enteredPassword, enteredEmail);
-
         setUserNameIsValid(true);
         setPasswordIsValid(true);
         setEmailIsValid(true);
@@ -29,17 +26,24 @@ const SignUp = () => {
         const containsUpper = /[A-Z]/.test(enteredPassword);
         const containsLower = /[a-z]/.test(enteredPassword);
 
+        let formIsInvalid = false;
+
         if (enteredUserName.trim().length < 4 || enteredUserName.trim().length > 50) {
             setUserNameIsValid(false);
-            return;
+            formIsInvalid = true;
         }
 
         if (enteredPassword.trim().length < 8 || enteredPassword.trim().length > 250 || !containsDigits || !containsLower || !containsUpper) {
             setPasswordIsValid(false);
-            return;
+            formIsInvalid = true;
         }
+
         if (enteredEmail.trim().length < 6 || enteredEmail.trim().length > 320) {
             setEmailIsValid(false);
+            formIsInvalid = true;
+        }
+
+        if (formIsInvalid) {
             return;
         }
 
@@ -51,7 +55,6 @@ const SignUp = () => {
 
         const success = await register(regData);
         success && navigate('/confirm');
-
     };
 
     return (
