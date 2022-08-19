@@ -92,11 +92,11 @@ const Expense = () => {
             <SelectVehicle setChosenVehicle={setChosenVehicle} />
             <SelectExpenseType setChosenType={setChosenType} />
             <div className='w3-left'>
-                <button className="w3-button w3-indigo add-button-margin" onClick={expensesTypesHandler}>Spravovať typy výdavkov</button>
+                <button className='w3-button w3-indigo add-button-margin' onClick={expensesTypesHandler}>Spravovať typy výdavkov</button>
             </div>
             <div className='w3-right'>
-                <button className="w3-button w3-indigo add-button-margin w3-tooltip" disabled={!chosenType || !chosenVehicle} onClick={createExpense} >Pridať záznam o výdavku
-                    {(!chosenType || !chosenVehicle) && <span className="w3-text w3-tag tooltip">Pre pridanie záznamu musíte vybrať vozidlo a typ výdavku.</span>}
+                <button className='w3-button w3-indigo add-button-margin w3-tooltip' disabled={!chosenType || !chosenVehicle} onClick={createExpense} >Pridať záznam o výdavku
+                    {(!chosenType || !chosenVehicle) && <span className='w3-text w3-tag tooltip'>Pre pridanie záznamu musíte vybrať vozidlo a typ výdavku.</span>}
                 </button>
             </div>
             <div className='w3-bar'>

@@ -36,7 +36,7 @@ const DeleteUser = () => {
         <Fragment>
             {modalDialogIsVisible && <ModalDialog onCancel={cancel} onSubmit={showPasswordDialogHandler} text={'Naozaj chcete zmazať účet?'} />}
             {passwordDialogIsVisible && <PasswordDialog onCancel={cancel} onSubmit={deleteAccountHandler} />}
-            <button className="w3-button w3-indigo w3-margin-left" onClick={showModalDialogHandler}>Zmazať účet</button>
+            <button className='w3-button w3-indigo w3-margin-left' onClick={showModalDialogHandler}>Zmazať účet</button>
         </Fragment>
     );
 };

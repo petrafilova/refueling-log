@@ -67,7 +67,7 @@ const Vehicles = () => {
                 {vehiclesList.length >= 1 &&
                     <table className='w3-table-all'>
                         <thead>
-                            <tr className="w3-indigo">
+                            <tr className='w3-indigo'>
                                 <th>Výrobca</th>
                                 <th>Model</th>
                                 <th>štátna poznávacia značka</th>

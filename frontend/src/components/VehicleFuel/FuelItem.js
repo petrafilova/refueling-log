@@ -11,12 +11,12 @@ const FuelItem = (props) => {
     };
 
     return (
-        <div className="w3-modal w3-show">
-            <div className="w3-modal-content dialog">
-                <header className="w3-container w3-light-grey">
+        <div className='w3-modal w3-show'>
+            <div className='w3-modal-content dialog'>
+                <header className='w3-container w3-light-grey'>
                     <h2>Zmena paliva</h2>
                 </header>
-                <div className="w3-container w3-section">
+                <div className='w3-container w3-section'>
 
                     <label className='w3-text-indigo' htmlFor='fuel'>zmeniť typ paliva na: </label>
                     <div className='flex'>
@@ -27,10 +27,10 @@ const FuelItem = (props) => {
                     </div>
 
                 </div>
-                <footer className="w3-container w3-light-grey">
+                <footer className='w3-container w3-light-grey'>
                     <p>
-                        <button className="w3-button w3-indigo" onClick={props.onCancel}>Zrušiť</button>
-                        <button className="w3-button w3-indigo w3-right" onClick={props.onEdit.bind(null, fuel)}>Potvrdiť</button>
+                        <button className='w3-button w3-indigo' onClick={props.onCancel}>Zrušiť</button>
+                        <button className='w3-button w3-indigo w3-right' onClick={props.onEdit.bind(null, fuel)}>Potvrdiť</button>
                     </p>
                 </footer>
             </div>

@@ -43,35 +43,35 @@ const SignIn = () => {
     };
 
     return (
-        <div className="w3-container w3-content">
+        <div className='w3-container w3-content'>
             <h1>Prihlásenie</h1>
             <form onSubmit={submitHandler}>
-                <div className="w3-padding-16">
-                    <label className="w3-text-indigo" htmlFor="text">
+                <div className='w3-padding-16'>
+                    <label className='w3-text-indigo' htmlFor='text'>
                         používateľské meno
                     </label>
                     <input
-                        className="w3-input w3-border"
-                        type="text"
-                        id="text"
+                        className='w3-input w3-border'
+                        type='text'
+                        id='text'
                         ref={userNameInputRef}
                     ></input>
                     {!userNameIsValid && <p className='w3-red'>Neplatné používateľského meno.</p>}
                 </div>
-                <div className="w3-padding-16">
-                    <label className="w3-text-indigo" htmlFor="password">
+                <div className='w3-padding-16'>
+                    <label className='w3-text-indigo' htmlFor='password'>
                         prihlasovacie heslo
                     </label>
                     <input
-                        className="w3-input w3-border"
-                        type="password"
-                        id="password"
+                        className='w3-input w3-border'
+                        type='password'
+                        id='password'
                         ref={passwordInputRef}
                     ></input>
                     {!passwordIsValid && <p className='w3-red'>Neplatné heslo.</p>}
                 </div>
-                <div className="w3-padding-16">
-                    <button className="w3-button w3-indigo" type="submit">
+                <div className='w3-padding-16'>
+                    <button className='w3-button w3-indigo' type='submit'>
                         Prihlásiť sa
                     </button>
                 </div>

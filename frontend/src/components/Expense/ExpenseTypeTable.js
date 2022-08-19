@@ -7,7 +7,7 @@ const ExpenseTypeTable = (props) => {
     return (
         <table className='w3-table-all w3-section'>
             <thead>
-                <tr className="w3-indigo">
+                <tr className='w3-indigo'>
                     <th>typ výdavku</th>
                     <th className='w3-center'>Upraviť</th>
                     <th className='w3-center'>Vymazať</th>

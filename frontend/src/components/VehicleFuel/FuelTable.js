@@ -75,7 +75,7 @@ const FuelTable = (props) => {
             <label className='w3-text-indigo' htmlFor='fuel'>palivo: </label>
             <div className='flex'>
                 <select className='w3-select w3-border' name='fuel' id='fuel' value={fuel} onChange={selectChangeHandler}>
-                    <option value="" disabled>Vyberte typ paliva</option>
+                    <option value='' disabled>Vyberte typ paliva</option>
                     {FuelTypes.filter((f) => props.fuelList.findIndex(fl => fl.fuel === f) === -1).map((ft) => <option key={ft} value={ft}>{formatFuelName(ft)}</option>)}
                 </select>
                 <button className='w3-button w3-indigo w3-right' disabled={!fuel} onClick={listOfFuelHandler}>Pridať</button>

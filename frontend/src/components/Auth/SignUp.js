@@ -58,17 +58,17 @@ const SignUp = () => {
     };
 
     return (
-        <div className="w3-container w3-content">
+        <div className='w3-container w3-content'>
             <h1>Registrácia</h1>
             <form onSubmit={submitHandler}>
-                <div className="w3-padding-16">
-                    <label className="w3-text-indigo" htmlFor="text">
+                <div className='w3-padding-16'>
+                    <label className='w3-text-indigo' htmlFor='text'>
                         používateľské meno
                     </label>
                     <input
-                        className="w3-input w3-border"
-                        type="text"
-                        id="text"
+                        className='w3-input w3-border'
+                        type='text'
+                        id='text'
                         // required
                         // minLength={4}
                         // maxLength={50}
@@ -76,14 +76,14 @@ const SignUp = () => {
                     ></input>
                     {!userNameIsValid && <p className='w3-red'>Používateľského meno musí obsahovať: min. 4 znaky, max. 50 znakov.</p>}
                 </div>
-                <div className="w3-padding-16">
-                    <label className="w3-text-indigo" htmlFor="password">
+                <div className='w3-padding-16'>
+                    <label className='w3-text-indigo' htmlFor='password'>
                         prihlasovacie heslo
                     </label>
                     <input
-                        className="w3-input w3-border"
-                        type="password"
-                        id="password"
+                        className='w3-input w3-border'
+                        type='password'
+                        id='password'
                         // required
                         // minLength={8}
                         // maxLength={250}
@@ -91,14 +91,14 @@ const SignUp = () => {
                     ></input>
                     {!passwordIsValid && <p className='w3-red'>Heslo musí obsahovať: min. 8 znakov, max. 250 znakov, min. 1 malé písmeno, min. 1 veľké písmeno a min. 1 číslo.</p>}
                 </div>
-                <div className="w3-padding-16">
-                    <label className="w3-text-indigo" htmlFor="email">
+                <div className='w3-padding-16'>
+                    <label className='w3-text-indigo' htmlFor='email'>
                         email
                     </label>
                     <input
                         className="w3-input w3-border"
-                        type="email"
-                        id="email"
+                        type='email'
+                        id='email'
                         // required
                         // minLength={6}
                         // maxLength={320}
@@ -106,8 +106,8 @@ const SignUp = () => {
                     ></input>
                     {!emailIsValid && <p className='w3-red'>Používateľského meno musí obsahovať: min. 6 znakov, max. 320 znakov.</p>}
                 </div>
-                <div className="w3-padding-16">
-                    <button className="w3-button w3-indigo" type="submit">
+                <div className='w3-padding-16'>
+                    <button className='w3-button w3-indigo' type='submit'>
                         Zaregistrovať sa
                     </button>
                 </div>

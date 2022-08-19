@@ -393,6 +393,7 @@ export const updateVehicleFuel = async (vehicleFuelId, updateFuel, token) => {
 };
 
 export const deleteVehicleFuel = async (vehicleFuelId, token) => {
+    console.log(vehicleFuelId, token);
     try {
         const response = await fetch(`${baseUrl}/vehicleFuel/${vehicleFuelId}`, {
             method: 'DELETE',

@@ -43,19 +43,19 @@ const ExpenseTypeDialog = (props) => {
         props.loadList();
     };
 
-    return (<div className="w3-modal w3-show">
-        <div className="w3-modal-content dialog">
-            <header className="w3-container w3-light-grey">
+    return (<div className='w3-modal w3-show'>
+        <div className='w3-modal-content dialog'>
+            <header className='w3-container w3-light-grey'>
                 <h2>Typy výdavkov</h2>
             </header>
-            <div className="w3-container">
+            <div className='w3-container'>
                 {props.listOfExpenses.length < 1 && <p>Žiadne typy výdavkov nie sú uložené.</p>}
                 {props.listOfExpenses.length >= 1 && <ExpenseTypeTable list={props.listOfExpenses} editExpenseType={editET} deleteExpenseType={deleteET}/>}
             </div>
-            <footer className="w3-container w3-light-grey">
+            <footer className='w3-container w3-light-grey'>
                 <p>
-                    <button className="w3-button w3-indigo" onClick={props.onCancel}>Zrušiť</button>
-                    <button className="w3-button w3-indigo w3-right" onClick={addExpense}>Pridať typ výdavku</button>
+                    <button className='w3-button w3-indigo' onClick={props.onCancel}>Zrušiť</button>
+                    <button className='w3-button w3-indigo w3-right' onClick={addExpense}>Pridať typ výdavku</button>
                 </p>
             </footer>
         </div>

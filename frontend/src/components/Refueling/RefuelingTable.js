@@ -7,7 +7,7 @@ const RefuelingTable = (props) => {
     return (
         <table className='w3-table-all w3-section'>
             <thead>
-                <tr className="w3-indigo">
+                <tr className='w3-indigo'>
                     <th>množstvo</th>
                     <th>celková cena</th>
                     <th>dátum</th>

@@ -30,7 +30,7 @@ const ChangePassword = () => {
 
     return (
         <Fragment>
-            <button className="w3-button w3-indigo" onClick={showChangePasswordDialogHandler}>Zmeniť heslo</button>
+            <button className='w3-button w3-indigo' onClick={showChangePasswordDialogHandler}>Zmeniť heslo</button>
             {changePasswordDialogIsVisible && <ChangePasswordDialog onCancel={cancel} onSubmit={submitHandler} />}
         </Fragment>
     );

@@ -25,7 +25,7 @@ const AddVehicle = (props) => {
     return (
         <div className='w3-right'>
             {createVehicleDialogIsVisible && <VehicleDialog onCancel={cancel} onSubmit={submitHandler} />}
-            <button className="w3-button w3-indigo add-button-margin" onClick={showDialog}>Pridať vozidlo</button>
+            <button className='w3-button w3-indigo add-button-margin' onClick={showDialog}>Pridať vozidlo</button>
         </div>
     );
 };
