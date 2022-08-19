@@ -95,8 +95,10 @@ const Expense = () => {
                 <button className="w3-button w3-indigo add-button-margin" onClick={expensesTypesHandler}>Spravovať typy výdavkov</button>
             </div>
             <div className='w3-right'>
-                <button className="w3-button w3-indigo add-button-margin" onClick={createExpense}>Pridať záznam o výdavku</button>
-            </div> 
+                <button className="w3-button w3-indigo add-button-margin w3-tooltip" disabled={!chosenType || !chosenVehicle} onClick={createExpense} >Pridať záznam o výdavku
+                    {(!chosenType || !chosenVehicle) && <span className="w3-text w3-tag tooltip">Pre pridanie záznamu musíte vybrať vozidlo a typ výdavku.</span>}
+                </button>
+            </div>
             <div className='w3-bar'>
                 {list.length < 1 && <p>Zoznam výdavkov pre dané vozidlo a typ výdavku je prázdny.</p>}
                 {list.length >= 1 && <ListOfExpenses list={list} editExpense={editExpense} deleteExpense={deleteExpense} listOfTypes={listOfET} />}
@@ -104,7 +106,7 @@ const Expense = () => {
             {expenseTypeDialog && <ExpenseTypeDialog onCancel={cancelExpenseType} listOfExpenses={listOfET} loadList={listOfTypes} />}
             {expenseDialog && <ExpenseDialog onCancel={cancelExpense} vehicleId={chosenVehicle} expenseTypeId={chosenType} listOfExpenses={getListOfExpenses} singleExpenseId={singleExpenseId} />}
             {modalDialog && <ModalDialog text={'Naozaj chcete vymazať výdavok?'} onCancel={cancelDeletion} onSubmit={deleteSingleExpense} />}
-        </Fragment>
+        </Fragment >
     );
 };
 
