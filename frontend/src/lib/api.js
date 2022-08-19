@@ -412,7 +412,7 @@ export const deleteVehicleFuel = async (vehicleFuelId, token) => {
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri zvymazaní paliva. ${err.message}`);
+        console.log(`Nastala chyba pri vymazaní paliva. ${err.message}`);
         alert(`Nastala chyba pri vymazaní paliva. ${err.message}`);
     }
     return false;

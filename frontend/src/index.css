@@ -23,15 +23,3 @@ code {
 .flex {
     display: flex;
 }
-
-.tooltip {
-    position: 'absolute'; 
-    width: 450px; 
-    height: 20px;
-    bottom: 100%; 
-    left: 50%; 
-    margin-left: -170px;
-    background-color: aqua;
-    color: black;
-    /* word-wrap: break-word; */
-}

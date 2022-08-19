@@ -21,7 +21,9 @@ const Expense = () => {
     const [modalDialog, setModalDialog] = useState(false);
 
     const listOfTypes = useCallback(() => {
+        console.log('Refreshujem list vydavkov');
         listOfExpensesTypes(authCtx.token).then((data) => {
+            console.log('Nove data', data);
             setListOfET(data);
         });
     }, [authCtx.token]);
@@ -90,14 +92,12 @@ const Expense = () => {
     return (
         <Fragment>
             <SelectVehicle setChosenVehicle={setChosenVehicle} />
-            <SelectExpenseType setChosenType={setChosenType} />
+            <SelectExpenseType setChosenType={setChosenType} listOfTypes={listOfET}/>
             <div className='w3-left'>
                 <button className='w3-button w3-indigo add-button-margin' onClick={expensesTypesHandler}>Spravovať typy výdavkov</button>
             </div>
             <div className='w3-right'>
-                <button className='w3-button w3-indigo add-button-margin w3-tooltip' disabled={!chosenType || !chosenVehicle} onClick={createExpense} >Pridať záznam o výdavku
-                    {(!chosenType || !chosenVehicle) && <span className='w3-text w3-tag tooltip'>Pre pridanie záznamu musíte vybrať vozidlo a typ výdavku.</span>}
-                </button>
+                <button className='w3-button w3-indigo add-button-margin' disabled={!chosenType || !chosenVehicle || listOfET.length <1} onClick={createExpense} title={!chosenType || !chosenVehicle || listOfET.length < 1 ? 'Pre pridanie záznamu musíte vybrať vozidlo a typ výdavku.' : undefined} >Pridať záznam o výdavku</button>
             </div>
             <div className='w3-bar'>
                 {list.length < 1 && <p>Zoznam výdavkov pre dané vozidlo a typ výdavku je prázdny.</p>}
