@@ -14,7 +14,6 @@ const RefuelingDialog = (props) => {
     const mileageInputRef = useRef();
     const dateTimeInputRef = useRef();
     const consumptionInputRef = useRef();
-    const vehicleFuelIdInputRef = useRef();
     const createdAtInputRef = useRef();
     const updatedAtInputRef = useRef();
 
@@ -43,13 +42,17 @@ const RefuelingDialog = (props) => {
         setFullIsValid(true);
         setPrevMissingIsValid(true);
 
-        const quantityInput = quantityInputRef.current.value;
-        const unitPriceInput = unitPriceInputRef.current.value;
-        const totalPriceInput = totalPriceInputRef.current.value;
+        let quantityInput = quantityInputRef.current.value;
+        let unitPriceInput = unitPriceInputRef.current.value;
+        let totalPriceInput = totalPriceInputRef.current.value;
         const mileageInput = mileageInputRef.current.value;
         const dateTimeInput = dateTimeInputRef.current.value;
 
         let formIsInvalid = false;
+
+        if (quantityInput && unitPriceInput) {
+            totalPriceInput = quantityInput * unitPriceInput;
+        }
 
         if (quantityInput < 0 || (quantityInput.trim().length === 0)) {
             setQuantityIsValid(false);
@@ -123,13 +126,35 @@ const RefuelingDialog = (props) => {
                 setFull(data.full);
                 setPrevMissing(data.previousMissing);
                 consumptionInputRef.current.value = data.consumption;
-                vehicleFuelIdInputRef.current.value = data.vehicleFuelId;
                 createdAtInputRef.current.value = new Date(data.createdAt).toLocaleString();
                 updatedAtInputRef.current.value = new Date(data.updatedAt).toLocaleString();
             };
             getData();
         }
     }, [props.singleFuelLogId, authCtx.token]);
+
+
+    const count = (event) => {
+        const targetId = event.target.id;
+
+        const quantity = quantityInputRef.current.value;
+        const unitPrice = unitPriceInputRef.current.value;
+        const totalPrice = totalPriceInputRef.current.value;
+
+        if ((targetId === 'quantity') && quantity && totalPrice) {
+            unitPriceInputRef.current.value = totalPrice / quantity;
+        } else if (targetId === 'quantity' && unitPrice && quantity) {
+            totalPriceInputRef.current.value = quantity * unitPrice;
+        }
+
+        if (targetId === 'unitPrice' && unitPrice && quantity) {
+            totalPriceInputRef.current.value = quantity * unitPrice;
+        }
+        
+        if ((targetId === 'totalPrice') && totalPrice && quantity) {
+            unitPriceInputRef.current.value = totalPrice / quantity;
+        } 
+    };
 
     return (
         <div className='w3-modal w3-show'>
@@ -140,17 +165,17 @@ const RefuelingDialog = (props) => {
                 <div className='w3-container'>
                     <p>
                         <label className='w3-text-indigo' htmlFor='quantity'>množstvo: </label>
-                        <input className='w3-input w3-border' type='number' id='quantity' ref={quantityInputRef}></input>
+                        <input className='w3-input w3-border' type='number' id='quantity' ref={quantityInputRef} onChange={count}></input>
                     </p>
                     {!quantityIsValid && <p className='w3-red'>Neplatný údaj</p>}
                     <p>
                         <label className='w3-text-indigo' htmlFor='unitPrice'>jednotková cena: </label>
-                        <input className='w3-input w3-border' type='number' id='unitPrice' ref={unitPriceInputRef}></input>
+                        <input className='w3-input w3-border' type='number' id='unitPrice' ref={unitPriceInputRef} onChange={count}></input>
                     </p>
                     {!unitPriceIsValid && <p className='w3-red'>Neplatný údaj</p>}
                     <p>
                         <label className='w3-text-indigo' htmlFor='totalPrice'>celková cena: </label>
-                        <input className='w3-input w3-border' type='number' id='totalPrice' ref={totalPriceInputRef}></input>
+                        <input className='w3-input w3-border' type='number' id='totalPrice' ref={totalPriceInputRef} onChange={count}></input>
                     </p>
                     {!totalPriceIsValid && <p className='w3-red'>Neplatný údaj</p>}
                     <p>
@@ -182,10 +207,6 @@ const RefuelingDialog = (props) => {
                     {props.singleFuelLogId && <p>
                         <label className='w3-text-indigo' htmlFor='consumption'>spotreba: </label>
                         <input className='w3-input w3-border' type='number' id='consumption' readOnly ref={consumptionInputRef}></input>
-                    </p>}
-                    {props.singleFuelLogId && <p>
-                        <label className='w3-text-indigo' htmlFor='vehicleFuelId'>Id paliva: </label>
-                        <input className='w3-input w3-border' type='number' id='vehicleFuelId' readOnly ref={vehicleFuelIdInputRef}></input>
                     </p>}
                     {props.singleFuelLogId && <p>
                         <label className='w3-text-indigo' htmlFor='createdAt'>vytvorené: </label>

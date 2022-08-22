@@ -66,7 +66,7 @@ export const confirm = async (registrationKey) => {
         });
         console.log(response);
         const data = await response.json();
-        
+
         if (response.ok) {
             console.log('Registrácia prebehla úspešne');
 
@@ -402,7 +402,7 @@ export const deleteVehicleFuel = async (vehicleFuelId, token) => {
             },
         });
         console.log(response);
-        
+
         if (response.ok) {
             console.log('deleteVehicleFuel');
             return true;
@@ -541,7 +541,7 @@ export const deleteFuelLog = async (fuelLogId, token) => {
             },
         });
         console.log(response);
-        
+
         if (response.ok) {
             console.log('deletedFuelLog');
             return true;
@@ -652,7 +652,7 @@ export const deleteExpenseType = async (expenseTypeId, token) => {
             },
         });
         console.log(response);
-        
+
         if (response.ok) {
             console.log('deletedExpenseType');
             return true;
@@ -663,8 +663,13 @@ export const deleteExpenseType = async (expenseTypeId, token) => {
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri vymazaní druhu výdavku. ${err.message}`);
-        alert(`Nastala chyba pri vymazaní druhu výdavku. ${err.message}`);
+        if (err.message === 'CONSTRAINT_FAILED') {
+            console.log(`Nastala chyba pri vymazaní druhu výdavku. Pre daný druh výdavku existuje záznam v zozname výdavkov. ${err.message}`);
+            alert('Nastala chyba pri vymazaní druhu výdavku. Pre daný druh výdavku existuje záznam v zozname výdavkov.');
+        } else {
+            console.log(`Nastala chyba pri vymazaní druhu výdavku. ${err.message}`);
+            alert(`Nastala chyba pri vymazaní druhu výdavku. ${err.message}`);
+        }
     }
     return false;
 };
@@ -792,7 +797,7 @@ export const deleteExpenseLog = async (expensesLogId, token) => {
             },
         });
         console.log(response);
-        
+
         if (response.ok) {
             console.log('deletedExpenseLog');
             return true;
@@ -810,3 +815,117 @@ export const deleteExpenseLog = async (expensesLogId, token) => {
 };
 
 // stats
+
+export const vehicleStatisticsSummary = async (vehicleId, token) => {
+    console.log(vehicleId, token);
+    try {
+        const response = await fetch(`${baseUrl}/stats/${vehicleId}/total`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        console.log(response);
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log('vehicleStatisticsSummary');
+            return data;
+        } else {
+            console.log(data);
+            console.log(data.code);
+            throw new Error(data.code);
+        }
+    } catch (err) {
+        console.log(`Nastala chyba pri zobrazení štatistiky pre dané vozidlo. ${err.message}`);
+        alert(`Nastala chyba pri zobrazení štatistiky pre dané vozidlo. ${err.message}`);
+    }
+    return false;
+};
+
+export const vehicleExpensesStatistic = async (vehicleId, date, token) => {
+    console.log(vehicleId, token);
+    try {
+        const response = await fetch(`${baseUrl}/stats/${vehicleId}/expenses`, {
+            method: 'POST',
+            body: JSON.stringify(date),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        console.log(response);
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log('vehicleExpensesStatistic');
+            return data;
+        } else {
+            console.log(data);
+            console.log(data.code);
+            throw new Error(data.code);
+        }
+    } catch (err) {
+        console.log(`Nastala chyba pri zobrazení štatistiky výdavkov pre dané vozidlo. ${err.message}`);
+        alert(`Nastala chyba pri zobrazení štatistiky výdavkov pre dané vozidlo. ${err.message}`);
+    }
+    return false;
+};
+
+export const vehicleFuelCostsStatistic = async (vehicleId, display, token) => {
+    console.log(vehicleId, token);
+    try {
+        const response = await fetch(`${baseUrl}/stats/${vehicleId}/fuel`, {
+            method: 'POST',
+            body: JSON.stringify(display),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        console.log(response);
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log('vehicleFuelCostsStatistic');
+            return data;
+        } else {
+            console.log(data);
+            console.log(data.code);
+            throw new Error(data.code);
+        }
+    } catch (err) {
+        console.log(`Nastala chyba pri zobrazení štatistiky výdavkov za tankovanie pre dané vozidlo. ${err.message}`);
+        alert(`Nastala chyba pri zobrazení štatistiky výdavkov za tankovanie pre dané vozidlo. ${err.message}`);
+    }
+    return false;
+};
+
+export const vehicleFuelConsumptionStatistic = async (vehicleId, display, token) => {
+    console.log(vehicleId, token);
+    try {
+        const response = await fetch(`${baseUrl}/stats/${vehicleId}/consumption`, {
+            method: 'POST',
+            body: JSON.stringify(display),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        console.log(response);
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log('vehicleFuelConsumptionStatistic');
+            return data;
+        } else {
+            console.log(data);
+            console.log(data.code);
+            throw new Error(data.code);
+        }
+    } catch (err) {
+        console.log(`Nastala chyba pri zobrazení štatistiky spotreby paliva pre dané vozidlo. ${err.message}`);
+        alert(`Nastala chyba pri zobrazení štatistiky spotreby paliva pre dané vozidlo. ${err.message}`);
+    }
+    return false;
+};

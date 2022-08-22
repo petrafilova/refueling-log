@@ -200,7 +200,7 @@ export const getFuel = async (
     }
 };
 
-export const getConsuption = async (
+export const getConsumption = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -227,7 +227,7 @@ export const getConsuption = async (
             vehicleFuels = vehicleFuels.filter((vf) => vf.id === vehicleFuelId);
         }
 
-        const consuptionStatsPromises = vehicleFuels.map(async (vf) => {
+        const consumptionStatsPromises = vehicleFuels.map(async (vf) => {
             const stat = await FuelLog.findAll({
                 where: {
                     dateTime: {
@@ -253,9 +253,9 @@ export const getConsuption = async (
             };
         });
 
-        const consuptionStats = await Promise.all(consuptionStatsPromises);
+        const consumptionStats = await Promise.all(consumptionStatsPromises);
 
-        res.status(200).json(consuptionStats);
+        res.status(200).json(consumptionStats);
     } catch (err) {
         next(err);
     }

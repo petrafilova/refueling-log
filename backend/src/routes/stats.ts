@@ -125,7 +125,7 @@ router.post(
 );
 
 router.post(
-    '/:vehicleId/consuption',
+    '/:vehicleId/consumption',
     isAuth,
     [
         param('vehicleId').isInt({ min: 1, allow_leading_zeroes: false }),
@@ -176,7 +176,7 @@ router.post(
             }),
     ],
     validationError,
-    statsController.getConsuption
+    statsController.getConsumption
 );
 
 export default router;

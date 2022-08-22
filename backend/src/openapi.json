@@ -50,7 +50,7 @@
         },
         {
             "name": "stats",
-            "description": "Endpoint full of statistics about expenses and fuel consuption."
+            "description": "Endpoint full of statistics about expenses and fuel consumption."
         }
     ],
     "paths": {
@@ -1454,7 +1454,7 @@
                 }
             }
         },
-        "/stats/{vehicleId}/consuption": {
+        "/stats/{vehicleId}/consumption": {
             "post": {
                 "tags": ["stats"],
                 "parameters": [
@@ -1956,7 +1956,7 @@
                     "consumption": {
                         "type": "number",
                         "format": "double",
-                        "description": "Consuption of fuel per 100km calculated by backend",
+                        "description": "Consumption of fuel per 100km calculated by backend",
                         "minimum": 0
                     },
                     "vehicleFuelId": {

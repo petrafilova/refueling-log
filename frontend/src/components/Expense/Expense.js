@@ -89,15 +89,20 @@ const Expense = () => {
         getListOfExpenses();
     }, [getListOfExpenses]);
 
+    console.log(chosenType, chosenVehicle, listOfET.length, listOfET);
+
     return (
         <Fragment>
+            <div className='w3-bar'>
+                <h1 className='w3-left'>Zoznam výdavkov</h1>
+            </div>
             <SelectVehicle setChosenVehicle={setChosenVehicle} />
-            <SelectExpenseType setChosenType={setChosenType} listOfTypes={listOfET}/>
+            <SelectExpenseType setChosenType={setChosenType} listOfTypes={listOfET} chosenType={chosenType} />
             <div className='w3-left'>
                 <button className='w3-button w3-indigo add-button-margin' onClick={expensesTypesHandler}>Spravovať typy výdavkov</button>
             </div>
             <div className='w3-right'>
-                <button className='w3-button w3-indigo add-button-margin' disabled={!chosenType || !chosenVehicle || listOfET.length <1} onClick={createExpense} title={!chosenType || !chosenVehicle || listOfET.length < 1 ? 'Pre pridanie záznamu musíte vybrať vozidlo a typ výdavku.' : undefined} >Pridať záznam o výdavku</button>
+                <button className='w3-button w3-indigo add-button-margin' disabled={!chosenType || !chosenVehicle || listOfET.length < 1} onClick={createExpense} title={!chosenType || !chosenVehicle || listOfET.length < 1 ? 'Pre pridanie záznamu musíte vybrať vozidlo a typ výdavku.' : undefined} >Pridať záznam o výdavku</button>
             </div>
             <div className='w3-bar'>
                 {list.length < 1 && <p>Zoznam výdavkov pre dané vozidlo a typ výdavku je prázdny.</p>}

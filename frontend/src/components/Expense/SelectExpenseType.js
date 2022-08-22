@@ -1,31 +1,16 @@
-import React, { useEffect } /*, { useContext, useEffect, useState }*/ from 'react';
-// import AuthContext from '../../store/auth-context';
-// import { listOfExpensesTypes } from '../../lib/api';
+import React, { useEffect } from 'react';
 
 const SelectExpenseType = (props) => {
-    //const authCtx = useContext(AuthContext);
-    //const [listOfTypes, setListOfTypes] = useState([]);
+    const { setChosenType, listOfTypes, chosenType } = props;
 
-    const { setChosenType } = props;
-
-    // useEffect(() => {
-    //     (async () => {
-    //         const expensesTypes = await listOfExpensesTypes(authCtx.token);
-    //         setListOfTypes(expensesTypes);
-    //         if (expensesTypes.length > 0) {
-    //             console.log('SETUJEM', expensesTypes[0].id);
-    //             setChosenType(expensesTypes[0].id);
-    //         }
-    //     })();
-    // }, [authCtx.token, setChosenType]);
-
-    // useEffect (()=> {
-    //     if(props.listOfTypes.length > 0) {
-    //         setChosenType(props.listOfTypes[0].id);
-    //     }   
-    // }, [props.listOfTypes, setChosenType]);
+    useEffect (()=> {
+        if(listOfTypes.length > 0) {
+            if (!chosenType) {
+                setChosenType(listOfTypes[0].id);
+            }
+        }   
+    }, [listOfTypes, setChosenType, chosenType]);
     
-
     const selectTypeHandler = (event) => {
         console.log(event.target.value);
         setChosenType(event.target.value);

@@ -60,7 +60,7 @@ const ExpenseTypeDialog = (props) => {
             </footer>
         </div>
         {addAndEditExpenseDialog && <AddAndEditExpenseTypeDialog onCancel={cancelAddAndEditExpenseDialog} expenseType={expenseType}/>}
-        {confirmDeletion && <ModalDialog text={`Naozaj chcete vymazať typ paliva "${expenseType.name}"?`} onCancel={cancelConfirmation} onSubmit={deleteExpenseTypeById}/>}
+        {confirmDeletion && <ModalDialog text={`Naozaj chcete vymazať typ pvýdavku? "${expenseType.name}"?`} onCancel={cancelConfirmation} onSubmit={deleteExpenseTypeById}/>}
     </div>);
 };
 
