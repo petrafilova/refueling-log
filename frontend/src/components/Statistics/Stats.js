@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, Fragment } from 'react';
-import { getVehicles, listOfVehicleFuels, vehicleFuelCostsStatistic } from '../../lib/api';
+import { getVehicles, listOfVehicleFuels, vehicleFuelConsumptionStatistic, vehicleStatisticsSummary, vehicleFuelCostsStatistic, vehicleExpensesStatistic } from '../../lib/api';
 import AuthContext from '../../store/auth-context';
 import { formatFuelName } from '../../lib/fuelNameFormatter';
 import DatePicker from 'react-datepicker';
@@ -9,8 +9,9 @@ import sk from 'date-fns/locale/sk';
 import getYear from 'date-fns/getYear';
 import getMonth from 'date-fns/getMonth';
 import { padNumber } from '../../lib/dateFormatter';
+import SummaryPie from './SummaryPie';
 
-const VehicleFuelStatistic = () => {
+const Stats = (props) => {
     registerLocale('sk', sk);
     const authCtx = useContext(AuthContext);
     const [listOfVehicles, setListOfVehicles] = useState([]);
@@ -19,7 +20,7 @@ const VehicleFuelStatistic = () => {
     const [chosenFuel, setChosenFuel] = useState();
     const [startDate, setStartDate] = useState(new Date().setFullYear(new Date().getFullYear() - 1));
     const [endDate, setEndDate] = useState(new Date());
-    const [data, setData] = useState([]);
+    const [data, setData] = useState();
 
     useEffect(() => {
         (async () => {
@@ -52,20 +53,63 @@ const VehicleFuelStatistic = () => {
     };
 
     useEffect(() => {
-        if (chosenVehicle && startDate && endDate && chosenFuel) {
-            (async () => {
-                const startMonth = padNumber(getMonth(startDate) + 1);
-                const endMonth = padNumber(getMonth(endDate) + 1);
-                const display = {
-                    vehicleFuelId: chosenFuel,
-                    dateFrom: `${getYear(startDate)}-${startMonth}`,
-                    dateTo: `${getYear(endDate)}-${endMonth}`,
-                };
-                const data = await vehicleFuelCostsStatistic(chosenVehicle, display, authCtx.token);
-                setData(data);
-            })();
+        if (props.tab === 'summary') {
+            if (chosenVehicle) {
+                (async () => {
+                    const data = await vehicleStatisticsSummary(chosenVehicle, authCtx.token);
+                    setData(data);
+                })();
+            }
         }
-    }, [chosenVehicle, chosenFuel, authCtx.token, startDate, endDate]);
+
+        if (props.tab === 'fuel') {
+            if (chosenVehicle && startDate && endDate && chosenFuel) {
+                (async () => {
+                    const startMonth = padNumber(getMonth(startDate) + 1);
+                    const endMonth = padNumber(getMonth(endDate) + 1);
+                    const display = {
+                        vehicleFuelId: chosenFuel,
+                        dateFrom: `${getYear(startDate)}-${startMonth}`,
+                        dateTo: `${getYear(endDate)}-${endMonth}`,
+                    };
+                    const data = await vehicleFuelCostsStatistic(chosenVehicle, display, authCtx.token);
+                    setData(data);
+                })();
+            }
+        }
+
+        if (props.tab === 'expenses') {
+            if (chosenVehicle && startDate && endDate) {
+                (async () => {
+                    const startMonth = padNumber(getMonth(startDate) + 1);
+                    const endMonth = padNumber(getMonth(endDate) + 1);
+                    const selectedDate = {
+                        dateFrom: `${getYear(startDate)}-${startMonth}`,
+                        dateTo: `${getYear(endDate)}-${endMonth}`,
+                    };
+                    console.log(selectedDate);
+                    const data = await vehicleExpensesStatistic(chosenVehicle, selectedDate, authCtx.token);
+                    setData(data);
+                })();
+            }
+        }
+
+        if (props.tab === 'consumption') {
+            if (chosenVehicle && startDate && endDate && chosenFuel) {
+                (async () => {
+                    const startMonth = padNumber(getMonth(startDate) + 1);
+                    const endMonth = padNumber(getMonth(endDate) + 1);
+                    const display = {
+                        vehicleFuelId: chosenFuel,
+                        dateFrom: `${getYear(startDate)}-${startMonth}`,
+                        dateTo: `${getYear(endDate)}-${endMonth}`,
+                    };
+                    const data = await vehicleFuelConsumptionStatistic(chosenVehicle, display, authCtx.token);
+                    setData(data);
+                })();
+            }
+        }
+    }, [chosenVehicle, chosenFuel, authCtx.token, startDate, endDate, props.tab]);
 
     console.log(data);
 
@@ -79,15 +123,15 @@ const VehicleFuelStatistic = () => {
                     )};
                 </select>
             </div>
-            <div className='w3-section'>
+            {(props.tab === 'fuel' || props.tab === 'consumption') && <div className='w3-section'>
                 <label className='w3-text-indigo' htmlFor='fuel'>Vyberte palivo:</label>
                 <select className='w3-select w3-border' name='fuel' id='fuel' onChange={selectFuelHandler}>
                     {listOfFuels.map((l) =>
                         <option key={l.id} value={l.id}>{formatFuelName(l.fuel)}</option>
                     )};
                 </select>
-            </div>
-            <div>
+            </div>}
+            {(props.tab === 'expenses' || props.tab === 'fuel' || props.tab === 'consumption') && <div>
                 <label className='w3-text-indigo' htmlFor='date'>Vyberte dátum:</label>
                 <div>
                     <div className='w3-left'>
@@ -121,10 +165,11 @@ const VehicleFuelStatistic = () => {
                         />
                     </div>
                 </div>
-            </div>
+            </div>}
             <div className='w3-container'>{JSON.stringify(data)}</div>
+            {(props.tab === 'summary') && <SummaryPie datapie={data}/>}
         </Fragment>
     );
 };
 
-export default VehicleFuelStatistic;
+export default Stats;

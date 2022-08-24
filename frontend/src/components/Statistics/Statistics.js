@@ -1,30 +1,33 @@
 import React, { useState, Fragment } from 'react';
-import VehicleTotalStatistic from '../Statistics/VehicleTotalStatistic';
-import VehicleExpensesStatistic from '../Statistics/VehicleExpensesStatistic';
-import VehicleFuelStatistic from '../Statistics/VehicleFuelStatistic';
-import VehicleConsumptionStatistic from '../Statistics/VehicleConsumptionStatistic';
+// import VehicleTotalStatistic from '../Statistics/VehicleTotalStatistic';
+// import VehicleExpensesStatistic from '../Statistics/VehicleExpensesStatistic';
+// import VehicleFuelStatistic from '../Statistics/VehicleFuelStatistic';
+// import VehicleConsumptionStatistic from '../Statistics/VehicleConsumptionStatistic';
+import Stats from './Stats';
 
 const Statistics = () => {
-    const [summaryStyle, setSummaryStyle] = useState(true);
-    const [expensesStyle, setExpensesStyle] = useState(false);
-    const [fuelStyle, setFuelStyle] = useState(false);
-    const [consumptionStyle, setConsumptionStyle] = useState(false);
+    // const [summary, setSummary] = useState(true);
+    // const [expenses, setExpenses] = useState(false);
+    // const [fuel, setFuel] = useState(false);
+    // const [consumption, setConsumption] = useState(false);
+    const [tab, setTab] = useState('summary');
 
-    const openCity = (type) => {
-        setSummaryStyle(false);
-        setExpensesStyle(false);
-        setFuelStyle(false);
-        setConsumptionStyle(false);
+    const selectTab = (selectedTab) => {
+        // setSummary(false);
+        // setExpenses(false);
+        // setFuel(false);
+        // setConsumption(false);
 
-        if (type === 'summary') {
-            setSummaryStyle(true);
-        } else if (type === 'expenses') {
-            setExpensesStyle(true);
-        } else if (type === 'fuel') {
-            setFuelStyle(true);
-        } else if (type === 'consumption') {
-            setConsumptionStyle(true);
-        }
+        // if (type === 'summary') {
+        //     setSummary(true);
+        // } else if (type === 'expenses') {
+        //     setExpenses(true);
+        // } else if (type === 'fuel') {
+        //     setFuel(true);
+        // } else if (type === 'consumption') {
+        //     setConsumption(true);
+        // }
+        setTab(selectedTab);
     };
 
     return (
@@ -34,17 +37,21 @@ const Statistics = () => {
             </div>
 
             <div className='w3-row'>
-                <button className={`w3-quarter w3-button w3-bottombar${summaryStyle ? ' w3-border-indigo' : ''}`} onClick={openCity.bind(null, 'summary')}>Všetky výdavky</button>
-                <button className={`w3-quarter w3-button w3-bottombar${fuelStyle ? ' w3-border-indigo' : ''}`} onClick={openCity.bind(null, 'fuel')}>Palivo</button>
-                <button className={`w3-quarter w3-button w3-bottombar${expensesStyle ? ' w3-border-indigo' : ''}`} onClick={openCity.bind(null, 'expenses')}>Iné výdavky</button>
-                <button className={`w3-quarter w3-button w3-bottombar${consumptionStyle ? ' w3-border-indigo' : ''}`} onClick={openCity.bind(null, 'consumption')}>Spotreba</button>
+                <button className={`w3-quarter w3-button w3-bottombar${tab === 'summary' ? ' w3-border-indigo' : ''}`} onClick={selectTab.bind(null, 'summary')}>Všetky výdavky</button>
+                <button className={`w3-quarter w3-button w3-bottombar${tab === 'fuel' ? ' w3-border-indigo' : ''}`} onClick={selectTab.bind(null, 'fuel')}>Palivo</button>
+                <button className={`w3-quarter w3-button w3-bottombar${tab === 'expenses' ? ' w3-border-indigo' : ''}`} onClick={selectTab.bind(null, 'expenses')}>Iné výdavky</button>
+                <button className={`w3-quarter w3-button w3-bottombar${tab === 'consumption' ? ' w3-border-indigo' : ''}`} onClick={selectTab.bind(null, 'consumption')}>Spotreba</button>
             </div>
 
+            {/* <div className='w3-container w3-padding-top-24'>
+                {summary && <VehicleTotalStatistic />}
+                {fuel && <VehicleFuelStatistic />}
+                {expenses && <VehicleExpensesStatistic />}
+                {consumption && <VehicleConsumptionStatistic />}
+            </div> */}
+
             <div className='w3-container w3-padding-top-24'>
-                {summaryStyle && <VehicleTotalStatistic />}
-                {fuelStyle && <VehicleFuelStatistic />}
-                {expensesStyle && <VehicleExpensesStatistic />}
-                {consumptionStyle && <VehicleConsumptionStatistic />}
+                <Stats tab={tab}/>
             </div>
         </Fragment>
     );

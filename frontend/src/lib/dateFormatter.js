@@ -1,4 +1,4 @@
-const padNumber = (num) => {
+export const padNumber = (num) => {
     return String(num).padStart(2, '0');
 };
 

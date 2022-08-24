@@ -844,7 +844,7 @@ export const vehicleStatisticsSummary = async (vehicleId, token) => {
 };
 
 export const vehicleExpensesStatistic = async (vehicleId, date, token) => {
-    console.log(vehicleId, token);
+    console.warn(vehicleId, date, token);
     try {
         const response = await fetch(`${baseUrl}/stats/${vehicleId}/expenses`, {
             method: 'POST',
@@ -873,7 +873,7 @@ export const vehicleExpensesStatistic = async (vehicleId, date, token) => {
 };
 
 export const vehicleFuelCostsStatistic = async (vehicleId, display, token) => {
-    console.log(vehicleId, token);
+    console.log(vehicleId, display, token);
     try {
         const response = await fetch(`${baseUrl}/stats/${vehicleId}/fuel`, {
             method: 'POST',
@@ -902,7 +902,7 @@ export const vehicleFuelCostsStatistic = async (vehicleId, display, token) => {
 };
 
 export const vehicleFuelConsumptionStatistic = async (vehicleId, display, token) => {
-    console.log(vehicleId, token);
+    console.log(vehicleId, display, token);
     try {
         const response = await fetch(`${baseUrl}/stats/${vehicleId}/consumption`, {
             method: 'POST',
