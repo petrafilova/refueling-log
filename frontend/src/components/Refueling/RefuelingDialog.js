@@ -64,7 +64,7 @@ const RefuelingDialog = (props) => {
             formIsInvalid = true;
         }
         
-        if (totalPriceInput < 0  || (totalPriceInput.trim().length === 0)) {
+        if (totalPriceInput < 0  /*|| (totalPriceInput.trim().length === 0)*/) {
             setTotalPriceIsValid(false);
             formIsInvalid = true;
         }

@@ -6,27 +6,9 @@ import React, { useState, Fragment } from 'react';
 import Stats from './Stats';
 
 const Statistics = () => {
-    // const [summary, setSummary] = useState(true);
-    // const [expenses, setExpenses] = useState(false);
-    // const [fuel, setFuel] = useState(false);
-    // const [consumption, setConsumption] = useState(false);
     const [tab, setTab] = useState('summary');
 
     const selectTab = (selectedTab) => {
-        // setSummary(false);
-        // setExpenses(false);
-        // setFuel(false);
-        // setConsumption(false);
-
-        // if (type === 'summary') {
-        //     setSummary(true);
-        // } else if (type === 'expenses') {
-        //     setExpenses(true);
-        // } else if (type === 'fuel') {
-        //     setFuel(true);
-        // } else if (type === 'consumption') {
-        //     setConsumption(true);
-        // }
         setTab(selectedTab);
     };
 
@@ -35,21 +17,12 @@ const Statistics = () => {
             <div className='w3-bar'>
                 <h1 className='w3-left'>Štatistiky</h1>
             </div>
-
             <div className='w3-row'>
                 <button className={`w3-quarter w3-button w3-bottombar${tab === 'summary' ? ' w3-border-indigo' : ''}`} onClick={selectTab.bind(null, 'summary')}>Všetky výdavky</button>
                 <button className={`w3-quarter w3-button w3-bottombar${tab === 'fuel' ? ' w3-border-indigo' : ''}`} onClick={selectTab.bind(null, 'fuel')}>Palivo</button>
                 <button className={`w3-quarter w3-button w3-bottombar${tab === 'expenses' ? ' w3-border-indigo' : ''}`} onClick={selectTab.bind(null, 'expenses')}>Iné výdavky</button>
                 <button className={`w3-quarter w3-button w3-bottombar${tab === 'consumption' ? ' w3-border-indigo' : ''}`} onClick={selectTab.bind(null, 'consumption')}>Spotreba</button>
             </div>
-
-            {/* <div className='w3-container w3-padding-top-24'>
-                {summary && <VehicleTotalStatistic />}
-                {fuel && <VehicleFuelStatistic />}
-                {expenses && <VehicleExpensesStatistic />}
-                {consumption && <VehicleConsumptionStatistic />}
-            </div> */}
-
             <div className='w3-container w3-padding-top-24'>
                 <Stats tab={tab}/>
             </div>

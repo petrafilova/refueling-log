@@ -10,6 +10,8 @@ import getYear from 'date-fns/getYear';
 import getMonth from 'date-fns/getMonth';
 import { padNumber } from '../../lib/dateFormatter';
 import SummaryPie from './SummaryPie';
+import FuelLineChart from './FuelLineChart';
+import ExpensesBarChart from './ExpensesBarChart';
 
 const Stats = (props) => {
     registerLocale('sk', sk);
@@ -20,7 +22,10 @@ const Stats = (props) => {
     const [chosenFuel, setChosenFuel] = useState();
     const [startDate, setStartDate] = useState(new Date().setFullYear(new Date().getFullYear() - 1));
     const [endDate, setEndDate] = useState(new Date());
-    const [data, setData] = useState();
+    const [summaryData, setSummaryData] = useState();
+    const [fuelData, setFuelData] = useState([]);
+    const [expensesData, setExpensesData] = useState([]);
+    const [consumptionData, setConsumptionData] = useState([]);
 
     useEffect(() => {
         (async () => {
@@ -57,7 +62,7 @@ const Stats = (props) => {
             if (chosenVehicle) {
                 (async () => {
                     const data = await vehicleStatisticsSummary(chosenVehicle, authCtx.token);
-                    setData(data);
+                    setSummaryData(data);
                 })();
             }
         }
@@ -73,7 +78,7 @@ const Stats = (props) => {
                         dateTo: `${getYear(endDate)}-${endMonth}`,
                     };
                     const data = await vehicleFuelCostsStatistic(chosenVehicle, display, authCtx.token);
-                    setData(data);
+                    setFuelData(data);
                 })();
             }
         }
@@ -89,7 +94,7 @@ const Stats = (props) => {
                     };
                     console.log(selectedDate);
                     const data = await vehicleExpensesStatistic(chosenVehicle, selectedDate, authCtx.token);
-                    setData(data);
+                    setExpensesData(data);
                 })();
             }
         }
@@ -105,13 +110,13 @@ const Stats = (props) => {
                         dateTo: `${getYear(endDate)}-${endMonth}`,
                     };
                     const data = await vehicleFuelConsumptionStatistic(chosenVehicle, display, authCtx.token);
-                    setData(data);
+                    setConsumptionData(data);
                 })();
             }
         }
     }, [chosenVehicle, chosenFuel, authCtx.token, startDate, endDate, props.tab]);
 
-    console.log(data);
+    console.log(consumptionData);
 
     return (
         <Fragment>
@@ -166,8 +171,9 @@ const Stats = (props) => {
                     </div>
                 </div>
             </div>}
-            <div className='w3-container'>{JSON.stringify(data)}</div>
-            {(props.tab === 'summary') && <SummaryPie datapie={data}/>}
+            {(props.tab === 'summary') && <SummaryPie summaryData={summaryData}/>}
+            {(props.tab === 'fuel') && <FuelLineChart fuelData={fuelData}/>}
+            {(props.tab === 'expenses') && <ExpensesBarChart expensesData={expensesData}/>}
         </Fragment>
     );
 };

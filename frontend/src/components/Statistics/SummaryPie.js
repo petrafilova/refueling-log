@@ -1,39 +1,23 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
-
-// const colors = ['rgba(255, 99, 132, 0.2)',
-//     'rgba(54, 162, 235, 0.2)',
-//     'rgba(255, 206, 86, 0.2)',
-//     'rgba(75, 192, 192, 0.2)',
-//     'rgba(153, 102, 255, 0.2)',
-//     'rgba(255, 159, 64, 0.2)', 'rgba(255, 99, 132, 0.2)',
-//     'rgba(54, 162, 235, 0.2)',
-//     'rgba(255, 206, 86, 0.2)',
-//     'rgba(75, 192, 192, 0.2)',
-//     'rgba(153, 102, 255, 0.2)',
-//     'rgba(255, 159, 64, 0.2)',
-//     'rgba(255, 99, 132, 0.2)',
-//     'rgba(54, 162, 235, 0.2)',
-//     'rgba(255, 206, 86, 0.2)',
-//     'rgba(75, 192, 192, 0.2)',
-//     'rgba(153, 102, 255, 0.2)',
-//     'rgba(255, 159, 64, 0.2)'];
+import { formatFuelName } from '../../lib/fuelNameFormatter';
+import { backgroundColor, borderColor } from '../../lib/graphColors';
 
 const SummaryPie = (props) => {
     ChartJS.register(ArcElement, Tooltip, Legend);
 
-    console.log(props.datapie);
+    console.log(props.summaryData);
 
     let labels = [];
     let values = [];
 
-    if (props.datapie) {
-        for (const el of props.datapie['costOfFuel']) {
-            labels.push(el.fuel); // TODO preklad na citatelny text!!!!!
+    if (props.summaryData) {
+        for (const el of props.summaryData['costOfFuel']) {
+            labels.push(formatFuelName(el.fuel));
             values.push(el.price);
         }
-        for (const el of props.datapie['expenses']) {
+        for (const el of props.summaryData['expenses']) {
             labels.push(el.type);
             values.push(el.price);
         }
@@ -41,24 +25,18 @@ const SummaryPie = (props) => {
 
     console.log(labels, values);
 
+    const colorOfBackground = [];
+    const colorOfBorder = [];
 
-    /*
-        pole farieb ktore bude rovnako dlhe ako pole dataInPie
-
-        rgba - sklada sa z 3 farieb
-
-        const l = dataInPie.length;
-
-        let a = 0;
-        for (const i = 0; i < l; i++) {
-            if (a >= colors.length) {
-                a = 0;
-            }
-            polefarieb.push(colors[a++]);
+    let a = 0;
+    for (let i = 0; i < labels.length; i++) {
+        if (a >= labels.length) {
+            a = 0;
         }
-        
-    */
+        colorOfBackground.push(backgroundColor[a]);
+        colorOfBorder.push(borderColor[a++]);
 
+    }
 
     const data = {
         labels: labels,
@@ -66,29 +44,74 @@ const SummaryPie = (props) => {
             {
                 label: '# of Votes',
                 data: values,
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)',
-                ],
+                backgroundColor: colorOfBackground,
+                borderColor: colorOfBorder,
                 borderWidth: 1,
             },
         ],
     };
 
     return (
-        <Pie data={data} />
+        <Fragment>
+            <div className='w3-container'>{JSON.stringify(props.summaryData)}</div>
+            <Pie data={data} />
+            <table className='w3-table-all w3-section'>
+                <thead>
+                    <tr className='w3-indigo'>
+                        <th>názov</th>
+                        <th>spolu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr >
+                        <td>najazdené kilometre</td>
+                        <td>{props.summaryData?.mileage}</td>
+                    </tr>
+                    <tr >
+                        <td>výdavky za palivo</td>
+                        <td>{props.summaryData?.costOfFuelTotal}</td>
+                    </tr>
+                    <tr >
+                        <td>iné výdavky</td>
+                        <td>{props.summaryData?.expensesTotal}</td>
+                    </tr>
+                    <tr >
+                        <td>spolu za výdavky</td>
+                        <td>{props.summaryData?.sum}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table className='w3-table-all w3-section'>
+                <thead>
+                    <tr className='w3-indigo'>
+                        <th>výdavky za palivo</th>
+                        <th>spolu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {props.summaryData?.costOfFuel.map((l) =>
+                        <tr key={l.fuel} >
+                            <td>{formatFuelName(l.fuel)}</td>
+                            <td>{l.price}</td>
+                        </tr>)}
+                </tbody>
+            </table>
+            <table className='w3-table-all w3-section'>
+                <thead>
+                    <tr className='w3-indigo'>
+                        <th>iné výdavky</th>
+                        <th>spolu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {props.summaryData?.expenses.map((l) =>
+                        <tr key={l.type} >
+                            <td>{l.type}</td>
+                            <td>{l.price}</td>
+                        </tr>)}
+                </tbody>
+            </table>
+        </Fragment>
     );
 };
 

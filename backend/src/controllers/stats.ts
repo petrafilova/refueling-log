@@ -96,6 +96,7 @@ export const getExpenses = async (
             const stat = await MonthStatistics.findAll({
                 where: {
                     vehicleId: vehicleId,
+                    expenseTypeId: et.id,
                     [Op.or]: [
                         {
                             month: {
