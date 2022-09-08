@@ -9,7 +9,7 @@ import {
     Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import { backgroundColor } from '../../lib/graphColors';
+import { borderColor } from '../../lib/graphColors';
 
 
 const ExpensesBarChart = (props) => {
@@ -82,12 +82,9 @@ const ExpensesBarChart = (props) => {
         dataset.push({
             label: expense.type,
             data: values,
-            backgroundColor: backgroundColor[idx],
+            backgroundColor: borderColor[idx],
         });
     });
-
-    console.log(labels);
-    console.log(dataset);
 
     const data = {
         labels: labels,

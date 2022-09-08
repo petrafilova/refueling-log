@@ -23,3 +23,9 @@ code {
 .flex {
     display: flex;
 }
+
+.summaryPie {
+    max-width: 510px; 
+    max-height: 510px; 
+    margin: auto;
+}

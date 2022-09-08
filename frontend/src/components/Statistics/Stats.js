@@ -12,6 +12,7 @@ import { padNumber } from '../../lib/dateFormatter';
 import SummaryPie from './SummaryPie';
 import FuelLineChart from './FuelLineChart';
 import ExpensesBarChart from './ExpensesBarChart';
+import ConsumptionLineChart from './ConsumptionLineChart';
 
 const Stats = (props) => {
     registerLocale('sk', sk);
@@ -130,7 +131,7 @@ const Stats = (props) => {
             </div>
             {(props.tab === 'fuel' || props.tab === 'consumption') && <div className='w3-section'>
                 <label className='w3-text-indigo' htmlFor='fuel'>Vyberte palivo:</label>
-                <select className='w3-select w3-border' name='fuel' id='fuel' onChange={selectFuelHandler}>
+                <select className='w3-select w3-border' name='fuel' id='fuel' value={chosenFuel} onChange={selectFuelHandler}>
                     {listOfFuels.map((l) =>
                         <option key={l.id} value={l.id}>{formatFuelName(l.fuel)}</option>
                     )};
@@ -152,6 +153,7 @@ const Stats = (props) => {
                             name='date'
                             id='date'
                             locale="sk"
+                            value={startDate}
                         />
                     </div>
                     <div className='w3-right'>
@@ -167,6 +169,7 @@ const Stats = (props) => {
                             name='date'
                             id='date'
                             locale="sk"
+                            value={endDate}
                         />
                     </div>
                 </div>
@@ -174,6 +177,7 @@ const Stats = (props) => {
             {(props.tab === 'summary') && <SummaryPie summaryData={summaryData}/>}
             {(props.tab === 'fuel') && <FuelLineChart fuelData={fuelData}/>}
             {(props.tab === 'expenses') && <ExpensesBarChart expensesData={expensesData}/>}
+            {(props.tab === 'consumption') && <ConsumptionLineChart consumptionData={consumptionData}/>}
         </Fragment>
     );
 };

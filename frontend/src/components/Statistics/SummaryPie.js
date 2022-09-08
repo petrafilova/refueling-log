@@ -7,8 +7,6 @@ import { backgroundColor, borderColor } from '../../lib/graphColors';
 const SummaryPie = (props) => {
     ChartJS.register(ArcElement, Tooltip, Legend);
 
-    console.log(props.summaryData);
-
     let labels = [];
     let values = [];
 
@@ -22,8 +20,6 @@ const SummaryPie = (props) => {
             values.push(el.price);
         }
     }
-
-    console.log(labels, values);
 
     const colorOfBackground = [];
     const colorOfBorder = [];
@@ -53,8 +49,11 @@ const SummaryPie = (props) => {
 
     return (
         <Fragment>
-            <div className='w3-container'>{JSON.stringify(props.summaryData)}</div>
-            <Pie data={data} />
+            {/* <div className='w3-container'>{JSON.stringify(props.summaryData)}</div> */}
+            {/* <div style={{ maxWidth: '510px', maxHeight: '510px', margin: 'auto' }}> */}
+            <div className='summaryPie'>
+                <Pie data={data} />
+            </div>
             <table className='w3-table-all w3-section'>
                 <thead>
                     <tr className='w3-indigo'>
@@ -80,8 +79,6 @@ const SummaryPie = (props) => {
                         <td>{props.summaryData?.sum}</td>
                     </tr>
                 </tbody>
-            </table>
-            <table className='w3-table-all w3-section'>
                 <thead>
                     <tr className='w3-indigo'>
                         <th>výdavky za palivo</th>
@@ -95,8 +92,6 @@ const SummaryPie = (props) => {
                             <td>{l.price}</td>
                         </tr>)}
                 </tbody>
-            </table>
-            <table className='w3-table-all w3-section'>
                 <thead>
                     <tr className='w3-indigo'>
                         <th>iné výdavky</th>
@@ -111,7 +106,7 @@ const SummaryPie = (props) => {
                         </tr>)}
                 </tbody>
             </table>
-        </Fragment>
+        </Fragment >
     );
 };
 
