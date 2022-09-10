@@ -1,7 +1,6 @@
 const baseUrl = 'http://localhost:8080';
 
 export const register = async (regData) => {
-    console.log(regData);
     try {
         const response = await fetch(`${baseUrl}/auth/register`, {
             method: 'POST',
@@ -10,14 +9,11 @@ export const register = async (regData) => {
                 'Content-Type': 'application/json',
             },
         });
-        console.log(response);
         if (response.ok) {
             console.log('register -  zadajte registračný kľúč.');
             return true;
         } else {
             const data = await response.json();
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -28,7 +24,6 @@ export const register = async (regData) => {
 };
 
 export const login = async (loginData) => {
-    console.log(loginData);
     try {
         const response = await fetch(`${baseUrl}/auth/login`, {
             method: 'POST',
@@ -37,9 +32,7 @@ export const login = async (loginData) => {
                 'Content-Type': 'application/json',
             },
         });
-        console.log(response);
         const data = await response.json();
-
         if (response.ok) {
             console.log('Prihlásenie prebehlo úspešne');
             return {
@@ -48,8 +41,6 @@ export const login = async (loginData) => {
                 username: data.username,
             };
         } else {
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -59,14 +50,11 @@ export const login = async (loginData) => {
 };
 
 export const confirm = async (registrationKey) => {
-    console.log(registrationKey);
     try {
         const response = await fetch(`${baseUrl}/auth/confirm/${registrationKey}`, {
             method: 'POST',
         });
-        console.log(response);
         const data = await response.json();
-
         if (response.ok) {
             console.log('Registrácia prebehla úspešne');
 
@@ -76,11 +64,8 @@ export const confirm = async (registrationKey) => {
                 username: data.username,
             };
 
-            console.log(confirmedData);
             return confirmedData;
         } else {
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -90,9 +75,33 @@ export const confirm = async (registrationKey) => {
 
 };
 
+export const refreshToken = async (refreshToken) => {
+    try {
+        const response = await fetch(`${baseUrl}/auth/refresh`, {
+            method: 'POST',
+            body: JSON.stringify(refreshToken),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await response.json();
+        if (response.ok) {
+            console.log('Zaslaný token a refreshToken');
+            return {
+                token: data.token,
+                refreshToken: data.refreshToken,
+                username: data.username,
+            };
+        } else {
+            throw new Error(data.code);
+        }
+    } catch (err) {
+        console.log(`Nastala chyba pri zaslaní tokenu a refreshTokenu. ${err.message}`);
+        alert(`Nastala chyba pri zaslaní tokenu a refreshTokenu. ${err.message}`);
+    }
+};
+
 export const password = async (newPassword, token) => {
-    console.log(newPassword);
-    console.log(token);
     try {
         const response = await fetch(`${baseUrl}/auth/password`, {
             method: 'PUT',
@@ -102,14 +111,11 @@ export const password = async (newPassword, token) => {
                 'Authorization': `Bearer ${token}`,
             },
         });
-        console.log(response);
         if (response.ok) {
             alert('Zmena hesla prebehla úspešne.');
             return true;
         } else {
             const data = await response.json();
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -120,8 +126,6 @@ export const password = async (newPassword, token) => {
 };
 
 export const deleteUserAccount = async (userInfo, token) => {
-    console.log(userInfo);
-    console.log(token);
     try {
         const response = await fetch(`${baseUrl}/auth/delete`, {
             method: 'POST',
@@ -131,14 +135,11 @@ export const deleteUserAccount = async (userInfo, token) => {
                 'Authorization': `Bearer ${token}`,
             },
         });
-        console.log(response);
         if (response.ok) {
             alert('Zmazanie účtu prebehlo úspešne.');
             return true;
         } else {
             const data = await response.json();
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -149,8 +150,6 @@ export const deleteUserAccount = async (userInfo, token) => {
 };
 
 export const createVehicle = async (createdVehicle, token) => {
-    console.log(createdVehicle);
-    console.log(token);
     try {
         const response = await fetch(`${baseUrl}/vehicle`, {
             method: 'POST',
@@ -160,15 +159,11 @@ export const createVehicle = async (createdVehicle, token) => {
                 'Authorization': `Bearer ${token}`,
             },
         });
-        console.log(response);
         const data = await response.json();
-
         if (response.ok) {
             console.log('Pridanie vozidla prebehlo úspešne');
             return data;
         } else {
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -187,14 +182,10 @@ export const getVehicles = async (token) => {
             },
         });
         const data = await response.json();
-        console.log(data);
-
         if (response.ok) {
             console.log('Zoznam vozidiel');
             return data;
         } else {
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -205,8 +196,6 @@ export const getVehicles = async (token) => {
 };
 
 export const deleteVehicleById = async (vehicleId, token) => {
-    console.log(vehicleId);
-    console.log(token);
     try {
         const response = await fetch(`${baseUrl}/vehicle/${vehicleId}`, {
             method: 'DELETE',
@@ -214,14 +203,11 @@ export const deleteVehicleById = async (vehicleId, token) => {
                 'Authorization': `Bearer ${token}`,
             },
         });
-        console.log(response);
         if (response.ok) {
             console.log('Zmazanie vozidla prebehlo úspešne.');
             return true;
         } else {
             const data = await response.json();
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -239,14 +225,11 @@ export const getVehicleById = async (vehicleId, token) => {
                 'Authorization': `Bearer ${token}`,
             },
         });
-        console.log(response);
         const data = await response.json();
         if (response.ok) {
             console.log('getVehicle');
             return data;
         } else {
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -266,15 +249,11 @@ export const updateVehicleById = async (vehicleId, editedVehicle, token) => {
                 'Authorization': `Bearer ${token}`,
             },
         });
-        console.log(response);
         const data = await response.json();
-
         if (response.ok) {
             console.log('updateVehicle');
             return data;
         } else {
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -294,15 +273,11 @@ export const createVehicleFuel = async (vehicleFuel, token) => {
                 'Authorization': `Bearer ${token}`,
             },
         });
-        console.log(response);
         const data = await response.json();
-
         if (response.ok) {
             console.log('createVehicleFuel');
             return data;
         } else {
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -320,15 +295,11 @@ export const listOfVehicleFuels = async (vehicleId, token) => {
                 'Authorization': `Bearer ${token}`,
             },
         });
-        console.log(response);
         const data = await response.json();
-
         if (response.ok) {
             console.log('listOfVehicleFuels');
             return data;
         } else {
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -346,15 +317,11 @@ export const singleVehicleFuel = async (vehicleFuelId, token) => {
                 'Authorization': `Bearer ${token}`,
             },
         });
-        console.log(response);
         const data = await response.json();
-
         if (response.ok) {
             console.log('singleVehicleFuel');
             return data;
         } else {
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -374,15 +341,11 @@ export const updateVehicleFuel = async (vehicleFuelId, updateFuel, token) => {
                 'Authorization': `Bearer ${token}`,
             },
         });
-        console.log(response);
         const data = await response.json();
-
         if (response.ok) {
             console.log('updateVehicleFuel');
             return data;
         } else {
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -393,7 +356,6 @@ export const updateVehicleFuel = async (vehicleFuelId, updateFuel, token) => {
 };
 
 export const deleteVehicleFuel = async (vehicleFuelId, token) => {
-    console.log(vehicleFuelId, token);
     try {
         const response = await fetch(`${baseUrl}/vehicleFuel/${vehicleFuelId}`, {
             method: 'DELETE',
@@ -401,14 +363,11 @@ export const deleteVehicleFuel = async (vehicleFuelId, token) => {
                 'Authorization': `Bearer ${token}`,
             },
         });
-        console.log(response);
-
         if (response.ok) {
             console.log('deleteVehicleFuel');
             return true;
         } else {
             const data = await response.json();
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -421,7 +380,6 @@ export const deleteVehicleFuel = async (vehicleFuelId, token) => {
 // refueling log
 
 export const listOfFuelLogs = async (vehicleFuelId, token, display) => {
-    console.log(vehicleFuelId, token, display);
     try {
         const response = await fetch(`${baseUrl}/fuelLog/byVehicleFuel/${vehicleFuelId}`, {
             method: 'POST',
@@ -431,15 +389,11 @@ export const listOfFuelLogs = async (vehicleFuelId, token, display) => {
                 'Authorization': `Bearer ${token}`,
             },
         });
-        console.log(response);
         const data = await response.json();
-
         if (response.ok) {
             console.log('listOfFuelLogs');
             return data;
         } else {
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -450,7 +404,6 @@ export const listOfFuelLogs = async (vehicleFuelId, token, display) => {
 };
 
 export const createFuelLog = async (fuelLog, token) => {
-    console.log(fuelLog, token);
     try {
         const response = await fetch(`${baseUrl}/fuelLog`, {
             method: 'POST',
@@ -460,15 +413,11 @@ export const createFuelLog = async (fuelLog, token) => {
                 'Authorization': `Bearer ${token}`,
             },
         });
-        console.log(response);
         const data = await response.json();
-
         if (response.ok) {
             console.log('createdFuelLog');
             return data;
         } else {
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -486,15 +435,11 @@ export const getSingleFuelLog = async (fuelLogId, token) => {
                 'Authorization': `Bearer ${token}`,
             },
         });
-        console.log(response);
         const data = await response.json();
-
         if (response.ok) {
             console.log('gettedSingleFuelLog');
             return data;
         } else {
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -514,15 +459,11 @@ export const updateFuelLog = async (fuelLogId, updatedData, token) => {
                 'Authorization': `Bearer ${token}`,
             },
         });
-        console.log(response);
         const data = await response.json();
-
         if (response.ok) {
             console.log('updatedFuelLog');
             return data;
         } else {
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -540,15 +481,11 @@ export const deleteFuelLog = async (fuelLogId, token) => {
                 'Authorization': `Bearer ${token}`,
             },
         });
-        console.log(response);
-
         if (response.ok) {
             console.log('deletedFuelLog');
             return true;
         } else {
             const data = await response.json();
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -568,15 +505,11 @@ export const listOfExpensesTypes = async (token) => {
                 'Authorization': `Bearer ${token}`,
             },
         });
-        console.log(response);
         const data = await response.json();
-
         if (response.ok) {
             console.log('listOfExpensesTypes');
             return data;
         } else {
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -587,7 +520,6 @@ export const listOfExpensesTypes = async (token) => {
 };
 
 export const createExpensesType = async (nameOfExpenseType, token) => {
-    console.log(nameOfExpenseType, token);
     try {
         const response = await fetch(`${baseUrl}/expenseType`, {
             method: 'POST',
@@ -597,15 +529,11 @@ export const createExpensesType = async (nameOfExpenseType, token) => {
                 'Authorization': `Bearer ${token}`,
             },
         });
-        console.log(response);
         const data = await response.json();
-
         if (response.ok) {
             console.log('createdExpensesType');
             return data;
         } else {
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -625,15 +553,11 @@ export const updateExpenseType = async (expenseTypeId, updatedData, token) => {
                 'Authorization': `Bearer ${token}`,
             },
         });
-        console.log(response);
         const data = await response.json();
-
         if (response.ok) {
             console.log('updatedExpenseType');
             return data;
         } else {
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -651,15 +575,11 @@ export const deleteExpenseType = async (expenseTypeId, token) => {
                 'Authorization': `Bearer ${token}`,
             },
         });
-        console.log(response);
-
         if (response.ok) {
             console.log('deletedExpenseType');
             return true;
         } else {
             const data = await response.json();
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -674,10 +594,9 @@ export const deleteExpenseType = async (expenseTypeId, token) => {
     return false;
 };
 
-// expense-log
+// expense log
 
 export const listOfExpenseLogs = async (vehicleId, token, display) => {
-    console.log(vehicleId, token, display);
     try {
         const response = await fetch(`${baseUrl}/expenseLog/byVehicle/${vehicleId}`, {
             method: 'POST',
@@ -687,15 +606,11 @@ export const listOfExpenseLogs = async (vehicleId, token, display) => {
                 'Authorization': `Bearer ${token}`,
             },
         });
-        console.log(response);
         const data = await response.json();
-
         if (response.ok) {
             console.log('listOfExpenseLogs');
             return data;
         } else {
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -706,7 +621,6 @@ export const listOfExpenseLogs = async (vehicleId, token, display) => {
 };
 
 export const createExpenseLog = async (expenseLog, token) => {
-    console.log(expenseLog, token);
     try {
         const response = await fetch(`${baseUrl}/expenseLog`, {
             method: 'POST',
@@ -716,15 +630,11 @@ export const createExpenseLog = async (expenseLog, token) => {
                 'Authorization': `Bearer ${token}`,
             },
         });
-        console.log(response);
         const data = await response.json();
-
         if (response.ok) {
             console.log('createdExpenseLog');
             return data;
         } else {
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -742,15 +652,11 @@ export const getSingleExpenseLog = async (expensesLogId, token) => {
                 'Authorization': `Bearer ${token}`,
             },
         });
-        console.log(response);
         const data = await response.json();
-
         if (response.ok) {
             console.log('gettedSingExpenseLog');
             return data;
         } else {
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -770,15 +676,11 @@ export const updateExpenseLog = async (expensesLogId, updatedData, token) => {
                 'Authorization': `Bearer ${token}`,
             },
         });
-        console.log(response);
         const data = await response.json();
-
         if (response.ok) {
             console.log('updatedExpenseLog');
             return data;
         } else {
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -796,15 +698,11 @@ export const deleteExpenseLog = async (expensesLogId, token) => {
                 'Authorization': `Bearer ${token}`,
             },
         });
-        console.log(response);
-
         if (response.ok) {
             console.log('deletedExpenseLog');
             return true;
         } else {
             const data = await response.json();
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -817,7 +715,6 @@ export const deleteExpenseLog = async (expensesLogId, token) => {
 // stats
 
 export const vehicleStatisticsSummary = async (vehicleId, token) => {
-    console.log(vehicleId, token);
     try {
         const response = await fetch(`${baseUrl}/stats/${vehicleId}/total`, {
             method: 'POST',
@@ -825,15 +722,11 @@ export const vehicleStatisticsSummary = async (vehicleId, token) => {
                 'Authorization': `Bearer ${token}`,
             },
         });
-        console.log(response);
         const data = await response.json();
-
         if (response.ok) {
             console.log('vehicleStatisticsSummary');
             return data;
         } else {
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -844,7 +737,6 @@ export const vehicleStatisticsSummary = async (vehicleId, token) => {
 };
 
 export const vehicleExpensesStatistic = async (vehicleId, date, token) => {
-    console.warn(vehicleId, date, token);
     try {
         const response = await fetch(`${baseUrl}/stats/${vehicleId}/expenses`, {
             method: 'POST',
@@ -854,15 +746,11 @@ export const vehicleExpensesStatistic = async (vehicleId, date, token) => {
                 'Authorization': `Bearer ${token}`,
             },
         });
-        console.log(response);
         const data = await response.json();
-
         if (response.ok) {
             console.log('vehicleExpensesStatistic');
             return data;
         } else {
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -873,7 +761,6 @@ export const vehicleExpensesStatistic = async (vehicleId, date, token) => {
 };
 
 export const vehicleFuelCostsStatistic = async (vehicleId, display, token) => {
-    console.log(vehicleId, display, token);
     try {
         const response = await fetch(`${baseUrl}/stats/${vehicleId}/fuel`, {
             method: 'POST',
@@ -883,15 +770,11 @@ export const vehicleFuelCostsStatistic = async (vehicleId, display, token) => {
                 'Authorization': `Bearer ${token}`,
             },
         });
-        console.log(response);
         const data = await response.json();
-
         if (response.ok) {
             console.log('vehicleFuelCostsStatistic');
             return data;
         } else {
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {
@@ -902,7 +785,6 @@ export const vehicleFuelCostsStatistic = async (vehicleId, display, token) => {
 };
 
 export const vehicleFuelConsumptionStatistic = async (vehicleId, display, token) => {
-    console.log(vehicleId, display, token);
     try {
         const response = await fetch(`${baseUrl}/stats/${vehicleId}/consumption`, {
             method: 'POST',
@@ -912,15 +794,12 @@ export const vehicleFuelConsumptionStatistic = async (vehicleId, display, token)
                 'Authorization': `Bearer ${token}`,
             },
         });
-        console.log(response);
         const data = await response.json();
 
         if (response.ok) {
             console.log('vehicleFuelConsumptionStatistic');
             return data;
         } else {
-            console.log(data);
-            console.log(data.code);
             throw new Error(data.code);
         }
     } catch (err) {

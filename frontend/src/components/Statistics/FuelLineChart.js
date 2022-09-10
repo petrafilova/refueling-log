@@ -10,8 +10,8 @@ import {
     Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import { formatDate } from '../../lib/dateFormatter';
 import { formatFuelName } from '../../lib/fuelNameFormatter';
+import { isoDateTimeToString } from '../../lib/dateFormatter';
 
 const FuelLineChart = (props) => {
     ChartJS.register(
@@ -27,9 +27,6 @@ const FuelLineChart = (props) => {
     const options = {
         responsive: true,
         plugins: {
-            // legend: {
-            //     // position: 'top' as const,
-            // },
             title: {
                 display: true,
                 text: 'graf vývoja jednotkových cien za palivo',
@@ -41,7 +38,7 @@ const FuelLineChart = (props) => {
     let values = [];
 
     if (props.fuelData.length > 0) {
-        props.fuelData[0].stats?.map((l) => labels.push(formatDate(l.dateTime)));
+        props.fuelData[0].stats?.map((l) => labels.push(isoDateTimeToString(l.dateTime)));
         props.fuelData[0].stats?.map((v) => values.push(v.unitPrice));
     }
 
@@ -58,10 +55,8 @@ const FuelLineChart = (props) => {
     };
 
     return (
-        <div>
-            <div className='w3-container'>{JSON.stringify(props.fuelData)}</div>
-            <Line options={options} data={data} />
-        </div>);
+        <Line options={options} data={data} />
+    );
 };
 
 export default FuelLineChart;

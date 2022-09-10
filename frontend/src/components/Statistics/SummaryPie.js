@@ -49,8 +49,6 @@ const SummaryPie = (props) => {
 
     return (
         <Fragment>
-            {/* <div className='w3-container'>{JSON.stringify(props.summaryData)}</div> */}
-            {/* <div style={{ maxWidth: '510px', maxHeight: '510px', margin: 'auto' }}> */}
             <div className='summaryPie'>
                 <Pie data={data} />
             </div>

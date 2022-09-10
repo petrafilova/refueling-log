@@ -40,10 +40,10 @@ const AddAndEditExpenseTypeDialog = (props) => {
                 </header>
                 <div className='w3-container'>
                     <p>
-                        <label className='w3-text-indigo' htmlFor='name'>typ výdavku: </label>
+                        <label className='w3-text-indigo' htmlFor='name'>typ výdavku: <span className='w3-text-red'>*</span></label>
                         <input className='w3-input w3-border' type='text' id='name' ref={nameInputRef}></input>
                     </p>
-                    {nameInputIsInvalid && <p className='w3-red'>Neplatný údaj</p>}
+                    {nameInputIsInvalid && <p className='w3-red'>Neplatný údaj.Zadajte min 1 a max 30 znakov.</p>}
                 </div>
                 <footer className='w3-container w3-light-grey'>
                     <p>

@@ -69,9 +69,6 @@ const SignUp = () => {
                         className='w3-input w3-border'
                         type='text'
                         id='text'
-                        // required
-                        // minLength={4}
-                        // maxLength={50}
                         ref={userNameInputRef}
                     ></input>
                     {!userNameIsValid && <p className='w3-red'>Používateľského meno musí obsahovať: min. 4 znaky, max. 50 znakov.</p>}
@@ -84,9 +81,6 @@ const SignUp = () => {
                         className='w3-input w3-border'
                         type='password'
                         id='password'
-                        // required
-                        // minLength={8}
-                        // maxLength={250}
                         ref={passwordInputRef}
                     ></input>
                     {!passwordIsValid && <p className='w3-red'>Heslo musí obsahovať: min. 8 znakov, max. 250 znakov, min. 1 malé písmeno, min. 1 veľké písmeno a min. 1 číslo.</p>}
@@ -99,9 +93,6 @@ const SignUp = () => {
                         className="w3-input w3-border"
                         type='email'
                         id='email'
-                        // required
-                        // minLength={6}
-                        // maxLength={320}
                         ref={emailInputRef}
                     ></input>
                     {!emailIsValid && <p className='w3-red'>Používateľského meno musí obsahovať: min. 6 znakov, max. 320 znakov.</p>}

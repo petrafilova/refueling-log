@@ -10,6 +10,7 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { borderColor } from '../../lib/graphColors';
+import { padNumber } from '../../lib/dateFormatter';
 
 
 const ExpensesBarChart = (props) => {
@@ -25,9 +26,6 @@ const ExpensesBarChart = (props) => {
     const options = {
         responsive: true,
         plugins: {
-            legend: {
-                // position: 'top' as const,
-            },
             title: {
                 display: true,
                 text: 'graf vývoja jednotkových cien za iné výdavky',
@@ -86,16 +84,22 @@ const ExpensesBarChart = (props) => {
         });
     });
 
+    const formatLabels = (labels) => {
+        const dates = labels.map(label => {
+            const aa = label.split('-');
+            const lab = `${padNumber(aa[1])}.${aa[0]}`;
+            return lab;
+        });
+        return dates;
+    };
+
     const data = {
-        labels: labels,
+        labels: formatLabels(labels),
         datasets: dataset,
     };
 
     return (
-        <div>
-            <div className='w3-container'>{JSON.stringify(props.expensesData)}</div>
-            <Bar options={options} data={data} />
-        </div>
+        <Bar options={options} data={data} />
     );
 };
 

@@ -22,7 +22,7 @@ function App() {
             {isLoggedIn && <MainNavigation />}
             <main className='w3-container'>
                 <Routes>
-                    <Route path='/' element={<HomePage />} />
+                    {isLoggedIn ? <Route path='/' element={<StartingPage />} /> : <Route path='/' element={<HomePage />} />}
                     <Route path='/signIn' element={<SignInPage />} />
                     <Route path='/signUp' element={<SignUpPage />} />
                     <Route path='/confirm' element={<ConfirmationPage />} />

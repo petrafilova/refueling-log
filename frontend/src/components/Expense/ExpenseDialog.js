@@ -1,14 +1,18 @@
 import React, { useRef, useState, useContext, useEffect } from 'react';
 import { createExpenseLog, getSingleExpenseLog, updateExpenseLog } from '../../lib/api';
 import AuthContext from '../../store/auth-context';
-import { formatDate } from '../../lib/dateFormatter';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { registerLocale } from 'react-datepicker';
+import sk from 'date-fns/locale/sk';
+import { isoDateTimeToString } from '../../lib/dateFormatter';
 
 const ExpenseDialog = (props) => {
+    registerLocale('sk', sk);
     const authCtx = useContext(AuthContext);
 
     const priceInputRef = useRef();
     const mileageInputRef = useRef();
-    const dateTimeInputRef = useRef();
     const commentInputRef = useRef();
     const createdAtInputRef = useRef();
     const updatedAtInputRef = useRef();
@@ -17,6 +21,8 @@ const ExpenseDialog = (props) => {
     const [mileageInputIsInvalid, setMileageInputIsInvalid] = useState(false);
     const [dateTimeInputIsInvalid, setDateTimeInputIsInvalid] = useState(false);
 
+    const [date, setDate] = useState(new Date());
+
     const expenseHandler = async () => {
         setPriceInputIsInvalid(false);
         setMileageInputIsInvalid(false);
@@ -24,22 +30,21 @@ const ExpenseDialog = (props) => {
 
         const priceInput = priceInputRef.current.value;
         const mileageInput = mileageInputRef.current.value;
-        const dateTimeInput = dateTimeInputRef.current.value;
         const commentInput = commentInputRef.current.value;
 
         let formIsInvalid = false;
 
-        if (priceInput <= 0) {
+        if (priceInput.trim().length === 0 || priceInput < 0) {
             setPriceInputIsInvalid(true);
             formIsInvalid = true;
         }
 
-        if (mileageInput <= 0) {
+        if (mileageInput.trim().length === 0 || mileageInput < 0) {
             setMileageInputIsInvalid(true);
             formIsInvalid = true;
         }
 
-        if (dateTimeInput.trim().length === 0) {
+        if (!(date instanceof Date)) {
             setDateTimeInputIsInvalid(true);
             formIsInvalid = true;
         }
@@ -51,7 +56,7 @@ const ExpenseDialog = (props) => {
         const expenseLog = {
             price: priceInput,
             mileage: mileageInput,
-            dateTime: new Date(dateTimeInput),
+            dateTime: date,
             comment: commentInput,
             typeId: props.expenseTypeId,
             vehicleId: props.vehicleId,
@@ -61,7 +66,6 @@ const ExpenseDialog = (props) => {
             await updateExpenseLog(props.singleExpenseId, expenseLog, authCtx.token);
         } else {
             await createExpenseLog(expenseLog, authCtx.token);
-            console.log('som tu?', expenseLog);
         }
 
         props.onCancel();
@@ -75,10 +79,10 @@ const ExpenseDialog = (props) => {
                 const data = await getSingleExpenseLog(props.singleExpenseId, authCtx.token);
                 priceInputRef.current.value = data.price;
                 mileageInputRef.current.value = data.mileage;
-                dateTimeInputRef.current.value = formatDate(data.dateTime);
+                setDate(isoDateTimeToString(data.dateTime));
                 commentInputRef.current.value = data.comment;
-                createdAtInputRef.current.value = new Date(data.createdAt).toLocaleString();
-                updatedAtInputRef.current.value = new Date(data.updatedAt).toLocaleString();
+                createdAtInputRef.current.value = isoDateTimeToString(data.createdAt);
+                updatedAtInputRef.current.value = isoDateTimeToString(data.updatedAt);
             };
             getData();
         }
@@ -92,19 +96,29 @@ const ExpenseDialog = (props) => {
                 </header>
                 <div className='w3-container'>
                     <p>
-                        <label className='w3-text-indigo' htmlFor='price'>cena: </label>
+                        <label className='w3-text-indigo' htmlFor='price'>cena: <span className='w3-text-red'>*</span></label>
                         <input className='w3-input w3-border' type='number' id='price' ref={priceInputRef}></input>
                     </p>
                     {priceInputIsInvalid && <p className='w3-red'>Neplatný údaj</p>}
                     <p>
-                        <label className='w3-text-indigo' htmlFor='mileage'>najazdené kilometre: </label>
+                        <label className='w3-text-indigo' htmlFor='mileage'>najazdené kilometre: <span className='w3-text-red'>*</span></label>
                         <input className='w3-input w3-border' type='number' id='mileage' ref={mileageInputRef}></input>
                     </p>
                     {mileageInputIsInvalid && <p className='w3-red'>Neplatný údaj</p>}
-                    <p>
-                        <label className='w3-text-indigo' htmlFor='dateTime'>dátum a čas: </label>
-                        <input className='w3-input w3-border' type='datetime-local' id='dateTime' ref={dateTimeInputRef}></input>
-                    </p>
+                    <div>
+                        <label className='w3-text-indigo' htmlFor='dateTime'>dátum a čas: <span className='w3-text-red'>*</span></label>
+                        <DatePicker
+                            className='w3-input w3-border'
+                            type='datetime-local'
+                            id='dateTime'
+                            selected={date}
+                            onChange={(date) => setDate(date)}
+                            timeInputLabel="Time:"
+                            dateFormat="dd.MM.yyyy HH:mm"
+                            showTimeInput
+                            locale="sk"
+                        />
+                    </div>
                     {dateTimeInputIsInvalid && <p className='w3-red'>Neplatný údaj</p>}
                     <p>
                         <label className='w3-text-indigo' htmlFor='comment'>komentár: </label>

@@ -1,18 +1,22 @@
 import React, { useRef, useState, useContext, useEffect } from 'react';
 import { getSingleFuelLog, createFuelLog, updateFuelLog } from '../../lib/api';
 import AuthContext from '../../store/auth-context';
-import { formatDate } from '../../lib/dateFormatter';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { registerLocale } from 'react-datepicker';
+import sk from 'date-fns/locale/sk';
+import { isoDateTimeToString } from '../../lib/dateFormatter';
 
 const RefuelingDialog = (props) => {
+    registerLocale('sk', sk);
     const authCtx = useContext(AuthContext);
-    const [full, setFull] = useState();
-    const [prevMissing, setPrevMissing] = useState();
+    const [full, setFull] = useState(true);
+    const [prevMissing, setPrevMissing] = useState(false);
 
     const quantityInputRef = useRef();
     const unitPriceInputRef = useRef();
     const totalPriceInputRef = useRef();
     const mileageInputRef = useRef();
-    const dateTimeInputRef = useRef();
     const consumptionInputRef = useRef();
     const createdAtInputRef = useRef();
     const updatedAtInputRef = useRef();
@@ -25,12 +29,14 @@ const RefuelingDialog = (props) => {
     const [fullIsValid, setFullIsValid] = useState(true);
     const [prevMissingIsValid, setPrevMissingIsValid] = useState(true);
 
+    const [date, setDate] = useState(new Date());
+
     const fullChanged = (event) => {
         setFull(event.target.value === 'false' ? false : true);
     };
 
     const prevMissingChanged = (event) => {
-        setPrevMissing(event.target.value === 'true');
+        setPrevMissing(event.target.value === 'true' ? true : false);
     };
 
     const submitHandler = async () => {
@@ -46,7 +52,6 @@ const RefuelingDialog = (props) => {
         let unitPriceInput = unitPriceInputRef.current.value;
         let totalPriceInput = totalPriceInputRef.current.value;
         const mileageInput = mileageInputRef.current.value;
-        const dateTimeInput = dateTimeInputRef.current.value;
 
         let formIsInvalid = false;
 
@@ -54,36 +59,38 @@ const RefuelingDialog = (props) => {
             totalPriceInput = quantityInput * unitPriceInput;
         }
 
-        if (quantityInput < 0 || (quantityInput.trim().length === 0)) {
+        if (quantityInput.trim().length === 0 || quantityInput < 0) {
             setQuantityIsValid(false);
             formIsInvalid = true;
-        } 
-         
-        if (unitPriceInput < 0  || (unitPriceInput.trim().length === 0)) {
+        }
+
+        if (unitPriceInput.trim().length === 0 || unitPriceInput < 0) {
             setUnitPriceIsValid(false);
             formIsInvalid = true;
         }
-        
-        if (totalPriceInput < 0  /*|| (totalPriceInput.trim().length === 0)*/) {
+
+        if (totalPriceInput.trim().length === 0 || totalPriceInput < 0) {
             setTotalPriceIsValid(false);
             formIsInvalid = true;
         }
-        
-        if (mileageInput < 0  || (mileageInput.trim().length === 0)) {
+
+        if (mileageInput.trim().length === 0 || mileageInput < 0) {
             setMileageIsValid(false);
             formIsInvalid = true;
         }
-        
-        if (dateTimeInput.trim().length === 0) {
+
+        if (!(date instanceof Date)) {
+            console.log(date);
+            console.log(date instanceof Date);
             setDateTimeIsValid(false);
             formIsInvalid = true;
         }
-        
+
         if (full !== true && full !== false) {
             setFullIsValid(false);
             formIsInvalid = true;
         }
-        
+
         if (prevMissing !== true && prevMissing !== false) {
             setPrevMissingIsValid(false);
             formIsInvalid = true;
@@ -98,12 +105,12 @@ const RefuelingDialog = (props) => {
             unitPrice: unitPriceInput,
             totalPrice: totalPriceInput,
             mileage: mileageInput,
-            dateTime: new Date(dateTimeInput),
+            dateTime: new Date(date),
             full: full,
             previousMissing: prevMissing,
             vehicleFuelId: props.fuelId,
         };
-        
+
         if (props.singleFuelLogId) {
             await updateFuelLog(props.singleFuelLogId, fuelLog, authCtx.token);
         } else {
@@ -122,12 +129,12 @@ const RefuelingDialog = (props) => {
                 unitPriceInputRef.current.value = data.unitPrice;
                 totalPriceInputRef.current.value = data.totalPrice;
                 mileageInputRef.current.value = data.mileage;
-                dateTimeInputRef.current.value = formatDate(data.dateTime);
+                setDate(new Date(data.dateTime));
                 setFull(data.full);
                 setPrevMissing(data.previousMissing);
                 consumptionInputRef.current.value = data.consumption;
-                createdAtInputRef.current.value = new Date(data.createdAt).toLocaleString();
-                updatedAtInputRef.current.value = new Date(data.updatedAt).toLocaleString();
+                createdAtInputRef.current.value = isoDateTimeToString(data.createdAt);
+                updatedAtInputRef.current.value = isoDateTimeToString(data.updatedAt);
             };
             getData();
         }
@@ -150,10 +157,10 @@ const RefuelingDialog = (props) => {
         if (targetId === 'unitPrice' && unitPrice && quantity) {
             totalPriceInputRef.current.value = quantity * unitPrice;
         }
-        
+
         if ((targetId === 'totalPrice') && totalPrice && quantity) {
             unitPriceInputRef.current.value = totalPrice / quantity;
-        } 
+        }
     };
 
     return (
@@ -164,46 +171,56 @@ const RefuelingDialog = (props) => {
                 </header>
                 <div className='w3-container'>
                     <p>
-                        <label className='w3-text-indigo' htmlFor='quantity'>množstvo: </label>
+                        <label className='w3-text-indigo' htmlFor='quantity'>množstvo: <span className='w3-text-red'>*</span></label>
                         <input className='w3-input w3-border' type='number' id='quantity' ref={quantityInputRef} onChange={count}></input>
                     </p>
-                    {!quantityIsValid && <p className='w3-red'>Neplatný údaj</p>}
+                    {!quantityIsValid && <p className='w3-red'>Neplatný údaj.</p>}
                     <p>
-                        <label className='w3-text-indigo' htmlFor='unitPrice'>jednotková cena: </label>
+                        <label className='w3-text-indigo' htmlFor='unitPrice'>jednotková cena: <span className='w3-text-red'>*</span></label>
                         <input className='w3-input w3-border' type='number' id='unitPrice' ref={unitPriceInputRef} onChange={count}></input>
                     </p>
-                    {!unitPriceIsValid && <p className='w3-red'>Neplatný údaj</p>}
+                    {!unitPriceIsValid && <p className='w3-red'>Neplatný údaj.</p>}
                     <p>
-                        <label className='w3-text-indigo' htmlFor='totalPrice'>celková cena: </label>
+                        <label className='w3-text-indigo' htmlFor='totalPrice'>celková cena: <span className='w3-text-red'>*</span></label>
                         <input className='w3-input w3-border' type='number' id='totalPrice' ref={totalPriceInputRef} onChange={count}></input>
                     </p>
-                    {!totalPriceIsValid && <p className='w3-red'>Neplatný údaj</p>}
+                    {!totalPriceIsValid && <p className='w3-red'>Neplatný údaj.</p>}
                     <p>
-                        <label className='w3-text-indigo' htmlFor='mileage'>najazdené kilometre: </label>
+                        <label className='w3-text-indigo' htmlFor='mileage'>najazdené kilometre: <span className='w3-text-red'>*</span></label>
                         <input className='w3-input w3-border' type='number' id='mileage' ref={mileageInputRef}></input>
                     </p>
-                    {!mileageIsValid && <p className='w3-red'>Neplatný údaj</p>}
-                    <p>
-                        <label className='w3-text-indigo' htmlFor='dateTime'>dátum a čas: </label>
-                        <input className='w3-input w3-border' type='datetime-local' id='dateTime' ref={dateTimeInputRef}></input>
-                    </p>
-                    {!dateTimeIsValid && <p className='w3-red'>Neplatný údaj</p>}
+                    {!mileageIsValid && <p className='w3-red'>Neplatný údaj.</p>}
                     <div>
-                        <p className='w3-text-indigo'>plná nádrž: </p>
+                        <label className='w3-text-indigo' htmlFor='dateTime'>dátum a čas: <span className='w3-text-red'>*</span></label>
+                        <DatePicker
+                            className='w3-input w3-border'
+                            type='datetime-local'
+                            id='dateTime'
+                            selected={date}
+                            onChange={(date) => setDate(date)}
+                            timeInputLabel="Time:"
+                            dateFormat="dd.MM.yyyy HH:mm"
+                            showTimeInput
+                            locale="sk"
+                        />
+                    </div>
+                    {!dateTimeIsValid && <p className='w3-red'>Neplatný údaj.</p>}
+                    <div>
+                        <p className='w3-text-indigo'>plná nádrž: <span className='w3-text-red'>*</span></p>
                         <input type='radio' id='fullTrue' name='full' value='true' checked={full === true} onChange={fullChanged}></input>
                         <label htmlFor='fullTrue'> áno</label><br></br>
                         <input type='radio' id='fullFalse' name='full' value='false' checked={full === false} onChange={fullChanged}></input>
                         <label htmlFor='fullFalse'> nie</label>
                     </div>
-                    {!fullIsValid && <p className='w3-red'>Neplatný údaj</p>}
+                    {!fullIsValid && <p className='w3-red'>Neplatný údaj.</p>}
                     <div>
-                        <p className='w3-text-indigo'>chýbajúce predchádzajúce údaje: </p>
+                        <p className='w3-text-indigo'>chýbajúce predchádzajúce údaje: <span className='w3-text-red'>*</span></p>
                         <input type='radio' id='previousMissingTrue' name='previousMissing' value='true' checked={prevMissing === true} onChange={prevMissingChanged}></input>
                         <label htmlFor='previousMissingTrue'> áno</label><br></br>
                         <input type='radio' id='previousMissingFalse' name='previousMissing' value='false' checked={prevMissing === false} onChange={prevMissingChanged}></input>
                         <label htmlFor='previousMissingFalse'> nie</label>
                     </div>
-                    {!prevMissingIsValid && <p className='w3-red'>Neplatný údaj</p>}
+                    {!prevMissingIsValid && <p className='w3-red'>Neplatný údaj.</p>}
                     {props.singleFuelLogId && <p>
                         <label className='w3-text-indigo' htmlFor='consumption'>spotreba: </label>
                         <input className='w3-input w3-border' type='number' id='consumption' readOnly ref={consumptionInputRef}></input>

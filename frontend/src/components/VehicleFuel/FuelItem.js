@@ -6,7 +6,6 @@ const FuelItem = (props) => {
     const [fuel, setFuel] = useState();
 
     const selectChangeHandler = (event) => {
-        console.log(event);
         setFuel(event.target.value);
     };
 
@@ -17,7 +16,6 @@ const FuelItem = (props) => {
                     <h2>Zmena paliva</h2>
                 </header>
                 <div className='w3-container w3-section'>
-
                     <label className='w3-text-indigo' htmlFor='fuel'>zmeniť typ paliva na: </label>
                     <div className='flex'>
                         <select className='w3-select w3-border' name='fuel' id='fuel' defaultValue={props.fuelType} onChange={selectChangeHandler}>
@@ -25,7 +23,6 @@ const FuelItem = (props) => {
                         </select>
 
                     </div>
-
                 </div>
                 <footer className='w3-container w3-light-grey'>
                     <p>

@@ -93,7 +93,6 @@ const Stats = (props) => {
                         dateFrom: `${getYear(startDate)}-${startMonth}`,
                         dateTo: `${getYear(endDate)}-${endMonth}`,
                     };
-                    console.log(selectedDate);
                     const data = await vehicleExpensesStatistic(chosenVehicle, selectedDate, authCtx.token);
                     setExpensesData(data);
                 })();
@@ -117,8 +116,6 @@ const Stats = (props) => {
         }
     }, [chosenVehicle, chosenFuel, authCtx.token, startDate, endDate, props.tab]);
 
-    console.log(consumptionData);
-
     return (
         <Fragment>
             <div className='w3-section'>
@@ -137,39 +134,39 @@ const Stats = (props) => {
                     )};
                 </select>
             </div>}
-            {(props.tab === 'expenses' || props.tab === 'fuel' || props.tab === 'consumption') && <div>
+            {(props.tab === 'expenses' || props.tab === 'fuel' || props.tab === 'consumption') && <div>   
                 <label className='w3-text-indigo' htmlFor='date'>Vyberte dátum:</label>
                 <div>
-                    <div className='w3-left'>
+                    <div className='w3-left w3-margin-top smFullWidth w3-'>
                         <label className='w3-text-indigo' htmlFor='date'>od:</label>
                         <DatePicker
                             selected={startDate}
                             onChange={(date) => setStartDate(date)}
-                            // selectsStart
                             startDate={startDate}
                             endDate={endDate}
-                            dateFormat="MM/yyyy"
+                            dateFormat='MM/yyyy'
                             showMonthYearPicker
                             name='date'
                             id='date'
-                            locale="sk"
+                            locale='sk'
                             value={startDate}
+                            className='w3-input w3-border'
                         />
                     </div>
-                    <div className='w3-right'>
+                    <div className='w3-right w3-section smFullWidth'>
                         <label className='w3-text-indigo' htmlFor='date'>do:</label>
                         <DatePicker
                             selected={endDate}
                             onChange={(date) => setEndDate(date)}
-                            // selectsEnd
                             startDate={startDate}
                             endDate={endDate}
-                            dateFormat="MM/yyyy"
+                            dateFormat='MM/yyyy'
                             showMonthYearPicker
                             name='date'
                             id='date'
-                            locale="sk"
+                            locale='sk'
                             value={endDate}
+                            className='w3-input w3-border'
                         />
                     </div>
                 </div>

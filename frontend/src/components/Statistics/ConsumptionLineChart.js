@@ -10,8 +10,8 @@ import {
     Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import { formatDate } from '../../lib/dateFormatter';
 import { formatFuelName } from '../../lib/fuelNameFormatter';
+import { isoDateTimeToString } from '../../lib/dateFormatter';
 
 const ConsumptionLineChart = (props) => {
     ChartJS.register(
@@ -27,9 +27,6 @@ const ConsumptionLineChart = (props) => {
     const options = {
         responsive: true,
         plugins: {
-            // legend: {
-            //     // position: 'top' as const,
-            // },
             title: {
                 display: true,
                 text: 'graf vývoja spotreby paliva',
@@ -41,7 +38,7 @@ const ConsumptionLineChart = (props) => {
     let values = [];
 
     if (props.consumptionData.length > 0) {
-        props.consumptionData[0].stats?.map((l) => labels.push(formatDate(l.dateTime)));
+        props.consumptionData[0].stats?.map((l) => labels.push(isoDateTimeToString(l.dateTime)));
         props.consumptionData[0].stats?.map((v) => values.push(v.consumption));
     }
 
@@ -58,10 +55,8 @@ const ConsumptionLineChart = (props) => {
     };
 
     return (
-        <div>
-            <div className='w3-container'>{JSON.stringify(props.consumptionData)}</div>
-            <Line options={options} data={data} />
-        </div>);
+        <Line options={options} data={data} />
+    );
 };
-    
+
 export default ConsumptionLineChart;

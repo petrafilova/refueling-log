@@ -33,8 +33,6 @@ const Vehicles = () => {
         load();
     }, [authCtx.token]);
 
-    console.log(vehiclesList);
-
     useEffect(() => {
         loadVehicles();
     }, [loadVehicles]);

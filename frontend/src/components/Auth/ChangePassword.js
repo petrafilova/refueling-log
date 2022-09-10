@@ -8,7 +8,7 @@ const ChangePassword = () => {
     const authCtx = useContext(AuthContext);
     const navigate = useNavigate();
     const [changePasswordDialogIsVisible, setChangePasswordDialogIsVisible] = useState(false);
-    
+
     const showChangePasswordDialogHandler = () => {
         setChangePasswordDialogIsVisible(true);
     };
@@ -30,7 +30,9 @@ const ChangePassword = () => {
 
     return (
         <Fragment>
-            <button className='w3-button w3-indigo' onClick={showChangePasswordDialogHandler}>Zmeniť heslo</button>
+            <div className='smFullWidth'>
+                <button className='w3-button w3-indigo add-button-margin smFullWidth' onClick={showChangePasswordDialogHandler}>Zmeniť heslo</button>
+            </div>
             {changePasswordDialogIsVisible && <ChangePasswordDialog onCancel={cancel} onSubmit={submitHandler} />}
         </Fragment>
     );

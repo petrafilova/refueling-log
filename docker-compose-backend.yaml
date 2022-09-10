@@ -50,8 +50,8 @@ services:
             EMAIL_PASS:
             EMAIL_FROM: test@noreply.com
             TOKEN_SIGN_KEY: somesecrettoken
-            TOKEN_EXPIRES_IN: 1d
-            REFRESH_TOKEN_EXPIRES_IN: 30d
+            TOKEN_EXPIRES_IN: 5m
+            REFRESH_TOKEN_EXPIRES_IN: 1h
         depends_on:
             - db
             - email

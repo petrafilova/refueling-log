@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, Fragment } from 'react';
 import { getVehicles, listOfVehicleFuels } from '../../lib/api';
 import AuthContext from '../../store/auth-context';
 import { formatFuelName } from '../../lib/fuelNameFormatter';
@@ -42,7 +42,7 @@ const Selection = (props) => {
     };
 
     return (
-        <div>
+        <Fragment>
             <div className='w3-section'>
                 <label className='w3-text-indigo' htmlFor='vehicle'>Vyberte vozidlo:</label>
                 <select className='w3-select w3-border' name='vehicle' id='vehicle' onChange={selectVehicleHandler}>
@@ -59,8 +59,7 @@ const Selection = (props) => {
                     )};
                 </select>
             </div>
-
-        </div>
+        </Fragment>
     );
 };
 

@@ -1,17 +1,25 @@
 import React, { useContext, useRef, useState, useEffect } from 'react';
-import { createVehicleFuel, getVehicleById, listOfVehicleFuels, deleteVehicleFuel, updateVehicleFuel} from '../../lib/api';
+import { createVehicleFuel, getVehicleById, listOfVehicleFuels, deleteVehicleFuel, updateVehicleFuel } from '../../lib/api';
 import AuthContext from '../../store/auth-context';
 import FuelTable from '../VehicleFuel/FuelTable';
-
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { registerLocale } from 'react-datepicker';
+import sk from 'date-fns/locale/sk';
+import getYear from 'date-fns/getYear';
+import getMonth from 'date-fns/getMonth';
+import getDate from 'date-fns/getDate';
+import { padNumber } from '../../lib/dateFormatter';
+import { isoDateTimeToString } from '../../lib/dateFormatter';
 
 const VehicleDialog = (props) => {
+    registerLocale('sk', sk);
     const authCtx = useContext(AuthContext);
     const vehicleId = props.id;
 
     const brandInputRef = useRef();
     const modelInputRef = useRef();
     const licensePlateNoInputRef = useRef();
-    const dateOfRegInputRef = useRef();
     const colorInputRef = useRef();
     const vinInputRef = useRef();
     const createdAtInputRef = useRef();
@@ -20,24 +28,26 @@ const VehicleDialog = (props) => {
     const [brandIsInvalid, setBrandIsInvalid] = useState(false);
     const [modelIsInvalid, setModelIsInvalid] = useState(false);
     const [licenseIsInvalid, setLicenseIsInvalid] = useState(false);
-    const [dateIsInvalid, setDateIsInvalid] = useState(false);
     const [colorIsInvalid, setColorIsInvalid] = useState(false);
     const [vinIsInvalid, setVinIsInvalid] = useState(false);
     const [vehicleFuelIsInvalid, setVehicleFuelIsInvalid] = useState(false);
     const [vehicleFuel, setVehicleFuel] = useState([]);
 
+    const [date, setDate] = useState(new Date());
+
     useEffect(() => {
         if (vehicleId) {
             const getData = async () => {
                 const data = await getVehicleById(vehicleId, authCtx.token);
+                console.log(data);
                 brandInputRef.current.value = data.brand;
                 modelInputRef.current.value = data.model;
                 licensePlateNoInputRef.current.value = data.licensePlateNo;
-                dateOfRegInputRef.current.value = data.dateOfReg;
+                setDate(new Date(data.dateOfReg));
                 colorInputRef.current.value = data.color;
                 vinInputRef.current.value = data.vin;
-                createdAtInputRef.current.value = new Date(data.createdAt).toLocaleString();
-                updatedAtInputRef.current.value = new Date(data.updatedAt).toLocaleString();
+                createdAtInputRef.current.value = isoDateTimeToString(data.createdAt);
+                updatedAtInputRef.current.value = isoDateTimeToString(data.updatedAt);
             };
             getData();
             const getFuels = async () => {
@@ -52,14 +62,13 @@ const VehicleDialog = (props) => {
         setBrandIsInvalid(false);
         setModelIsInvalid(false);
         setLicenseIsInvalid(false);
-        setDateIsInvalid(false);
         setColorIsInvalid(false);
         setVinIsInvalid(false);
 
         const brand = brandInputRef.current.value;
         const model = modelInputRef.current.value;
         const licensePlateNo = licensePlateNoInputRef.current.value;
-        const dateOfReg = dateOfRegInputRef.current.value;
+        let dateOfReg = date;
         const color = colorInputRef.current.value;
         const vin = vinInputRef.current.value;
 
@@ -69,29 +78,24 @@ const VehicleDialog = (props) => {
             setBrandIsInvalid(true);
             formIsInvalid = true;
         }
-        
+
         if (model.trim().length < 1 || model.trim().length > 60) {
             setModelIsInvalid(true);
             formIsInvalid = true;
         }
-        
+
         if (licensePlateNo.trim().length < 1 || licensePlateNo.trim().length > 10) {
             setLicenseIsInvalid(true);
             formIsInvalid = true;
         }
-        
+
         if (color.trim().length > 20) {
             setColorIsInvalid(true);
             formIsInvalid = true;
         }
-        
+
         if (vin.trim().length > 17) {
             setVinIsInvalid(true);
-            formIsInvalid = true;
-        }
-        
-        if (dateOfReg.trim().length === 0) {
-            setDateIsInvalid(true);
             formIsInvalid = true;
         }
 
@@ -103,7 +107,14 @@ const VehicleDialog = (props) => {
         if (formIsInvalid) {
             return;
         }
-        
+
+        if (date) {
+            const year = getYear(date);
+            const month = padNumber(getMonth(date) + 1);
+            const day = padNumber(getDate(date));
+            console.log(date);
+            dateOfReg = `${year}-${month}-${day}`;
+        }
 
         const createdVehicle = {
             brand,
@@ -117,23 +128,22 @@ const VehicleDialog = (props) => {
         if (vehicleId) {
             await props.onEdit(createdVehicle);
             for (let i = 0; i < vehicleFuel.length; i++) {
-                if(!vehicleFuel[i].id) {
-                    await createVehicleFuel({fuel: vehicleFuel[i].fuel, vehicleId:vehicleId }, authCtx.token);
+                if (!vehicleFuel[i].id) {
+                    await createVehicleFuel({ fuel: vehicleFuel[i].fuel, vehicleId: vehicleId }, authCtx.token);
                 } else if (vehicleFuel[i].status === 'DELETED') {
                     await deleteVehicleFuel(vehicleFuel[i].id, authCtx.token);
                 } else if (vehicleFuel[i].status === 'EDITED') {
-                    await updateVehicleFuel(vehicleFuel[i].id, {fuel: vehicleFuel[i].fuel, vehicleId: vehicleId}, authCtx.token);
+                    await updateVehicleFuel(vehicleFuel[i].id, { fuel: vehicleFuel[i].fuel, vehicleId: vehicleId }, authCtx.token);
                 }
             }
-        } else { 
+        } else {
             const createdId = await props.onSubmit(createdVehicle);
             if (createdId) {
                 for (let i = 0; i < vehicleFuel.length; i++) {
-                    await createVehicleFuel({fuel: vehicleFuel[i].fuel, vehicleId:createdId }, authCtx.token);
+                    await createVehicleFuel({ fuel: vehicleFuel[i].fuel, vehicleId: createdId }, authCtx.token);
                 }
             }
         }
-
     };
 
     return (
@@ -144,25 +154,32 @@ const VehicleDialog = (props) => {
                 </header>
                 <div className='w3-container'>
                     <p>
-                        <label className='w3-text-indigo' htmlFor='brand'>výrobca: </label>
+                        <label className='w3-text-indigo' htmlFor='brand'>výrobca: <span className='w3-text-red'>*</span></label>
                         <input className='w3-input w3-border' type='text' id='brand' ref={brandInputRef}></input>
                     </p>
                     {brandIsInvalid && <p className='w3-red'>Neplatný údaj. Zadajte min 1 a max 20 znakov.</p>}
                     <p>
-                        <label className='w3-text-indigo' htmlFor='model'>model: </label>
+                        <label className='w3-text-indigo' htmlFor='model'>model: <span className='w3-text-red'>*</span></label>
                         <input className='w3-input w3-border' type='text' id='model' ref={modelInputRef}></input>
                     </p>
                     {modelIsInvalid && <p className='w3-red'>Neplatný údaj. Zadajte min 1 a max 60 znakov.</p>}
                     <p>
-                        <label className='w3-text-indigo' htmlFor='licensePlateNo'>štátna poznávacia značka: </label>
+                        <label className='w3-text-indigo' htmlFor='licensePlateNo'>štátna poznávacia značka: <span className='w3-text-red'>*</span></label>
                         <input className='w3-input w3-border' type='text' id='licensePlateNo' ref={licensePlateNoInputRef}></input>
                     </p>
                     {licenseIsInvalid && <p className='w3-red'>Neplatný údaj. Zadajte min 1 a max 10 znakov.</p>}
-                    <p>
+                    <div>
                         <label className='w3-text-indigo' htmlFor='dateOfReg'>dátum registrácie: </label>
-                        <input className='w3-input w3-border' type='date' id='dateOfReg' ref={dateOfRegInputRef}></input>
-                    </p>
-                    {dateIsInvalid && <p className='w3-red'>Neplatný údaj.</p>}
+                        <DatePicker
+                            className='w3-input w3-border'
+                            type='date'
+                            id='dateOfReg'
+                            locale="sk"
+                            dateFormat="dd.MM.yyyy"
+                            selected={date}
+                            onChange={(date) => setDate(date)}
+                        />
+                    </div>
                     <p>
                         <label className='w3-text-indigo' htmlFor='color'>farba: </label>
                         <input className='w3-input w3-border' type='text' id='color' ref={colorInputRef}></input>
@@ -173,7 +190,7 @@ const VehicleDialog = (props) => {
                         <input className='w3-input w3-border' type='text' id='vin' ref={vinInputRef}></input>
                     </p>
                     {vinIsInvalid && <p className='w3-red'>Neplatný údaj. Zadajte max 17 znakov.</p>}
-                    <FuelTable setFuelList={setVehicleFuel} fuelList={vehicleFuel}/>
+                    <FuelTable setFuelList={setVehicleFuel} fuelList={vehicleFuel} />
                     {vehicleFuelIsInvalid && <p className='w3-red'>Povinný údaj.</p>}
                     {vehicleId && <p>
                         <label className='w3-text-indigo' htmlFor='createdAt'>vytvorené: </label>

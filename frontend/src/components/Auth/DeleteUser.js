@@ -18,7 +18,7 @@ const DeleteUser = () => {
     };
 
     const deleteAccountHandler = async (password) => {
-        const userInfo = { username: authCtx.username, password: password};
+        const userInfo = { username: authCtx.username, password: password };
         const success = await deleteUserAccount(userInfo, authCtx.token);
         success && authCtx.logout();
     };
@@ -36,7 +36,9 @@ const DeleteUser = () => {
         <Fragment>
             {modalDialogIsVisible && <ModalDialog onCancel={cancel} onSubmit={showPasswordDialogHandler} text={'Naozaj chcete zmazať účet?'} />}
             {passwordDialogIsVisible && <PasswordDialog onCancel={cancel} onSubmit={deleteAccountHandler} />}
-            <button className='w3-button w3-indigo w3-margin-left' onClick={showModalDialogHandler}>Zmazať účet</button>
+            <div className='smFullWidth'>
+                <button className='w3-button w3-indigo add-button-margin smFullWidth' onClick={showModalDialogHandler}>Zmazať účet</button>
+            </div>
         </Fragment>
     );
 };

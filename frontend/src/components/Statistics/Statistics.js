@@ -1,8 +1,4 @@
 import React, { useState, Fragment } from 'react';
-// import VehicleTotalStatistic from '../Statistics/VehicleTotalStatistic';
-// import VehicleExpensesStatistic from '../Statistics/VehicleExpensesStatistic';
-// import VehicleFuelStatistic from '../Statistics/VehicleFuelStatistic';
-// import VehicleConsumptionStatistic from '../Statistics/VehicleConsumptionStatistic';
 import Stats from './Stats';
 
 const Statistics = () => {

@@ -69,8 +69,8 @@ const Refueling = () => {
             <div>
                 <Selection onChangeFuel={setFuelId} fuelId={fuelId} />
             </div>
-            <div className='w3-right'>
-                <button className='w3-button w3-indigo add-button-margin' onClick={createRecordHandler}>Pridať záznam o tankovaní</button>
+            <div className='w3-right smFullWidth'>
+                <button className='w3-button w3-indigo add-button-margin smFullWidth' onClick={createRecordHandler}>Pridať záznam o tankovaní</button>
             </div>
             <div>
                 {list.length < 1 && <div className='w3-padding-64'>Zoznam záznamov tankovania je prázdny.</div>}

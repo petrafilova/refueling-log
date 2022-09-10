@@ -29,3 +29,9 @@ code {
     max-height: 510px; 
     margin: auto;
 }
+
+@media(max-width: 768px) {
+    .smFullWidth {
+        width: 100%;
+    }
+}
