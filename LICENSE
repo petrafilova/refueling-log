@@ -20,9 +20,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-This application depends on this libraries which are distributed together
-with this application as part of docker images.
+This application depends on 3rd party libraries which are distributed together with this application as part of docker images.
 
-Backend: Libraries distributed as part of Docker Image are listed in file BACKEND_LIBRARIES_LICENSES
+Backend: Libraries distributed as part of Docker Image are listed in file backend/LICENSES
 
-Frontend: Libraries distributed as part of Docker Image are listed in file FRONTEND_LIBRARIES_LICENSES
+Frontend: Libraries distributed as part of Docker Image are listed in file frontend/LICENSES

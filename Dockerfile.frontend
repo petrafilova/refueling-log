@@ -1,0 +1,14 @@
+FROM node:18-alpine AS builder
+WORKDIR /usr/src/app
+COPY ./frontend/ .
+RUN npm install --location=global npm@latest
+RUN npm install
+RUN npm run build
+
+FROM nginx:stable-alpine
+ENV BASE_API_URL='http://localhost/api'
+COPY ./frontend/default.conf /etc/nginx/conf.d/default.conf
+COPY ./frontend/envreplace.sh /docker-entrypoint.d/envreplace.sh
+WORKDIR /usr/share/nginx/html/
+COPY --from=builder /usr/src/app/build/ .
+EXPOSE 80

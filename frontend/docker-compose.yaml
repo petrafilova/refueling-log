@@ -6,7 +6,7 @@ services:
             - '8082:1080'
 
     db:
-        image: 'postgres:13.5-alpine'
+        image: 'postgres:14.5-alpine'
         environment:
             POSTGRES_DB: refueling
             POSTGRES_USER: refueling
@@ -26,7 +26,7 @@ services:
         ports:
             - '8083:80'
         volumes:
-            - ./servers.json:/pgadmin4/servers.json
+            - ../servers.json:/pgadmin4/servers.json
             - pgadmin_data:/var/lib/pgadmin
         depends_on:
             - db
@@ -38,20 +38,21 @@ services:
             - '8080:8080'
         environment:
             PORT: 8080
+            BASE_PATH: '/api'
             DATABASE_PASSWORD: refueling123
             DATABASE_USER: refueling
             DATABASE: refueling
             DATABASE_HOST: db
             DATABASE_PORT: 5432
             DATABASE_LOGGING: 'true'
+            TOKEN_SIGN_KEY: somesecrettoken
+            TOKEN_EXPIRES_IN: 5m
+            REFRESH_TOKEN_EXPIRES_IN: 1h
             EMAIL_HOST: email
             EMAIL_PORT: 1025
             EMAIL_USER:
             EMAIL_PASS:
             EMAIL_FROM: test@noreply.com
-            TOKEN_SIGN_KEY: somesecrettoken
-            TOKEN_EXPIRES_IN: 5m
-            REFRESH_TOKEN_EXPIRES_IN: 1h
         depends_on:
             - db
             - email

@@ -6,13 +6,11 @@ services:
             - '8082:1080'
 
     db:
-        image: 'postgres:13.5-alpine'
+        image: 'postgres:14.5-alpine'
         environment:
             POSTGRES_DB: refueling
             POSTGRES_USER: refueling
             POSTGRES_PASSWORD: refueling123
-        ports:
-            - '5432:5432'
         volumes:
             - postgre_refueling_data:/var/lib/postgresql/data
 
@@ -34,37 +32,59 @@ services:
     backend:
         image: 'refueling-log-backend:latest'
         restart: always
-        ports:
-            - '8080:8080'
         environment:
             PORT: 8080
-            TOKEN_SIGN_KEY: 'somesecrettoken'
+            BASE_PATH: '/api'
             DATABASE_PASSWORD: 'refueling123'
             DATABASE_USER: 'refueling'
             DATABASE: 'refueling'
             DATABASE_HOST: 'db'
             DATABASE_PORT: 5432
             DATABASE_LOGGING: 'true'
+            TOKEN_SIGN_KEY: 'somesecrettoken'
+            TOKEN_EXPIRES_IN: 1h
+            REFRESH_TOKEN_EXPIRES_IN: 10d
             EMAIL_HOST: email
             EMAIL_PORT: 1025
             EMAIL_USER:
             EMAIL_PASS:
             EMAIL_FROM: test@noreply.com
-            TOKEN_EXPIRES_IN: 1d
-            REFRESH_TOKEN_EXPIRES_IN: 30d
         depends_on:
             - db
             - email
+        labels:
+            - traefik.enable=true
+            - traefik.http.routers.refueling-api.rule=PathPrefix(`/api`)
+            - traefik.http.routers.refueling-api.entrypoints=web
+            - traefik.http.services.refueling-api.loadbalancer.server.port=8080
 
     frontend:
         image: 'refueling-log-frontend:latest'
         restart: always
-        ports:
-            - '8081:80'
         environment:
             NGINX_PORT: 80
+            BASE_API_URL: '/api'
         depends_on:
             - backend
+        labels:
+            - traefik.enable=true
+            - traefik.http.routers.refueling-frontend.rule=PathPrefix(`/`)
+            - traefik.http.routers.refueling-frontend.entrypoints=web
+            - traefik.http.services.refueling-frontend.loadbalancer.server.port=80
+
+    traefik:
+        image: traefik:v2.8.4
+        command:
+            - "--api.insecure=true"
+            - "--providers.docker=true"
+            - "--providers.docker.exposedbydefault=false"
+            - "--entrypoints.web.address=:80"
+            - "--log.level=INFO"
+        ports:
+            - 80:80
+            - 8080:8080
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock:ro
 
 volumes:
     postgre_refueling_data:

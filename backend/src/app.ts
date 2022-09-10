@@ -15,13 +15,13 @@ import hasError from './middleware/has-error';
 export const app = express();
 
 const openapiFilePath = path.join(__dirname, 'openapi.json');
-const openapiFile = fs.readFileSync(openapiFilePath, 'utf-8');
+const openapiFile = JSON.parse(fs.readFileSync(openapiFilePath, 'utf-8'));
+const basePath = String(process.env.BASE_PATH);
 
 // TODO XSS protection
 
 app.use(express.json());
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader(
         'Access-Control-Allow-Methods',
         'OPTIONS, GET, POST, PUT, PATCH, DELETE'
@@ -33,17 +33,22 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/vehicle', vehicleRoutes);
-app.use('/vehicleFuel', vehicleFuelRoutes);
-app.use('/fuelLog', fuelLogRoutes);
-app.use('/expenseLog', expenseLogRoutes);
-app.use('/expenseType', expenseTypeRoutes);
-app.use('/stats', statsRoutes);
-app.use('/auth', authRoutes);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(JSON.parse(openapiFile)));
+const router = express.Router();
 
-app.get('/health', (req, res) => {
+router.use('/vehicle', vehicleRoutes);
+router.use('/vehicleFuel', vehicleFuelRoutes);
+router.use('/fuelLog', fuelLogRoutes);
+router.use('/expenseLog', expenseLogRoutes);
+router.use('/expenseType', expenseTypeRoutes);
+router.use('/stats', statsRoutes);
+router.use('/auth', authRoutes);
+router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiFile));
+router.get('/api-docs/openapi.json', (req, res) => res.json(openapiFile));
+
+router.get('/health', (req, res) => {
     res.send('ok');
 });
+
+app.use(basePath, router);
 
 app.use(hasError);
