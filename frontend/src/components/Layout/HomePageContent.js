@@ -15,10 +15,9 @@ const HomePageContent = () => {
                 <h2>Oznam</h2>
                 <p>
                     Aplikácia pre svoju funkčnosť vyžaduje uložiť v localStorage
-                    vašeho prehliadača informáciu o aktuálne prihlásenom
-                    používateľovi. Registráciou súhlasíte s ukladaním tejto
-                    informácie. Pri odhlásení dôjde k vymazaniu záznamu v
-                    localStorage.
+                    prehliadača informáciu o aktuálne prihlásenom používateľovi.
+                    Registráciou súhlasíte s ukladaním tejto informácie. Pri
+                    odhlásení dôjde k vymazaniu záznamu v localStorage.
                 </p>
             </div>
             <div className='w3-panel w3-yellow'>
@@ -31,7 +30,7 @@ const HomePageContent = () => {
                         rel='noreferrer'
                     >
                         github.com
-                    </a>
+                    </a>.
                 </p>
             </div>
         </div>
