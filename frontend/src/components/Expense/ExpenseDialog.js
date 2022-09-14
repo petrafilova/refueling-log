@@ -1,6 +1,5 @@
-import React, { useRef, useState, useContext, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { createExpenseLog, getSingleExpenseLog, updateExpenseLog } from '../../lib/api';
-import AuthContext from '../../store/auth-context';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { registerLocale } from 'react-datepicker';
@@ -9,7 +8,6 @@ import { isoDateTimeToString } from '../../lib/dateFormatter';
 
 const ExpenseDialog = (props) => {
     registerLocale('sk', sk);
-    const authCtx = useContext(AuthContext);
 
     const priceInputRef = useRef();
     const mileageInputRef = useRef();
@@ -63,9 +61,9 @@ const ExpenseDialog = (props) => {
         };
 
         if (props.singleExpenseId) {
-            await updateExpenseLog(props.singleExpenseId, expenseLog, authCtx.token);
+            await updateExpenseLog(props.singleExpenseId, expenseLog);
         } else {
-            await createExpenseLog(expenseLog, authCtx.token);
+            await createExpenseLog(expenseLog);
         }
 
         props.onCancel();
@@ -76,7 +74,7 @@ const ExpenseDialog = (props) => {
         if (props.singleExpenseId) {
             console.log(props.singleExpenseId);
             const getData = async () => {
-                const data = await getSingleExpenseLog(props.singleExpenseId, authCtx.token);
+                const data = await getSingleExpenseLog(props.singleExpenseId);
                 priceInputRef.current.value = data.price;
                 mileageInputRef.current.value = data.mileage;
                 setDate(isoDateTimeToString(data.dateTime));
@@ -86,7 +84,7 @@ const ExpenseDialog = (props) => {
             };
             getData();
         }
-    }, [props.singleExpenseId, authCtx.token]);
+    }, [props.singleExpenseId]);
 
     return (
         <div className='w3-modal w3-show'>

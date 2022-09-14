@@ -1,6 +1,5 @@
-import React, { useContext, useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { createVehicleFuel, getVehicleById, listOfVehicleFuels, deleteVehicleFuel, updateVehicleFuel } from '../../lib/api';
-import AuthContext from '../../store/auth-context';
 import FuelTable from '../VehicleFuel/FuelTable';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -14,7 +13,6 @@ import { isoDateTimeToString } from '../../lib/dateFormatter';
 
 const VehicleDialog = (props) => {
     registerLocale('sk', sk);
-    const authCtx = useContext(AuthContext);
     const vehicleId = props.id;
 
     const brandInputRef = useRef();
@@ -38,7 +36,7 @@ const VehicleDialog = (props) => {
     useEffect(() => {
         if (vehicleId) {
             const getData = async () => {
-                const data = await getVehicleById(vehicleId, authCtx.token);
+                const data = await getVehicleById(vehicleId);
                 console.log(data);
                 brandInputRef.current.value = data.brand;
                 modelInputRef.current.value = data.model;
@@ -51,12 +49,12 @@ const VehicleDialog = (props) => {
             };
             getData();
             const getFuels = async () => {
-                const fuels = await listOfVehicleFuels(vehicleId, authCtx.token);
+                const fuels = await listOfVehicleFuels(vehicleId);
                 setVehicleFuel(fuels);
             };
             getFuels();
         }
-    }, [vehicleId, authCtx.token]);
+    }, [vehicleId]);
 
     const submitHandler = async () => {
         setBrandIsInvalid(false);
@@ -129,18 +127,18 @@ const VehicleDialog = (props) => {
             await props.onEdit(createdVehicle);
             for (let i = 0; i < vehicleFuel.length; i++) {
                 if (!vehicleFuel[i].id) {
-                    await createVehicleFuel({ fuel: vehicleFuel[i].fuel, vehicleId: vehicleId }, authCtx.token);
+                    await createVehicleFuel({ fuel: vehicleFuel[i].fuel, vehicleId: vehicleId });
                 } else if (vehicleFuel[i].status === 'DELETED') {
-                    await deleteVehicleFuel(vehicleFuel[i].id, authCtx.token);
+                    await deleteVehicleFuel(vehicleFuel[i].id);
                 } else if (vehicleFuel[i].status === 'EDITED') {
-                    await updateVehicleFuel(vehicleFuel[i].id, { fuel: vehicleFuel[i].fuel, vehicleId: vehicleId }, authCtx.token);
+                    await updateVehicleFuel(vehicleFuel[i].id, { fuel: vehicleFuel[i].fuel, vehicleId: vehicleId });
                 }
             }
         } else {
             const createdId = await props.onSubmit(createdVehicle);
             if (createdId) {
                 for (let i = 0; i < vehicleFuel.length; i++) {
-                    await createVehicleFuel({ fuel: vehicleFuel[i].fuel, vehicleId: createdId }, authCtx.token);
+                    await createVehicleFuel({ fuel: vehicleFuel[i].fuel, vehicleId: createdId });
                 }
             }
         }

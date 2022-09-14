@@ -3,8 +3,6 @@ import jwt_decode from 'jwt-decode';
 import { refreshToken as refreshTokenFunction } from '../lib/api';
 
 const AuthContext = React.createContext({
-    token: '',
-    refreshToken: '',
     username: '',
     isLoggedIn: false,
     login: () => { },
@@ -82,8 +80,6 @@ export const AuthContextProvider = (props) => {
     };
 
     const contextValue = {
-        token: token,
-        refreshToken: refreshToken,
         username: username,
         isLoggedIn: userIsLoggedIn,
         login: loginHandler,

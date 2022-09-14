@@ -1,21 +1,19 @@
-import React, { useContext, useEffect, useState } from 'react';
-import AuthContext from '../../store/auth-context';
+import React, { useEffect, useState } from 'react';
 import { getVehicles } from '../../lib/api';
 
 const SelectVehicle = (props) => {
-    const authCtx = useContext(AuthContext);
     const [listOfVehicles, setListOfVehicles] = useState([]);
     const { setChosenVehicle } = props;
 
     useEffect(() => {
         (async () => {
-            const vehicles = await getVehicles(authCtx.token);
+            const vehicles = await getVehicles();
             setListOfVehicles(vehicles);
             if (vehicles.length > 0) {
                 setChosenVehicle(vehicles[0].id);
             }
         })();
-    }, [authCtx.token, setChosenVehicle]);
+    }, [setChosenVehicle]);
 
     const selectVehicleHandler = (event) => {
         setChosenVehicle(event.target.value);

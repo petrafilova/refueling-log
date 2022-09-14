@@ -24,7 +24,7 @@ const ChangePassword = () => {
             password: enteredCurrentPassword,
             newPassword: enteredNewPassword,
         };
-        const success = await password(newPassword, authCtx.token);
+        const success = await password(newPassword);
         success && setChangePasswordDialogIsVisible(false);
     };
 

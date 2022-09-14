@@ -1,10 +1,8 @@
-import React, { useContext, useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { getVehicles, listOfVehicleFuels } from '../../lib/api';
-import AuthContext from '../../store/auth-context';
 import { formatFuelName } from '../../lib/fuelNameFormatter';
 
 const Selection = (props) => {
-    const authCtx = useContext(AuthContext);
     const [listOfVehicles, setListOfVehicles] = useState([]);
     const [listOfFuels, setListOfFuels] = useState([]);
     const [chosenVehicle, setChosenVehicle] = useState();
@@ -13,25 +11,25 @@ const Selection = (props) => {
 
     useEffect(() => {
         (async () => {
-            const vehicles = await getVehicles(authCtx.token);
+            const vehicles = await getVehicles();
             setListOfVehicles(vehicles);
             if (vehicles.length > 0) {
                 setChosenVehicle(vehicles[0].id);
             }
         })();
-    }, [authCtx.token]);
+    }, []);
 
     useEffect(() => {
         if (chosenVehicle) {
             (async () => {
-                const fuels = await listOfVehicleFuels(chosenVehicle, authCtx.token);
+                const fuels = await listOfVehicleFuels(chosenVehicle);
                 setListOfFuels(fuels);
                 if (fuels.length > 0) {
                     onChangeFuel(fuels[0].id);
                 }
             })();
         }
-    }, [authCtx.token, chosenVehicle, onChangeFuel]);
+    }, [chosenVehicle, onChangeFuel]);
 
     const selectVehicleHandler = (event) => {
         setChosenVehicle(event.target.value);

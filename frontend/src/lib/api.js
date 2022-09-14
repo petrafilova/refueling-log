@@ -101,14 +101,14 @@ export const refreshToken = async (refreshToken) => {
     }
 };
 
-export const password = async (newPassword, token) => {
+export const password = async (newPassword) => {
     try {
         const response = await fetch(`${baseUrl}/auth/password`, {
             method: 'PUT',
             body: JSON.stringify(newPassword),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
         if (response.ok) {
@@ -125,14 +125,14 @@ export const password = async (newPassword, token) => {
     return false;
 };
 
-export const deleteUserAccount = async (userInfo, token) => {
+export const deleteUserAccount = async (userInfo) => {
     try {
         const response = await fetch(`${baseUrl}/auth/delete`, {
             method: 'POST',
             body: JSON.stringify(userInfo),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
         if (response.ok) {
@@ -149,14 +149,14 @@ export const deleteUserAccount = async (userInfo, token) => {
     return false;
 };
 
-export const createVehicle = async (createdVehicle, token) => {
+export const createVehicle = async (createdVehicle) => {
     try {
         const response = await fetch(`${baseUrl}/vehicle`, {
             method: 'POST',
             body: JSON.stringify(createdVehicle),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
         const data = await response.json();
@@ -173,12 +173,12 @@ export const createVehicle = async (createdVehicle, token) => {
     return false;
 };
 
-export const getVehicles = async (token) => {
+export const getVehicles = async () => {
     try {
         const response = await fetch(`${baseUrl}/vehicle`, {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
         const data = await response.json();
@@ -195,12 +195,12 @@ export const getVehicles = async (token) => {
     return false;
 };
 
-export const deleteVehicleById = async (vehicleId, token) => {
+export const deleteVehicleById = async (vehicleId) => {
     try {
         const response = await fetch(`${baseUrl}/vehicle/${vehicleId}`, {
             method: 'DELETE',
             headers: {
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
         if (response.ok) {
@@ -217,12 +217,12 @@ export const deleteVehicleById = async (vehicleId, token) => {
     return false;
 };
 
-export const getVehicleById = async (vehicleId, token) => {
+export const getVehicleById = async (vehicleId) => {
     try {
         const response = await fetch(`${baseUrl}/vehicle/${vehicleId}`, {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
         const data = await response.json();
@@ -239,14 +239,14 @@ export const getVehicleById = async (vehicleId, token) => {
     return false;
 };
 
-export const updateVehicleById = async (vehicleId, editedVehicle, token) => {
+export const updateVehicleById = async (vehicleId, editedVehicle) => {
     try {
         const response = await fetch(`${baseUrl}/vehicle/${vehicleId}`, {
             method: 'PUT',
             body: JSON.stringify(editedVehicle),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
         const data = await response.json();
@@ -263,14 +263,14 @@ export const updateVehicleById = async (vehicleId, editedVehicle, token) => {
     return false;
 };
 
-export const createVehicleFuel = async (vehicleFuel, token) => {
+export const createVehicleFuel = async (vehicleFuel) => {
     try {
         const response = await fetch(`${baseUrl}/vehicleFuel`, {
             method: 'POST',
             body: JSON.stringify(vehicleFuel),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
         const data = await response.json();
@@ -287,12 +287,12 @@ export const createVehicleFuel = async (vehicleFuel, token) => {
     return false;
 };
 
-export const listOfVehicleFuels = async (vehicleId, token) => {
+export const listOfVehicleFuels = async (vehicleId) => {
     try {
         const response = await fetch(`${baseUrl}/vehicleFuel/byVehicle/${vehicleId}`, {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
         const data = await response.json();
@@ -309,12 +309,12 @@ export const listOfVehicleFuels = async (vehicleId, token) => {
     return false;
 };
 
-export const singleVehicleFuel = async (vehicleFuelId, token) => {
+export const singleVehicleFuel = async (vehicleFuelId) => {
     try {
         const response = await fetch(`${baseUrl}/vehicleFuel/${vehicleFuelId}`, {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
         const data = await response.json();
@@ -331,14 +331,14 @@ export const singleVehicleFuel = async (vehicleFuelId, token) => {
     return false;
 };
 
-export const updateVehicleFuel = async (vehicleFuelId, updateFuel, token) => {
+export const updateVehicleFuel = async (vehicleFuelId, updateFuel) => {
     try {
         const response = await fetch(`${baseUrl}/vehicleFuel/${vehicleFuelId}`, {
             method: 'PUT',
             body: JSON.stringify(updateFuel),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
         const data = await response.json();
@@ -355,12 +355,12 @@ export const updateVehicleFuel = async (vehicleFuelId, updateFuel, token) => {
     return false;
 };
 
-export const deleteVehicleFuel = async (vehicleFuelId, token) => {
+export const deleteVehicleFuel = async (vehicleFuelId) => {
     try {
         const response = await fetch(`${baseUrl}/vehicleFuel/${vehicleFuelId}`, {
             method: 'DELETE',
             headers: {
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
         if (response.ok) {
@@ -379,14 +379,14 @@ export const deleteVehicleFuel = async (vehicleFuelId, token) => {
 
 // refueling log
 
-export const listOfFuelLogs = async (vehicleFuelId, token, display) => {
+export const listOfFuelLogs = async (vehicleFuelId, display) => {
     try {
         const response = await fetch(`${baseUrl}/fuelLog/byVehicleFuel/${vehicleFuelId}`, {
             method: 'POST',
             body: JSON.stringify(display),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
         const data = await response.json();
@@ -403,14 +403,14 @@ export const listOfFuelLogs = async (vehicleFuelId, token, display) => {
     return false;
 };
 
-export const createFuelLog = async (fuelLog, token) => {
+export const createFuelLog = async (fuelLog) => {
     try {
         const response = await fetch(`${baseUrl}/fuelLog`, {
             method: 'POST',
             body: JSON.stringify(fuelLog),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
         const data = await response.json();
@@ -427,12 +427,12 @@ export const createFuelLog = async (fuelLog, token) => {
     return false;
 };
 
-export const getSingleFuelLog = async (fuelLogId, token) => {
+export const getSingleFuelLog = async (fuelLogId) => {
     try {
         const response = await fetch(`${baseUrl}/fuelLog/${fuelLogId}`, {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
         const data = await response.json();
@@ -449,14 +449,14 @@ export const getSingleFuelLog = async (fuelLogId, token) => {
     return false;
 };
 
-export const updateFuelLog = async (fuelLogId, updatedData, token) => {
+export const updateFuelLog = async (fuelLogId, updatedData) => {
     try {
         const response = await fetch(`${baseUrl}/fuelLog/${fuelLogId}`, {
             method: 'PUT',
             body: JSON.stringify(updatedData),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
         const data = await response.json();
@@ -473,12 +473,12 @@ export const updateFuelLog = async (fuelLogId, updatedData, token) => {
     return false;
 };
 
-export const deleteFuelLog = async (fuelLogId, token) => {
+export const deleteFuelLog = async (fuelLogId) => {
     try {
         const response = await fetch(`${baseUrl}/fuelLog/${fuelLogId}`, {
             method: 'DELETE',
             headers: {
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
         if (response.ok) {
@@ -497,12 +497,12 @@ export const deleteFuelLog = async (fuelLogId, token) => {
 
 // expense type
 
-export const listOfExpensesTypes = async (token) => {
+export const listOfExpensesTypes = async () => {
     try {
         const response = await fetch(`${baseUrl}/expenseType`, {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
         const data = await response.json();
@@ -519,14 +519,14 @@ export const listOfExpensesTypes = async (token) => {
     return false;
 };
 
-export const createExpensesType = async (nameOfExpenseType, token) => {
+export const createExpensesType = async (nameOfExpenseType) => {
     try {
         const response = await fetch(`${baseUrl}/expenseType`, {
             method: 'POST',
             body: JSON.stringify(nameOfExpenseType),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
         const data = await response.json();
@@ -543,14 +543,14 @@ export const createExpensesType = async (nameOfExpenseType, token) => {
     return false;
 };
 
-export const updateExpenseType = async (expenseTypeId, updatedData, token) => {
+export const updateExpenseType = async (expenseTypeId, updatedData) => {
     try {
         const response = await fetch(`${baseUrl}/expenseType/${expenseTypeId}`, {
             method: 'PUT',
             body: JSON.stringify(updatedData),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
         const data = await response.json();
@@ -567,12 +567,12 @@ export const updateExpenseType = async (expenseTypeId, updatedData, token) => {
     return false;
 };
 
-export const deleteExpenseType = async (expenseTypeId, token) => {
+export const deleteExpenseType = async (expenseTypeId) => {
     try {
         const response = await fetch(`${baseUrl}/ExpenseType/${expenseTypeId}`, {
             method: 'DELETE',
             headers: {
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
         if (response.ok) {
@@ -596,14 +596,14 @@ export const deleteExpenseType = async (expenseTypeId, token) => {
 
 // expense log
 
-export const listOfExpenseLogs = async (vehicleId, token, display) => {
+export const listOfExpenseLogs = async (vehicleId, display) => {
     try {
         const response = await fetch(`${baseUrl}/expenseLog/byVehicle/${vehicleId}`, {
             method: 'POST',
             body: JSON.stringify(display),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
         const data = await response.json();
@@ -620,14 +620,14 @@ export const listOfExpenseLogs = async (vehicleId, token, display) => {
     return false;
 };
 
-export const createExpenseLog = async (expenseLog, token) => {
+export const createExpenseLog = async (expenseLog) => {
     try {
         const response = await fetch(`${baseUrl}/expenseLog`, {
             method: 'POST',
             body: JSON.stringify(expenseLog),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
         const data = await response.json();
@@ -644,12 +644,12 @@ export const createExpenseLog = async (expenseLog, token) => {
     return false;
 };
 
-export const getSingleExpenseLog = async (expensesLogId, token) => {
+export const getSingleExpenseLog = async (expensesLogId) => {
     try {
         const response = await fetch(`${baseUrl}/expenseLog/${expensesLogId}`, {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
         const data = await response.json();
@@ -666,14 +666,14 @@ export const getSingleExpenseLog = async (expensesLogId, token) => {
     return false;
 };
 
-export const updateExpenseLog = async (expensesLogId, updatedData, token) => {
+export const updateExpenseLog = async (expensesLogId, updatedData) => {
     try {
         const response = await fetch(`${baseUrl}/expenseLog/${expensesLogId}`, {
             method: 'PUT',
             body: JSON.stringify(updatedData),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
         const data = await response.json();
@@ -690,12 +690,12 @@ export const updateExpenseLog = async (expensesLogId, updatedData, token) => {
     return false;
 };
 
-export const deleteExpenseLog = async (expensesLogId, token) => {
+export const deleteExpenseLog = async (expensesLogId) => {
     try {
         const response = await fetch(`${baseUrl}/expenseLog/${expensesLogId}`, {
             method: 'DELETE',
             headers: {
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
         if (response.ok) {
@@ -714,12 +714,12 @@ export const deleteExpenseLog = async (expensesLogId, token) => {
 
 // stats
 
-export const vehicleStatisticsSummary = async (vehicleId, token) => {
+export const vehicleStatisticsSummary = async (vehicleId) => {
     try {
         const response = await fetch(`${baseUrl}/stats/${vehicleId}/total`, {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
         const data = await response.json();
@@ -736,14 +736,14 @@ export const vehicleStatisticsSummary = async (vehicleId, token) => {
     return false;
 };
 
-export const vehicleExpensesStatistic = async (vehicleId, date, token) => {
+export const vehicleExpensesStatistic = async (vehicleId, date) => {
     try {
         const response = await fetch(`${baseUrl}/stats/${vehicleId}/expenses`, {
             method: 'POST',
             body: JSON.stringify(date),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
         const data = await response.json();
@@ -760,14 +760,14 @@ export const vehicleExpensesStatistic = async (vehicleId, date, token) => {
     return false;
 };
 
-export const vehicleFuelCostsStatistic = async (vehicleId, display, token) => {
+export const vehicleFuelCostsStatistic = async (vehicleId, display) => {
     try {
         const response = await fetch(`${baseUrl}/stats/${vehicleId}/fuel`, {
             method: 'POST',
             body: JSON.stringify(display),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
         const data = await response.json();
@@ -784,14 +784,14 @@ export const vehicleFuelCostsStatistic = async (vehicleId, display, token) => {
     return false;
 };
 
-export const vehicleFuelConsumptionStatistic = async (vehicleId, display, token) => {
+export const vehicleFuelConsumptionStatistic = async (vehicleId, display) => {
     try {
         const response = await fetch(`${baseUrl}/stats/${vehicleId}/consumption`, {
             method: 'POST',
             body: JSON.stringify(display),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
         });
         const data = await response.json();

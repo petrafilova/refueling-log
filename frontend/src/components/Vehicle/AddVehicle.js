@@ -1,10 +1,8 @@
-import React, { useContext, useState } from 'react';
-import AuthContext from '../../store/auth-context';
-import VehicleDialog from '../UI/VehicleDialog';
+import React, { useState } from 'react';
+import VehicleDialog from './VehicleDialog';
 import { createVehicle } from '../../lib/api';
 
 const AddVehicle = (props) => {
-    const authCtx = useContext(AuthContext);
     const [createVehicleDialogIsVisible, setCreateVehicleDialogIsVisible] = useState(false);
 
     const showDialog = () => {
@@ -16,7 +14,7 @@ const AddVehicle = (props) => {
     };
 
     const submitHandler = async (createdVehicle) => {
-        const success = await createVehicle(createdVehicle, authCtx.token);
+        const success = await createVehicle(createdVehicle);
         success && setCreateVehicleDialogIsVisible(false);
         props.reloadVehicles();
         return success ? success.id : success;

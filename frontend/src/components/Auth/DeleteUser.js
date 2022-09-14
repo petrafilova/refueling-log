@@ -19,7 +19,7 @@ const DeleteUser = () => {
 
     const deleteAccountHandler = async (password) => {
         const userInfo = { username: authCtx.username, password: password };
-        const success = await deleteUserAccount(userInfo, authCtx.token);
+        const success = await deleteUserAccount(userInfo);
         success && authCtx.logout();
     };
 

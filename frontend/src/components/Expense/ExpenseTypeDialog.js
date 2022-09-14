@@ -1,12 +1,10 @@
-import React, { useState, useContext} from 'react';
+import React, { useState } from 'react';
 import { deleteExpenseType } from '../../lib/api';
-import AuthContext from '../../store/auth-context';
 import AddAndEditExpenseTypeDialog from './AddAndEditExpenseTypeDialog';
 import ExpenseTypeTable from './ExpenseTypeTable';
 import ModalDialog from '../UI/ModalDialog';
 
 const ExpenseTypeDialog = (props) => {
-    const authCtx = useContext(AuthContext);
     const [addAndEditExpenseDialog, setAddAndEditExpenseDialog] = useState(false);
     const [confirmDeletion, setConfirmDeletion] = useState(false);
     const [expenseType, setExpenseType] = useState({id: '', name: ''});
@@ -37,7 +35,7 @@ const ExpenseTypeDialog = (props) => {
     };
 
     const deleteExpenseTypeById = async() => {
-        await deleteExpenseType(expenseType.id, authCtx.token);
+        await deleteExpenseType(expenseType.id);
         setConfirmDeletion(false);
         setExpenseType({id: '', name: ''});
         props.loadList();

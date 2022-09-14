@@ -1,13 +1,11 @@
-import React, { useEffect, useState, useContext, useCallback, Fragment } from 'react';
+import React, { useEffect, useState, useCallback, Fragment } from 'react';
 import { listOfFuelLogs, deleteFuelLog } from '../../lib/api';
 import RefuelingTable from './RefuelingTable';
 import Selection from './Selection';
-import AuthContext from '../../store/auth-context';
 import RefuelingDialog from './RefuelingDialog';
 import ModalDialog from '../UI/ModalDialog';
 
 const Refueling = () => {
-    const authCtx = useContext(AuthContext);
     const [fuelId, setFuelId] = useState();
     const [list, setList] = useState([]);
 
@@ -15,9 +13,9 @@ const Refueling = () => {
     const [editDialogIsVisible, setEditDialogIsVisible] = useState(false);
     const [deleteDialogIsVisible, setDeleteDialogIsVisible] = useState(false);
 
-    const records = useCallback((fId, token) => {
-        if (fId && token) {
-            listOfFuelLogs(fId, token, { page: 0, pageSize: 10, order: 'DESC' }).then((data) => {
+    const records = useCallback((fId) => {
+        if (fId) {
+            listOfFuelLogs(fId, { page: 0, pageSize: 10, order: 'DESC' }).then((data) => {
                 setList(data);
             });
         } else {
@@ -26,8 +24,8 @@ const Refueling = () => {
     }, []);
 
     useEffect(() => {
-        records(fuelId, authCtx.token);
-    }, [records, fuelId, authCtx.token]);
+        records(fuelId);
+    }, [records, fuelId]);
 
     const editFuelLog = (id) => {
         setFuelLogId(id);
@@ -37,7 +35,7 @@ const Refueling = () => {
     const cancel = () => {
         setEditDialogIsVisible(false);
         setFuelLogId(false);
-        records(fuelId, authCtx.token);
+        records(fuelId);
     };
 
     const createRecordHandler = () => {
@@ -55,10 +53,10 @@ const Refueling = () => {
     };
 
     const deleteSingleFuelLog = async () => {
-        await deleteFuelLog(fuelLogId, authCtx.token);
+        await deleteFuelLog(fuelLogId);
         setFuelLogId();
         setDeleteDialogIsVisible(false);
-        records(fuelId, authCtx.token);
+        records(fuelId);
     };
 
     return (

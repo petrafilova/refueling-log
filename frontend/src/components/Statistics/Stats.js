@@ -1,6 +1,5 @@
-import React, { useContext, useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { getVehicles, listOfVehicleFuels, vehicleFuelConsumptionStatistic, vehicleStatisticsSummary, vehicleFuelCostsStatistic, vehicleExpensesStatistic } from '../../lib/api';
-import AuthContext from '../../store/auth-context';
 import { formatFuelName } from '../../lib/fuelNameFormatter';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -16,7 +15,6 @@ import ConsumptionLineChart from './ConsumptionLineChart';
 
 const Stats = (props) => {
     registerLocale('sk', sk);
-    const authCtx = useContext(AuthContext);
     const [listOfVehicles, setListOfVehicles] = useState([]);
     const [listOfFuels, setListOfFuels] = useState([]);
     const [chosenVehicle, setChosenVehicle] = useState();
@@ -30,25 +28,25 @@ const Stats = (props) => {
 
     useEffect(() => {
         (async () => {
-            const vehicles = await getVehicles(authCtx.token);
+            const vehicles = await getVehicles();
             setListOfVehicles(vehicles);
             if (vehicles.length > 0) {
                 setChosenVehicle(vehicles[0].id);
             }
         })();
-    }, [authCtx.token]);
+    }, []);
 
     useEffect(() => {
         if (chosenVehicle) {
             (async () => {
-                const fuels = await listOfVehicleFuels(chosenVehicle, authCtx.token);
+                const fuels = await listOfVehicleFuels(chosenVehicle);
                 setListOfFuels(fuels);
                 if (fuels.length > 0) {
                     setChosenFuel(fuels[0].id);
                 }
             })();
         }
-    }, [authCtx.token, chosenVehicle]);
+    }, [chosenVehicle]);
 
     const selectVehicleHandler = (event) => {
         setChosenVehicle(event.target.value);
@@ -62,7 +60,7 @@ const Stats = (props) => {
         if (props.tab === 'summary') {
             if (chosenVehicle) {
                 (async () => {
-                    const data = await vehicleStatisticsSummary(chosenVehicle, authCtx.token);
+                    const data = await vehicleStatisticsSummary(chosenVehicle);
                     setSummaryData(data);
                 })();
             }
@@ -78,7 +76,7 @@ const Stats = (props) => {
                         dateFrom: `${getYear(startDate)}-${startMonth}`,
                         dateTo: `${getYear(endDate)}-${endMonth}`,
                     };
-                    const data = await vehicleFuelCostsStatistic(chosenVehicle, display, authCtx.token);
+                    const data = await vehicleFuelCostsStatistic(chosenVehicle, display);
                     setFuelData(data);
                 })();
             }
@@ -93,7 +91,7 @@ const Stats = (props) => {
                         dateFrom: `${getYear(startDate)}-${startMonth}`,
                         dateTo: `${getYear(endDate)}-${endMonth}`,
                     };
-                    const data = await vehicleExpensesStatistic(chosenVehicle, selectedDate, authCtx.token);
+                    const data = await vehicleExpensesStatistic(chosenVehicle, selectedDate);
                     setExpensesData(data);
                 })();
             }
@@ -109,12 +107,12 @@ const Stats = (props) => {
                         dateFrom: `${getYear(startDate)}-${startMonth}`,
                         dateTo: `${getYear(endDate)}-${endMonth}`,
                     };
-                    const data = await vehicleFuelConsumptionStatistic(chosenVehicle, display, authCtx.token);
+                    const data = await vehicleFuelConsumptionStatistic(chosenVehicle, display);
                     setConsumptionData(data);
                 })();
             }
         }
-    }, [chosenVehicle, chosenFuel, authCtx.token, startDate, endDate, props.tab]);
+    }, [chosenVehicle, chosenFuel, startDate, endDate, props.tab]);
 
     return (
         <Fragment>

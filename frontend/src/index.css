@@ -25,13 +25,22 @@ code {
 }
 
 .summaryPie {
-    max-width: 510px; 
-    max-height: 510px; 
+    max-width: 510px;
+    max-height: 510px;
     margin: auto;
 }
 
-@media(max-width: 768px) {
+.overflow-x-auto {
+    overflow-x: auto;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
     .smFullWidth {
         width: 100%;
+    }
+
+    .smHide {
+        display: none;
     }
 }

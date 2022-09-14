@@ -26,10 +26,9 @@ Refueling log and expense tracker. This application is based on Express NodeJS b
 3) `docker-compose up -d` to run database, mail server and pgadmin
 4) email dev server avalaible on [http://localhost:8082](http://localhost:8082)
 5) pdadmin avalaible on [http://localhost:8083](http://localhost:8083)
-6) `cd backend`
-7) `npm install`
-8) `npm run start:dev`
-9) check if backend is running on [http://localhost:3000/api/health](http://localhost:3000/api/health)
+6) `npm install`
+7) `npm run start:dev`
+8) check if backend is running on [http://localhost:3000/api/health](http://localhost:3000/api/health)
 
 ## Development - frontend
 
@@ -43,12 +42,11 @@ Refueling log and expense tracker. This application is based on Express NodeJS b
 5) Openapi 3.0 specification available on [http://localhost:8080/api/api-docs](http://localhost:8080/api/api-docs)
 6) email dev server avalaible on [http://localhost:8082](http://localhost:8082)
 7) pdadmin avalaible on [http://localhost:8083](http://localhost:8083)
-8) `cd frontend`
-9) `npm install`
-10) `npm run start`
-11) check if frontend is running on [http://localhost:3000](http://localhost:3000)
-12) backend /api/health and /api/api-docs should be available on port 3000 while frontend is running
-13) to shutdown backend server in frontend directory run `docker-compose down`
+8) `npm install`
+9) `npm run start`
+10) check if frontend is running on [http://localhost:3000](http://localhost:3000)
+11) backend /api/health and /api/api-docs should be available on port 3000 while frontend is running
+12) to shutdown backend server run `docker-compose down` in frontend directory
 
 ### How to update list of used libraries
 

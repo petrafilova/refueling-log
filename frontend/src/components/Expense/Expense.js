@@ -1,16 +1,13 @@
-import React, { useState, useCallback, useContext, useEffect, Fragment } from 'react';
+import React, { useState, useCallback, useEffect, Fragment } from 'react';
 import SelectVehicle from './SelectVehicle';
 import ExpenseTypeDialog from './ExpenseTypeDialog';
 import ListOfExpenses from './ListOfExpenses';
-import AuthContext from '../../store/auth-context';
 import { listOfExpenseLogs, deleteExpenseLog, listOfExpensesTypes } from '../../lib/api';
 import SelectExpenseType from './SelectExpenseType';
 import ExpenseDialog from './ExpenseDialog';
 import ModalDialog from '../UI/ModalDialog';
 
 const Expense = () => {
-    const authCtx = useContext(AuthContext);
-
     const [listOfET, setListOfET] = useState([]);
     const [expenseTypeDialog, setExpenseTypeDialog] = useState(false);
     const [expenseDialog, setExpenseDialog] = useState(false);
@@ -21,10 +18,10 @@ const Expense = () => {
     const [modalDialog, setModalDialog] = useState(false);
 
     const listOfTypes = useCallback(() => {
-        listOfExpensesTypes(authCtx.token).then((data) => {
+        listOfExpensesTypes().then((data) => {
             setListOfET(data);
         });
-    }, [authCtx.token]);
+    }, []);
 
     useEffect(() => {
         listOfTypes();
@@ -53,7 +50,7 @@ const Expense = () => {
     };
 
     const deleteSingleExpense = async () => {
-        await deleteExpenseLog(singleExpenseId, authCtx.token);
+        await deleteExpenseLog(singleExpenseId);
         setSingleExpenseId('');
         setModalDialog(false);
         getListOfExpenses();
@@ -77,11 +74,11 @@ const Expense = () => {
 
     const getListOfExpenses = useCallback(() => {
         if (chosenType && chosenVehicle) {
-            listOfExpenseLogs(chosenVehicle, authCtx.token, { page: 0, pageSize: 10, order: 'DESC', typeId: +chosenType }).then((data) => {
+            listOfExpenseLogs(chosenVehicle, { page: 0, pageSize: 10, order: 'DESC', typeId: +chosenType }).then((data) => {
                 setList(data);
             });
         }
-    }, [authCtx.token, chosenType, chosenVehicle]);
+    }, [chosenType, chosenVehicle]);
 
     useEffect(() => {
         getListOfExpenses();

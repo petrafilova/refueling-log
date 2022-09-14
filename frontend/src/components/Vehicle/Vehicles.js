@@ -1,21 +1,19 @@
-import React, { useContext, useState, useEffect, useCallback, Fragment } from 'react';
+import React, { useState, useEffect, useCallback, Fragment } from 'react';
 import { getVehicles, updateVehicleById } from '../../lib/api';
-import AuthContext from '../../store/auth-context';
 import VehicleItem from './VehicleItem';
 import AddVehicle from './AddVehicle';
 import ModalDialog from '../UI/ModalDialog';
 import { deleteVehicleById } from '../../lib/api';
-import VehicleDialog from '../UI/VehicleDialog';
+import VehicleDialog from './VehicleDialog';
 
 const Vehicles = () => {
-    const authCtx = useContext(AuthContext);
     const [vehiclesList, setVehiclesList] = useState([]);
     const [deleteId, setDeleteId] = useState();
     const [editId, setEditId] = useState();
 
     const loadVehicles = useCallback(() => {
         const load = async () => {
-            const availableVehicles = await getVehicles(authCtx.token);
+            const availableVehicles = await getVehicles();
             setVehiclesList(
                 availableVehicles.map((vehicle) =>
                     <VehicleItem
@@ -31,7 +29,7 @@ const Vehicles = () => {
             );
         };
         load();
-    }, [authCtx.token]);
+    }, []);
 
     useEffect(() => {
         loadVehicles();
@@ -43,13 +41,13 @@ const Vehicles = () => {
     };
 
     const deleteVehicleItem = async () => {
-        await deleteVehicleById(deleteId, authCtx.token);
+        await deleteVehicleById(deleteId);
         setDeleteId();
         loadVehicles();
     };
 
     const editItem = async (editedVehicle) => {
-        await updateVehicleById(editId, editedVehicle, authCtx.token);
+        await updateVehicleById(editId, editedVehicle);
         setEditId();
         loadVehicles();
     };
@@ -63,20 +61,22 @@ const Vehicles = () => {
             <div className='w3-bar'>
                 {vehiclesList.length < 1 && <p>Zoznam vozidiel je prázdny.</p>}
                 {vehiclesList.length >= 1 &&
-                    <table className='w3-table-all'>
-                        <thead>
-                            <tr className='w3-indigo'>
-                                <th>Výrobca</th>
-                                <th>Model</th>
-                                <th>štátna poznávacia značka</th>
-                                <th className='w3-center'>Upraviť</th>
-                                <th className='w3-center'>Vymazať</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {vehiclesList}
-                        </tbody>
-                    </table>}
+                    <div className='overflow-x-auto'>
+                        <table className='w3-table-all'>
+                            <thead>
+                                <tr className='w3-indigo'>
+                                    <th>Výrobca</th>
+                                    <th>Model</th>
+                                    <th>štátna poznávacia značka</th>
+                                    <th className='w3-center'>Upraviť</th>
+                                    <th className='w3-center'>Vymazať</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {vehiclesList}
+                            </tbody>
+                        </table>
+                    </div>}
             </div>
             {deleteId && <ModalDialog text={'Naozaj chcete odstrániť položku?'} onCancel={cancel} onSubmit={deleteVehicleItem} />}
             {editId && <VehicleDialog id={editId} onCancel={cancel} onEdit={editItem} />}

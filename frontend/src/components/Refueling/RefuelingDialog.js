@@ -1,6 +1,5 @@
-import React, { useRef, useState, useContext, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { getSingleFuelLog, createFuelLog, updateFuelLog } from '../../lib/api';
-import AuthContext from '../../store/auth-context';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { registerLocale } from 'react-datepicker';
@@ -9,7 +8,6 @@ import { isoDateTimeToString } from '../../lib/dateFormatter';
 
 const RefuelingDialog = (props) => {
     registerLocale('sk', sk);
-    const authCtx = useContext(AuthContext);
     const [full, setFull] = useState(true);
     const [prevMissing, setPrevMissing] = useState(false);
 
@@ -54,10 +52,6 @@ const RefuelingDialog = (props) => {
         const mileageInput = mileageInputRef.current.value;
 
         let formIsInvalid = false;
-
-        if (quantityInput && unitPriceInput) {
-            totalPriceInput = quantityInput * unitPriceInput;
-        }
 
         if (quantityInput.trim().length === 0 || quantityInput < 0) {
             setQuantityIsValid(false);
@@ -112,9 +106,9 @@ const RefuelingDialog = (props) => {
         };
 
         if (props.singleFuelLogId) {
-            await updateFuelLog(props.singleFuelLogId, fuelLog, authCtx.token);
+            await updateFuelLog(props.singleFuelLogId, fuelLog);
         } else {
-            await createFuelLog(fuelLog, authCtx.token);
+            await createFuelLog(fuelLog);
         }
 
         props.onCancel();
@@ -124,7 +118,7 @@ const RefuelingDialog = (props) => {
         if (props.singleFuelLogId) {
             console.log('useEffect - singlefuelLog', props.singleFuelLogId);
             const getData = async () => {
-                const data = await getSingleFuelLog(props.singleFuelLogId, authCtx.token);
+                const data = await getSingleFuelLog(props.singleFuelLogId);
                 quantityInputRef.current.value = data.quantity;
                 unitPriceInputRef.current.value = data.unitPrice;
                 totalPriceInputRef.current.value = data.totalPrice;
@@ -138,7 +132,7 @@ const RefuelingDialog = (props) => {
             };
             getData();
         }
-    }, [props.singleFuelLogId, authCtx.token]);
+    }, [props.singleFuelLogId]);
 
 
     const count = (event) => {
