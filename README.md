@@ -54,7 +54,7 @@ If added new dependencies, list of used libraries can be updated using this scri
 
 `./generateLibrariesNotice.sh`
 
-WHILE RUNNING IT WILL INSTANLL GLOBALLY LIBRARY `license-report`
+WHILE RUNNING IT WILL INSTANLL GLOBALLY `license-report` LIBRARY
 
 ### TEST USER
 

@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Denník vozidla",
+  "name": "Denník vozidla",
   "icons": [
     {
       "src": "favicon.ico",

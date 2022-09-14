@@ -20,8 +20,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-This application depends on 3rd party libraries which are distributed together with this application as part of docker images.
+This application depends on 3rd party libraries.
 
-Backend: Libraries distributed as part of Docker Image are listed in file backend/LICENSES
+Backend: Libraries are listed in file backend/LICENSES
 
-Frontend: Libraries distributed as part of Docker Image are listed in file frontend/LICENSES
+Frontend: Libraries are listed in file frontend/LICENSES
