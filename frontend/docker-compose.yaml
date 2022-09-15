@@ -53,6 +53,7 @@ services:
             EMAIL_USER:
             EMAIL_PASS:
             EMAIL_FROM: email@email.email
+            CONFIRM_URL: 'http://localhost:3000/confirm/'
         depends_on:
             - db
             - email

@@ -49,6 +49,7 @@ services:
             EMAIL_USER:
             EMAIL_PASS:
             EMAIL_FROM: email@email.email
+            CONFIRM_URL: 'http://localhost/confirm/'
         depends_on:
             - db
             - email

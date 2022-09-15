@@ -132,11 +132,12 @@ export const registerAccount = async (
                     transaction: t,
                 }
             );
+            const confirmUrl = process.env.CONFIRM_URL ?? 'http://localhost:3000/confirm/';
             const emailInfo = await sendMail(
                 req.body.email,
                 'Welcome to Refueling-Log',
                 `Welcome ${req.body.username}, to complete your registration, please confirm your email by copying registration key. Your registration key is "${userUUID}". Please use this key for activating your account.`,
-                `<h1>Welcome ${req.body.username},</h1><p>to complete your registration, please confirm your email by copying registration key. Your registration key is "${userUUID}". Please use this key for activating your account. For better convenience you can follow this <a href="http://localhost:3000/auth/confirm/${userUUID}">link</a></p>`
+                `<h1>Welcome ${req.body.username},</h1><p>to complete your registration, please confirm your email by copying registration key. Your registration key is "${userUUID}". Please use this key for activating your account. For better convenience you can follow this <a href="${confirmUrl}${userUUID}">link</a></p>`
             );
 
             if (emailInfo.rejected.length > 0) {
