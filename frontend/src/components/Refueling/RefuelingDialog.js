@@ -74,8 +74,6 @@ const RefuelingDialog = (props) => {
         }
 
         if (!(date instanceof Date)) {
-            console.log(date);
-            console.log(date instanceof Date);
             setDateTimeIsValid(false);
             formIsInvalid = true;
         }
@@ -116,7 +114,6 @@ const RefuelingDialog = (props) => {
 
     useEffect(() => {
         if (props.singleFuelLogId) {
-            console.log('useEffect - singlefuelLog', props.singleFuelLogId);
             const getData = async () => {
                 const data = await getSingleFuelLog(props.singleFuelLogId);
                 quantityInputRef.current.value = data.quantity;

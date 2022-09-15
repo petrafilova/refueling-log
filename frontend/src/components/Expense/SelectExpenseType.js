@@ -12,7 +12,6 @@ const SelectExpenseType = (props) => {
     }, [listOfTypes, setChosenType, chosenType]);
     
     const selectTypeHandler = (event) => {
-        console.log(event.target.value);
         setChosenType(event.target.value);
     };
 

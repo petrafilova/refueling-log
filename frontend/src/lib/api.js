@@ -10,14 +10,12 @@ export const register = async (regData) => {
             },
         });
         if (response.ok) {
-            console.log('register -  zadajte registračný kľúč.');
             return true;
         } else {
             const data = await response.json();
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri registrácii. ${err.message}`);
         alert(`Nastala chyba pri registrácii. ${err.message}`);
     }
     return false;
@@ -34,7 +32,6 @@ export const login = async (loginData) => {
         });
         const data = await response.json();
         if (response.ok) {
-            console.log('Prihlásenie prebehlo úspešne');
             return {
                 token: data.token,
                 refreshToken: data.refreshToken,
@@ -44,7 +41,6 @@ export const login = async (loginData) => {
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri prihlásení. ${err.message}`);
         alert(`Nastala chyba pri prihlásení. ${err.message}`);
     }
 };
@@ -56,20 +52,16 @@ export const confirm = async (registrationKey) => {
         });
         const data = await response.json();
         if (response.ok) {
-            console.log('Registrácia prebehla úspešne');
-
             const confirmedData = {
                 token: data.token,
                 refreshToken: data.refreshToken,
                 username: data.username,
             };
-
             return confirmedData;
         } else {
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri registrácii. ${err.message}`);
         alert(`Nastala chyba pri registrácii. ${err.message}`);
     }
 
@@ -86,7 +78,6 @@ export const refreshToken = async (refreshToken) => {
         });
         const data = await response.json();
         if (response.ok) {
-            console.log('Zaslaný token a refreshToken');
             return {
                 token: data.token,
                 refreshToken: data.refreshToken,
@@ -96,7 +87,6 @@ export const refreshToken = async (refreshToken) => {
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri zaslaní tokenu a refreshTokenu. ${err.message}`);
         alert(`Nastala chyba pri zaslaní tokenu a refreshTokenu. ${err.message}`);
     }
 };
@@ -119,7 +109,6 @@ export const password = async (newPassword) => {
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri zmene hesla. ${err.message}`);
         alert(`Nastala chyba pri zmene hesla. ${err.message}`);
     }
     return false;
@@ -143,7 +132,6 @@ export const deleteUserAccount = async (userInfo) => {
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri zmazaní účtu. ${err.message}`);
         alert(`Nastala chyba pri zmazaní účtu. ${err.message}`);
     }
     return false;
@@ -161,13 +149,11 @@ export const createVehicle = async (createdVehicle) => {
         });
         const data = await response.json();
         if (response.ok) {
-            console.log('Pridanie vozidla prebehlo úspešne');
             return data;
         } else {
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri vytvorení vozidla. ${err.message}`);
         alert(`Nastala chyba pri vytvorení vozidla. ${err.message}`);
     }
     return false;
@@ -183,13 +169,11 @@ export const getVehicles = async () => {
         });
         const data = await response.json();
         if (response.ok) {
-            console.log('Zoznam vozidiel');
             return data;
         } else {
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri zobrazení vozidiel. ${err.message}`);
         alert(`Nastala chyba pri zobrazení vozidiel. ${err.message}`);
     }
     return false;
@@ -204,14 +188,12 @@ export const deleteVehicleById = async (vehicleId) => {
             },
         });
         if (response.ok) {
-            console.log('Zmazanie vozidla prebehlo úspešne.');
             return true;
         } else {
             const data = await response.json();
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri zmazaní vozidla. ${err.message}`);
         alert(`Nastala chyba pri zmazaní vozidla. ${err.message}`);
     }
     return false;
@@ -227,13 +209,11 @@ export const getVehicleById = async (vehicleId) => {
         });
         const data = await response.json();
         if (response.ok) {
-            console.log('getVehicle');
             return data;
         } else {
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri zobrazení vozidiel. ${err.message}`);
         alert(`Nastala chyba pri zobrazení vozidiel. ${err.message}`);
     }
     return false;
@@ -251,13 +231,11 @@ export const updateVehicleById = async (vehicleId, editedVehicle) => {
         });
         const data = await response.json();
         if (response.ok) {
-            console.log('updateVehicle');
             return data;
         } else {
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri zobrazení vozidiel. ${err.message}`);
         alert(`Nastala chyba pri zobrazení vozidiel. ${err.message}`);
     }
     return false;
@@ -275,13 +253,11 @@ export const createVehicleFuel = async (vehicleFuel) => {
         });
         const data = await response.json();
         if (response.ok) {
-            console.log('createVehicleFuel');
             return data;
         } else {
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri vytvorení paliva. ${err.message}`);
         alert(`Nastala chyba pri vytvorení paliva. ${err.message}`);
     }
     return false;
@@ -297,13 +273,11 @@ export const listOfVehicleFuels = async (vehicleId) => {
         });
         const data = await response.json();
         if (response.ok) {
-            console.log('listOfVehicleFuels');
             return data;
         } else {
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri zobrazení zoznamu palív pre dané vozidlo. ${err.message}`);
         alert(`Nastala chyba pri zobrazení zoznamu palív pre dané vozidlo. ${err.message}`);
     }
     return false;
@@ -319,13 +293,11 @@ export const singleVehicleFuel = async (vehicleFuelId) => {
         });
         const data = await response.json();
         if (response.ok) {
-            console.log('singleVehicleFuel');
             return data;
         } else {
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri zobrazení paliva pre dané vozidlo. ${err.message}`);
         alert(`Nastala chyba pri zobrazení paliva pre dané vozidlo. ${err.message}`);
     }
     return false;
@@ -343,13 +315,11 @@ export const updateVehicleFuel = async (vehicleFuelId, updateFuel) => {
         });
         const data = await response.json();
         if (response.ok) {
-            console.log('updateVehicleFuel');
             return data;
         } else {
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri úprave paliva. ${err.message}`);
         alert(`Nastala chyba pri úprave paliva. ${err.message}`);
     }
     return false;
@@ -364,14 +334,12 @@ export const deleteVehicleFuel = async (vehicleFuelId) => {
             },
         });
         if (response.ok) {
-            console.log('deleteVehicleFuel');
             return true;
         } else {
             const data = await response.json();
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri vymazaní paliva. ${err.message}`);
         alert(`Nastala chyba pri vymazaní paliva. ${err.message}`);
     }
     return false;
@@ -391,13 +359,11 @@ export const listOfFuelLogs = async (vehicleFuelId, display) => {
         });
         const data = await response.json();
         if (response.ok) {
-            console.log('listOfFuelLogs');
             return data;
         } else {
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri zobrazení záznamov tankovania. ${err.message}`);
         alert(`Nastala chyba pri zobrazení záznamov tankovania. ${err.message}`);
     }
     return false;
@@ -415,13 +381,11 @@ export const createFuelLog = async (fuelLog) => {
         });
         const data = await response.json();
         if (response.ok) {
-            console.log('createdFuelLog');
             return data;
         } else {
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri vytvorení záznamu tankovania. ${err.message}`);
         alert(`Nastala chyba pri vytvorení záznamu tankovania. ${err.message}`);
     }
     return false;
@@ -437,13 +401,11 @@ export const getSingleFuelLog = async (fuelLogId) => {
         });
         const data = await response.json();
         if (response.ok) {
-            console.log('gettedSingleFuelLog');
             return data;
         } else {
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri zobrazení záznamu pre dané palivo. ${err.message}`);
         alert(`Nastala chyba pri zobrazení záznamu pre dané palivo. ${err.message}`);
     }
     return false;
@@ -461,13 +423,11 @@ export const updateFuelLog = async (fuelLogId, updatedData) => {
         });
         const data = await response.json();
         if (response.ok) {
-            console.log('updatedFuelLog');
             return data;
         } else {
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri úprave záznamu tankovania. ${err.message}`);
         alert(`Nastala chyba pri úprave záznamu tankovania. ${err.message}`);
     }
     return false;
@@ -482,14 +442,12 @@ export const deleteFuelLog = async (fuelLogId) => {
             },
         });
         if (response.ok) {
-            console.log('deletedFuelLog');
             return true;
         } else {
             const data = await response.json();
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri vymazaní záznamu tankovania. ${err.message}`);
         alert(`Nastala chyba pri vymazaní záznamu tankovania. ${err.message}`);
     }
     return false;
@@ -507,13 +465,11 @@ export const listOfExpensesTypes = async () => {
         });
         const data = await response.json();
         if (response.ok) {
-            console.log('listOfExpensesTypes');
             return data;
         } else {
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri zobrazení druhov výdavkov. ${err.message}`);
         alert(`Nastala chyba pri zobrazení druhov výdavkov. ${err.message}`);
     }
     return false;
@@ -531,13 +487,11 @@ export const createExpensesType = async (nameOfExpenseType) => {
         });
         const data = await response.json();
         if (response.ok) {
-            console.log('createdExpensesType');
             return data;
         } else {
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri vytvorení druhu výdavku. ${err.message}`);
         alert(`Nastala chyba pri vytvorení druhu výdavku. ${err.message}`);
     }
     return false;
@@ -555,13 +509,11 @@ export const updateExpenseType = async (expenseTypeId, updatedData) => {
         });
         const data = await response.json();
         if (response.ok) {
-            console.log('updatedExpenseType');
             return data;
         } else {
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri úprave druhu výdavku. ${err.message}`);
         alert(`Nastala chyba pri úprave druhu výdavku. ${err.message}`);
     }
     return false;
@@ -576,7 +528,6 @@ export const deleteExpenseType = async (expenseTypeId) => {
             },
         });
         if (response.ok) {
-            console.log('deletedExpenseType');
             return true;
         } else {
             const data = await response.json();
@@ -584,10 +535,8 @@ export const deleteExpenseType = async (expenseTypeId) => {
         }
     } catch (err) {
         if (err.message === 'CONSTRAINT_FAILED') {
-            console.log(`Nastala chyba pri vymazaní druhu výdavku. Pre daný druh výdavku existuje záznam v zozname výdavkov. ${err.message}`);
             alert('Nastala chyba pri vymazaní druhu výdavku. Pre daný druh výdavku existuje záznam v zozname výdavkov.');
         } else {
-            console.log(`Nastala chyba pri vymazaní druhu výdavku. ${err.message}`);
             alert(`Nastala chyba pri vymazaní druhu výdavku. ${err.message}`);
         }
     }
@@ -608,13 +557,11 @@ export const listOfExpenseLogs = async (vehicleId, display) => {
         });
         const data = await response.json();
         if (response.ok) {
-            console.log('listOfExpenseLogs');
             return data;
         } else {
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri zobrazení záznamov výdavkov. ${err.message}`);
         alert(`Nastala chyba pri zobrazení záznamov výdavkov. ${err.message}`);
     }
     return false;
@@ -632,13 +579,11 @@ export const createExpenseLog = async (expenseLog) => {
         });
         const data = await response.json();
         if (response.ok) {
-            console.log('createdExpenseLog');
             return data;
         } else {
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri vytvorení výdavku. ${err.message}`);
         alert(`Nastala chyba pri vytvorení výdavku. ${err.message}`);
     }
     return false;
@@ -654,13 +599,11 @@ export const getSingleExpenseLog = async (expensesLogId) => {
         });
         const data = await response.json();
         if (response.ok) {
-            console.log('gettedSingExpenseLog');
             return data;
         } else {
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri zobrazení záznamu pre daný výdavok. ${err.message}`);
         alert(`Nastala chyba pri zobrazení záznamu pre daný výdavok. ${err.message}`);
     }
     return false;
@@ -678,13 +621,11 @@ export const updateExpenseLog = async (expensesLogId, updatedData) => {
         });
         const data = await response.json();
         if (response.ok) {
-            console.log('updatedExpenseLog');
             return data;
         } else {
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri úprave výdavku. ${err.message}`);
         alert(`Nastala chyba pri úprave výdavku. ${err.message}`);
     }
     return false;
@@ -699,14 +640,12 @@ export const deleteExpenseLog = async (expensesLogId) => {
             },
         });
         if (response.ok) {
-            console.log('deletedExpenseLog');
             return true;
         } else {
             const data = await response.json();
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri vymazaní výdavku. ${err.message}`);
         alert(`Nastala chyba pri vymazaní výdavku. ${err.message}`);
     }
     return false;
@@ -724,13 +663,11 @@ export const vehicleStatisticsSummary = async (vehicleId) => {
         });
         const data = await response.json();
         if (response.ok) {
-            console.log('vehicleStatisticsSummary');
             return data;
         } else {
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri zobrazení štatistiky pre dané vozidlo. ${err.message}`);
         alert(`Nastala chyba pri zobrazení štatistiky pre dané vozidlo. ${err.message}`);
     }
     return false;
@@ -748,13 +685,11 @@ export const vehicleExpensesStatistic = async (vehicleId, date) => {
         });
         const data = await response.json();
         if (response.ok) {
-            console.log('vehicleExpensesStatistic');
             return data;
         } else {
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri zobrazení štatistiky výdavkov pre dané vozidlo. ${err.message}`);
         alert(`Nastala chyba pri zobrazení štatistiky výdavkov pre dané vozidlo. ${err.message}`);
     }
     return false;
@@ -772,13 +707,11 @@ export const vehicleFuelCostsStatistic = async (vehicleId, display) => {
         });
         const data = await response.json();
         if (response.ok) {
-            console.log('vehicleFuelCostsStatistic');
             return data;
         } else {
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri zobrazení štatistiky výdavkov za tankovanie pre dané vozidlo. ${err.message}`);
         alert(`Nastala chyba pri zobrazení štatistiky výdavkov za tankovanie pre dané vozidlo. ${err.message}`);
     }
     return false;
@@ -797,13 +730,11 @@ export const vehicleFuelConsumptionStatistic = async (vehicleId, display) => {
         const data = await response.json();
 
         if (response.ok) {
-            console.log('vehicleFuelConsumptionStatistic');
             return data;
         } else {
             throw new Error(data.code);
         }
     } catch (err) {
-        console.log(`Nastala chyba pri zobrazení štatistiky spotreby paliva pre dané vozidlo. ${err.message}`);
         alert(`Nastala chyba pri zobrazení štatistiky spotreby paliva pre dané vozidlo. ${err.message}`);
     }
     return false;

@@ -4,7 +4,6 @@ const PasswordDialog = (props) => {
     const passwordInputRef = useRef();
 
     const submitHandler = () => {
-        console.log('submitHandler');
         const password = passwordInputRef.current.value;
         props.onSubmit(password);
     };

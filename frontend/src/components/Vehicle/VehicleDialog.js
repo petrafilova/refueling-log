@@ -37,7 +37,6 @@ const VehicleDialog = (props) => {
         if (vehicleId) {
             const getData = async () => {
                 const data = await getVehicleById(vehicleId);
-                console.log(data);
                 brandInputRef.current.value = data.brand;
                 modelInputRef.current.value = data.model;
                 licensePlateNoInputRef.current.value = data.licensePlateNo;
@@ -110,7 +109,6 @@ const VehicleDialog = (props) => {
             const year = getYear(date);
             const month = padNumber(getMonth(date) + 1);
             const day = padNumber(getDate(date));
-            console.log(date);
             dateOfReg = `${year}-${month}-${day}`;
         }
 

@@ -5,6 +5,7 @@ const ChangePasswordDialog = (props) => {
     const newPasswordInputRef = useRef();
     const compareNewPasswordInputRef = useRef();
 
+    const [currentPasswordIsValid, setCurrentPasswordIsValid] = useState(true);
     const [newPasswordIsValid, setNewPasswordIsValid] = useState(true);
     const [matchedPasswordIsCorrect, setMatchedPasswordIsCorrect] = useState(true);
 
@@ -13,6 +14,7 @@ const ChangePasswordDialog = (props) => {
         const enteredNewPassword = newPasswordInputRef.current.value;
         const compareNewPassword = compareNewPasswordInputRef.current.value;
 
+        setCurrentPasswordIsValid(true);
         setNewPasswordIsValid(true);
         setMatchedPasswordIsCorrect(true);
 
@@ -20,13 +22,24 @@ const ChangePasswordDialog = (props) => {
         const containsUpper = /[A-Z]/.test(enteredNewPassword);
         const containsLower = /[a-z]/.test(enteredNewPassword);
 
+        let formIsValid = true;
+
+        if (enteredCurrentPassword.trim().length < 1) {
+            setCurrentPasswordIsValid(false);
+            formIsValid = false;
+        }
+
         if (enteredNewPassword.trim().length < 8 || enteredNewPassword.trim().length > 250 || !containsDigits || !containsLower || !containsUpper) {
             setNewPasswordIsValid(false);
-            return;
+            formIsValid = false;
         }
 
         if (enteredNewPassword !== compareNewPassword) {
             setMatchedPasswordIsCorrect(false);
+            formIsValid = false;
+        }
+
+        if (!formIsValid) {
             return;
         }
 
@@ -45,6 +58,7 @@ const ChangePasswordDialog = (props) => {
                         <label className='w3-text-indigo'htmlFor='currentPassword'>súčasné heslo: </label>
                         <input className='w3-input w3-border' type='password' id='currentPassword' ref={currentPasswordInputRef}></input>
                     </p>
+                    {!currentPasswordIsValid && <p className='w3-red'>Zadajte súčasné heslo.</p>}
                     <p>
                         <label className='w3-text-indigo' htmlFor='newPassword'>nové heslo: </label>
                         <input className='w3-input w3-border' type='password' id='newPassword' ref={newPasswordInputRef}></input>
