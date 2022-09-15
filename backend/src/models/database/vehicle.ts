@@ -12,6 +12,8 @@ import {
     Table,
 } from 'sequelize-typescript';
 import { Optional } from 'sequelize/types';
+import ExpenseLog from './expenseLog';
+import MonthStatistics from './monthStatistics';
 import User from './user';
 import VehicleFuel from './vehicleFuel';
 
@@ -91,7 +93,9 @@ class Vehicle extends Model<VehicleAttributes, VehicleCreationAttributes> {
         unique: true,
     })
     @ForeignKey(() => User)
-    @Column
+    @Column({
+        onDelete: 'CASCADE'
+    })
     username: string;
 
     @BelongsTo(() => User)
@@ -99,6 +103,12 @@ class Vehicle extends Model<VehicleAttributes, VehicleCreationAttributes> {
 
     @HasMany(() => VehicleFuel)
     vehicleFuel: VehicleFuel[];
+
+    @HasMany(() => ExpenseLog)
+    expenseLog: ExpenseLog[];
+
+    @HasMany(() => MonthStatistics)
+    monthStatistics: MonthStatistics[];
 }
 
 export default Vehicle;

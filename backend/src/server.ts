@@ -7,7 +7,9 @@ import sequelize from './util/database';
 const port = process.env.PORT || 3000;
 
 (async () => {
-    await sequelize.sync();
+    await sequelize.sync({
+        alter: true,
+    });
 
     await User.findOrCreate({
         where: {
@@ -16,7 +18,7 @@ const port = process.env.PORT || 3000;
         defaults: {
             username: 'test',
             password: 'Test1234',
-            email: 'test@test.com',
+            email: 'email@email.email',
             confirmed: true
         }
     })

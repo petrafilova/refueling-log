@@ -12,6 +12,7 @@ import {
     Unique,
 } from 'sequelize-typescript';
 import { Optional } from 'sequelize/types';
+import ExpenseType from './expenseType';
 import Vehicle from './vehicle';
 
 interface UserAttributes {
@@ -22,8 +23,7 @@ interface UserAttributes {
     confirmed: boolean;
 }
 
-interface UserCreationAttributes
-    extends Optional<UserAttributes, 'uuid'> {}
+interface UserCreationAttributes extends Optional<UserAttributes, 'uuid'> {}
 
 @DefaultScope(() => ({
     attributes: { exclude: ['password', 'uuid'] },
@@ -79,6 +79,9 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
 
     @HasMany(() => Vehicle)
     vehicle: Vehicle[];
+
+    @HasMany(() => ExpenseType)
+    expenseType: ExpenseType[];
 }
 
 export default User;

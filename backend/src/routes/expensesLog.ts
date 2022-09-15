@@ -4,7 +4,7 @@ import { body, param } from 'express-validator';
 import validationError from '../middleware/validationError';
 import * as expensesLogController from '../controllers/expensesLog';
 import isAuth from '../middleware/is-auth';
-import { ALL_SORTS, SORT_ORDER } from '../models/sortOrderEnum';
+import { SORT_ORDER } from '../models/sortOrderEnum';
 
 const router = express.Router();
 
@@ -15,7 +15,7 @@ router.post(
         param('vehicleId').isInt({ min: 1, allow_leading_zeroes: false }),
         body('page').default(0).isInt({ min: 0, allow_leading_zeroes: false }),
         body('pageSize').default(10).isInt({ min: 1, allow_leading_zeroes: false }),
-        body('order').default(SORT_ORDER.DESC).isIn(ALL_SORTS),
+        body('order').default(SORT_ORDER.DESC).isIn(Object.keys(SORT_ORDER)),
         body('typeId').optional({ nullable: true }).isInt({ min: 1, allow_leading_zeroes: false }),
     ],
     validationError,

@@ -4,12 +4,14 @@ import {
     Column,
     DataType,
     ForeignKey,
+    HasMany,
     Index,
     Model,
     Table,
 } from 'sequelize-typescript';
 import { Optional } from 'sequelize/types';
-import { ALL_FUEL_TYPES, FUEL_TYPE } from '../fuelTypeEnum';
+import { FUEL_TYPE } from '../fuelTypeEnum';
+import FuelLog from './fuelLog';
 
 import Vehicle from './vehicle';
 
@@ -35,7 +37,7 @@ class VehicleFuel extends Model<
         unique: true,
     })
     @Column({
-        type: DataType.ENUM(...ALL_FUEL_TYPES),
+        type: DataType.ENUM(...Object.keys(FUEL_TYPE)),
     })
     fuel: FUEL_TYPE;
 
@@ -45,11 +47,16 @@ class VehicleFuel extends Model<
         unique: true,
     })
     @ForeignKey(() => Vehicle)
-    @Column
+    @Column({
+        onDelete: 'CASCADE'
+    })
     vehicleId: number;
 
     @BelongsTo(() => Vehicle)
     vehicle: Vehicle;
+
+    @HasMany(() => FuelLog)
+    fuelLog: FuelLog[];
 }
 
 export default VehicleFuel;

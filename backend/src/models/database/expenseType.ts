@@ -1,5 +1,16 @@
-import { AllowNull, Column, DataType, ForeignKey, Index, Model, Table } from 'sequelize-typescript';
+import {
+    AllowNull,
+    Column,
+    DataType,
+    ForeignKey,
+    HasMany,
+    Index,
+    Model,
+    Table,
+} from 'sequelize-typescript';
 import { Optional } from 'sequelize/types';
+import ExpenseLog from './expenseLog';
+import MonthStatistics from './monthStatistics';
 import User from './user';
 
 interface ExpenseTypeAttributes {
@@ -34,8 +45,16 @@ class ExpenseType extends Model<
         unique: true,
     })
     @ForeignKey(() => User)
-    @Column
+    @Column({
+        onDelete: 'CASCADE'
+    })
     username: string;
+
+    @HasMany(() => ExpenseLog)
+    expenseLog: ExpenseLog[];
+
+    @HasMany(() => MonthStatistics)
+    monthStatistics: MonthStatistics[];
 }
 
 export default ExpenseType;

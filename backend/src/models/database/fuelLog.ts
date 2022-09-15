@@ -89,7 +89,9 @@ class FuelLog extends Model<FuelLogAttributes, FuelLogCreationAttributes> {
         unique: true,
     })
     @ForeignKey(() => VehicleFuel)
-    @Column
+    @Column({
+        onDelete: 'CASCADE'
+    })
     vehicleFuelId: number;
 
     @BelongsTo(() => VehicleFuel)

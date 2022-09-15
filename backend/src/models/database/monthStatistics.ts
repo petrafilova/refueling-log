@@ -1,4 +1,12 @@
-import { AllowNull, Column, DataType, Default, ForeignKey, Model, Table } from 'sequelize-typescript';
+import {
+    AllowNull,
+    Column,
+    DataType,
+    Default,
+    ForeignKey,
+    Model,
+    Table,
+} from 'sequelize-typescript';
 import { Optional } from 'sequelize';
 
 import ExpenseType from './expenseType';
@@ -44,12 +52,16 @@ class MonthStatistics extends Model<
 
     @AllowNull(false)
     @ForeignKey(() => ExpenseType)
-    @Column
+    @Column({
+        onDelete: 'CASCADE'
+    })
     expenseTypeId: number;
 
     @AllowNull(false)
     @ForeignKey(() => Vehicle)
-    @Column
+    @Column({
+        onDelete: 'CASCADE'
+    })
     vehicleId: number;
 }
 

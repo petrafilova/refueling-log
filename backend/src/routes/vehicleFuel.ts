@@ -4,7 +4,7 @@ import { body, param } from 'express-validator';
 import validationError from '../middleware/validationError';
 import * as vehicleFuelController from '../controllers/vehicleFuel';
 import isAuth from '../middleware/is-auth';
-import { ALL_FUEL_TYPES } from '../models/fuelTypeEnum';
+import { FUEL_TYPE } from '../models/fuelTypeEnum';
 
 const router = express.Router();
 
@@ -28,7 +28,7 @@ router.post(
     '/',
     isAuth,
     [
-        body('fuel').isIn(ALL_FUEL_TYPES),
+        body('fuel').isIn(Object.keys(FUEL_TYPE)),
         body('vehicleId').isInt({ min: 1, allow_leading_zeroes: false }),
     ],
     validationError,
@@ -40,7 +40,7 @@ router.put(
     isAuth,
     [
         param('vehicleFuelId').isInt({ min: 1, allow_leading_zeroes: false }),
-        body('fuel').isIn(ALL_FUEL_TYPES),
+        body('fuel').isIn(Object.keys(FUEL_TYPE)),
         body('vehicleId').isInt({ min: 1, allow_leading_zeroes: false }),
     ],
     validationError,

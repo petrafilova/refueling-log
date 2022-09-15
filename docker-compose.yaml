@@ -17,7 +17,7 @@ services:
     pgadmin:
         image: 'dpage/pgadmin4'
         environment:
-            PGADMIN_DEFAULT_EMAIL: refueling@refueling.com
+            PGADMIN_DEFAULT_EMAIL: email@email.email
             PGADMIN_DEFAULT_PASSWORD: refueling123
             PGADMIN_CONFIG_SERVER_MODE: 'False'
             MASTER_PASSWORD_REQUIRED: 'False'
@@ -48,7 +48,7 @@ services:
             EMAIL_PORT: 1025
             EMAIL_USER:
             EMAIL_PASS:
-            EMAIL_FROM: test@noreply.com
+            EMAIL_FROM: email@email.email
         depends_on:
             - db
             - email

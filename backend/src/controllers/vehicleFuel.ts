@@ -108,7 +108,6 @@ export const updateVehicleFuel = async (
     }
 };
 
-// TODO check if don't allow delete if used
 export const deleteVehicleFuel = async (
     req: Request,
     res: Response,

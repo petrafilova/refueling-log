@@ -67,7 +67,9 @@ class ExpenseLog extends Model<
         unique: true,
     })
     @ForeignKey(() => ExpenseType)
-    @Column
+    @Column({
+        onDelete: 'CASCADE'
+    })
     typeId: number;
 
     @BelongsTo(() => ExpenseType)
@@ -75,7 +77,9 @@ class ExpenseLog extends Model<
 
     @AllowNull(false)
     @ForeignKey(() => Vehicle)
-    @Column
+    @Column({
+        onDelete: 'CASCADE'
+    })
     vehicleId: number;
 
     @BelongsTo(() => Vehicle)
