@@ -54,6 +54,7 @@ services:
             EMAIL_PASS:
             EMAIL_FROM: email@email.email
             CONFIRM_URL: 'http://localhost:3000/confirm/'
+            REGISTRATION_ENABLED: 'true'
         depends_on:
             - db
             - email

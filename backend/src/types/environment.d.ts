@@ -25,6 +25,7 @@ declare global {
             REFRESH_TOKEN_EXPIRES_IN: string;
 
             CONFIRM_URL: string;
+            REGISTRATION_ENABLED: boolean;
         }
     }
 }

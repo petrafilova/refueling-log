@@ -97,57 +97,65 @@ export const registerAccount = async (
     next: NextFunction
 ) => {
     try {
-        await sequelize.transaction(async (t) => {
-            const existingUser = await User.findOne({
-                where: {
-                    [Op.or]: {
-                        username: req.body.username,
-                        email: req.body.email,
+        if (process.env.REGISTRATION_ENABLED == 'true') {
+            await sequelize.transaction(async (t) => {
+                const existingUser = await User.findOne({
+                    where: {
+                        [Op.or]: {
+                            username: req.body.username,
+                            email: req.body.email,
+                        },
                     },
-                },
-                transaction: t,
-            });
-
-            if (existingUser) {
-                const error = new CustomError();
-                error.code =
-                    req.body.username === existingUser.username
-                        ? CUSTOM_ERROR_CODES.UNIQUE_CONSTRAINT_ERROR
-                        : CUSTOM_ERROR_CODES.EMAIL_IN_USE;
-                error.statusCode = 409;
-                throw error;
-            }
-
-            const userUUID = uuidv4();
-            await User.create(
-                { ...req.body, confirmed: false, uuid: userUUID },
-                {
-                    fields: [
-                        'username',
-                        'password',
-                        'email',
-                        'confirmed',
-                        'uuid',
-                    ],
                     transaction: t,
-                }
-            );
-            const confirmUrl = process.env.CONFIRM_URL ?? 'http://localhost:3000/confirm/';
-            const emailInfo = await sendMail(
-                req.body.email,
-                'Welcome to Refueling-Log',
-                `Welcome ${req.body.username}, to complete your registration, please confirm your email by copying registration key. Your registration key is "${userUUID}". Please use this key for activating your account.`,
-                `<h1>Welcome ${req.body.username},</h1><p>to complete your registration, please confirm your email by copying registration key. Your registration key is "${userUUID}". Please use this key for activating your account. For better convenience you can follow this <a href="${confirmUrl}${userUUID}">link</a></p>`
-            );
+                });
 
-            if (emailInfo.rejected.length > 0) {
-                const error = new CustomError();
-                error.code = CUSTOM_ERROR_CODES.UNABLE_TO_SENT_REG_EMAIL;
-                error.statusCode = 503; // TODO maybe better code ?
-                throw error;
-            }
-        });
-        res.status(201).send();
+                if (existingUser) {
+                    const error = new CustomError();
+                    error.code =
+                        req.body.username === existingUser.username
+                            ? CUSTOM_ERROR_CODES.UNIQUE_CONSTRAINT_ERROR
+                            : CUSTOM_ERROR_CODES.EMAIL_IN_USE;
+                    error.statusCode = 409;
+                    throw error;
+                }
+
+                const userUUID = uuidv4();
+                await User.create(
+                    { ...req.body, confirmed: false, uuid: userUUID },
+                    {
+                        fields: [
+                            'username',
+                            'password',
+                            'email',
+                            'confirmed',
+                            'uuid',
+                        ],
+                        transaction: t,
+                    }
+                );
+                const confirmUrl =
+                    process.env.CONFIRM_URL ?? 'http://localhost:3000/confirm/';
+                const emailInfo = await sendMail(
+                    req.body.email,
+                    'Welcome to Refueling-Log',
+                    `Welcome ${req.body.username}, to complete your registration, please confirm your email by copying registration key. Your registration key is "${userUUID}". Please use this key for activating your account.`,
+                    `<h1>Welcome ${req.body.username},</h1><p>to complete your registration, please confirm your email by copying registration key. Your registration key is "${userUUID}". Please use this key for activating your account. For better convenience you can follow this <a href="${confirmUrl}${userUUID}">link</a></p>`
+                );
+
+                if (emailInfo.rejected.length > 0) {
+                    const error = new CustomError();
+                    error.code = CUSTOM_ERROR_CODES.UNABLE_TO_SENT_REG_EMAIL;
+                    error.statusCode = 503;
+                    throw error;
+                }
+            });
+            res.status(201).send();
+        } else {
+            const error = new CustomError();
+            error.code = CUSTOM_ERROR_CODES.UNABLE_TO_SENT_REG_EMAIL;
+            error.statusCode = 503;
+            throw error;
+        }
     } catch (err) {
         next(err);
     }
