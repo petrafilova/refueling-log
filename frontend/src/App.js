@@ -26,6 +26,7 @@ function App() {
                     <Route path='/signIn' element={<SignInPage />} />
                     <Route path='/signUp' element={<SignUpPage />} />
                     <Route path='/confirm' element={<ConfirmationPage />} />
+                    <Route path='/confirm/:registrationKey' element={<ConfirmationPage />} />
                     {isLoggedIn && (<Fragment>
                         <Route path='/profile' element={<ProfilePage />} />
                         <Route path='/start' element={<StartingPage />} />

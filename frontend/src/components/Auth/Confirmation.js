@@ -1,19 +1,27 @@
 import React, { useRef, useState, useContext } from 'react';
 import { confirm } from '../../lib/api';
 import AuthContext from '../../store/auth-context';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const Confirmation = () => {
+    const params = useParams();
     const authCtx = useContext(AuthContext);
     const navigate = useNavigate();
     const keyInputRef = useRef();
     const [keyIsValid, setKeyIsValid] = useState(true);
-    
+
+    let registrationKey = '';
+
+    if (params.registrationKey) {
+        registrationKey = params.registrationKey;
+    }
+
     const submitKeyHandler = async (event) => {
         event.preventDefault();
         setKeyIsValid(true);
-        const registrationKey = keyInputRef.current.value;
-        
+
+        registrationKey = keyInputRef.current.value;
+
         if (!registrationKey.trim().length === 36) {
             setKeyIsValid(false);
             return;
@@ -33,7 +41,10 @@ const Confirmation = () => {
                     <input className='w3-input w3-border'
                         type='text'
                         id='text'
-                        ref={keyInputRef}></input>
+                        ref={keyInputRef}
+                        defaultValue={registrationKey}
+                    >
+                    </input>
                 </div>
                 <div className='w3-padding-16'>
                     <button className='w3-button w3-indigo' type='submit'>Potvrdiť</button>

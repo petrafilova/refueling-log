@@ -72,7 +72,6 @@ const ExpenseDialog = (props) => {
 
     useEffect(() => {
         if (props.singleExpenseId) {
-            console.log(props.singleExpenseId);
             const getData = async () => {
                 const data = await getSingleExpenseLog(props.singleExpenseId);
                 priceInputRef.current.value = data.price;
