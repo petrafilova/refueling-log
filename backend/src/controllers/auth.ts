@@ -137,9 +137,9 @@ export const registerAccount = async (
                     process.env.CONFIRM_URL ?? 'http://localhost:3000/confirm/';
                 const emailInfo = await sendMail(
                     req.body.email,
-                    'Welcome to Refueling-Log',
-                    `Welcome ${req.body.username}, to complete your registration, please confirm your email by copying registration key. Your registration key is "${userUUID}". Please use this key for activating your account.`,
-                    `<h1>Welcome ${req.body.username},</h1><p>to complete your registration, please confirm your email by copying registration key. Your registration key is "${userUUID}". Please use this key for activating your account. For better convenience you can follow this <a href="${confirmUrl}${userUUID}">link</a></p>`
+                    'Registrácia',
+                    `Vitajte ${req.body.username}, na dokončenie registrácie prosím potvrďte svoju emailovú adresu. Váš registračný kľúč je "${userUUID}". Zadajte tento kľúč do formulára na stránke ${confirmUrl}.`,
+                    `<h1>Vitajte ${req.body.username},</h1><p>na dokončenie registrácie prosím potvrďte svoju emailovú adresu. Váš registračný kľúč je "${userUUID}". Zadajte tento kľúč do formulára na stránke ${confirmUrl}. Pre jednoduchosť môžete využiť nasledujúci odkaz: <a href="${confirmUrl}${userUUID}">aktivovať</a></p>`
                 );
 
                 if (emailInfo.rejected.length > 0) {

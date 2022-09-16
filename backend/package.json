@@ -1,6 +1,6 @@
 {
     "name": "refueling-log-backend",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "description": "Refueling log and expense tracker",
     "main": "server.js",
     "author": "Tomáš Filo",

@@ -1,12 +1,11 @@
 {
     "name": "refueling-log-frontend",
-    "version": "0.1.0",
-    "private": true,
+    "version": "1.0.0",
     "author": "Tomáš Filo & Petra Filová",
     "license": "MIT",
     "scripts": {
         "start": "react-scripts start",
-        "build": "react-scripts build",
+        "build": "GENERATE_SOURCEMAP=false react-scripts build",
         "lint": "eslint 'src/**'"
     },
     "dependencies": {
