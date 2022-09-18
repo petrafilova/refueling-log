@@ -25,7 +25,6 @@ export const getByVehicle = (
             res.status(200).json(vehicleFuels);
         })
         .catch((err) => {
-            console.error(err);
             next(err);
         });
 };
@@ -45,7 +44,6 @@ export const getById = (req: Request, res: Response, next: NextFunction) => {
             res.status(200).json(vehicleFuel);
         })
         .catch((err) => {
-            console.error(err);
             next(err);
         });
 };

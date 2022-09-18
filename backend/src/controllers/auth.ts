@@ -308,7 +308,7 @@ const issueToken = (user: User) => {
             username: user.username,
         },
         process.env.TOKEN_SIGN_KEY!,
-        { expiresIn: process.env.TOKEN_EXPIRES_IN }
+        { expiresIn: process.env.TOKEN_EXPIRES_IN ?? '1h' }
     );
     return token;
 };
@@ -320,7 +320,7 @@ const issueRefreshToken = (user: User) => {
             refresh: true,
         },
         process.env.TOKEN_SIGN_KEY!,
-        { expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN }
+        { expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN ?? '30d' }
     );
     return refreshToken;
 };

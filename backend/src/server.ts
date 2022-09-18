@@ -7,9 +7,8 @@ import sequelize from './util/database';
 const port = process.env.PORT || 3000;
 
 (async () => {
-    await sequelize.sync();
-
     if (process.env.NODE_ENV === 'development') {
+        await sequelize.sync();
         await User.findOrCreate({
             where: {
                 username: 'test',

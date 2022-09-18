@@ -39,6 +39,7 @@ services:
         environment:
             PORT: 8080
             BASE_PATH: '/api'
+            NODE_ENV: 'development'
             DATABASE_PASSWORD: refueling123
             DATABASE_USER: refueling
             DATABASE: refueling

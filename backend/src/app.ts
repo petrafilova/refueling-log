@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
+import helmet from 'helmet';
 
 import vehicleRoutes from './routes/vehicle';
 import fuelLogRoutes from './routes/fuelLog';
@@ -16,10 +17,9 @@ export const app = express();
 
 const openapiFilePath = path.join(__dirname, 'openapi.json');
 const openapiFile = JSON.parse(fs.readFileSync(openapiFilePath, 'utf-8'));
-const basePath = String(process.env.BASE_PATH);
+const basePath = String(process.env.BASE_PATH ?? '/api');
 
-// TODO XSS protection
-
+app.use(helmet());
 app.use(express.json());
 app.use((req, res, next) => {
     res.setHeader(
