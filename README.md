@@ -1,6 +1,8 @@
 # Refueling-Log
 
-Refueling log and expense tracker. This application is based on Express NodeJS backend and React frontend. Whole application is writen in typescript/javascript.
+Refueling log and expense tracker. This application is based on Express NodeJS backend and React frontend. Whole application is written in typescript/javascript.
+
+Application demo is running on https://tankovanie.ddns.net between 08:30 - 22:00 CET.
 
 ## Running application in docker compose (testing enviroment with dev mail server)
 
