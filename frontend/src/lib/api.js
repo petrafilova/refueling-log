@@ -115,6 +115,7 @@ export const password = async (newPassword) => {
 };
 
 export const deleteUserAccount = async (userInfo) => {
+    console.log(userInfo);
     try {
         const response = await fetch(`${baseUrl}/auth/delete`, {
             method: 'POST',

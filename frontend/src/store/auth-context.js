@@ -24,7 +24,14 @@ const storedRefreshToken = localStorage.getItem('refreshToken');
 export const AuthContextProvider = (props) => {
     const [token, setToken] = useState(tokenValidity(storedToken) > 0 ? storedToken : null);
     const [refreshToken, setRefreshToken] = useState(tokenValidity(storedRefreshToken) > 0 ? storedRefreshToken : null);
-    const [username, setUserName] = useState(null);
+    const [username, setUserName] = useState(() => { 
+        if (token) {
+            const decodedToken = jwt_decode(token); 
+            return decodedToken.username; 
+        } else {
+            return null;
+        }
+    });
 
     const userIsLoggedIn = !!token;
 
