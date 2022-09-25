@@ -44,3 +44,39 @@ code {
         display: none;
     }
 }
+
+.loadingBackground {
+    background-color: rgba(0,0,0,0.2);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+
+.rotate {
+    /* -webkit-animation: spin 3s linear infinite;
+    -moz-animation: spin 3s linear infinite; */
+    animation: spin 3s linear infinite;
+}
+
+.loadingSpinner {
+    font-size: 100px;
+}
+
+/* @-moz-keyframes spin {
+    100% {
+        -moz-transform: rotate(360deg);
+    }
+}
+@-webkit-keyframes spin {
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+} */
+@keyframes spin {
+    100% {
+        /* -webkit-transform: rotate(360deg); */
+        transform: rotate(360deg);
+    }
+}

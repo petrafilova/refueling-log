@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { register } from '../../lib/api'; 
 import { useNavigate } from 'react-router-dom';
+import Loading from '../Layout/Loading';
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -11,6 +12,7 @@ const SignUp = () => {
     const [userNameIsValid, setUserNameIsValid] = useState(true);
     const [passwordIsValid, setPasswordIsValid] = useState(true);
     const [emailIsValid, setEmailIsValid] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     const submitHandler = async (event) => {
         event.preventDefault();
@@ -53,7 +55,9 @@ const SignUp = () => {
             email: enteredEmail,
         };
 
+        setIsLoading(true);
         const success = await register(regData);
+        setIsLoading(false);
         success && navigate('/confirm');
     };
 
@@ -103,6 +107,7 @@ const SignUp = () => {
                     </button>
                 </div>
             </form>
+            {isLoading && <Loading />}
         </div>
     );
 };
