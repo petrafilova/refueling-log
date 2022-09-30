@@ -4,12 +4,14 @@ import { deleteUserAccount } from '../../lib/api';
 import AuthContext from '../../store/auth-context';
 import ModalDialog from '../UI/ModalDialog';
 import PasswordDialog from '../UI/PasswordDialog';
+import Loading from '../Layout/Loading';
 
 const DeleteUser = () => {
     const authCtx = useContext(AuthContext);
     const navigate = useNavigate();
     const [modalDialogIsVisible, setModalDialogIsVisible] = useState(false);
     const [passwordDialogIsVisible, setPasswordDialogIsVisible] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const cancel = () => {
         setPasswordDialogIsVisible(false);
@@ -18,10 +20,10 @@ const DeleteUser = () => {
     };
 
     const deleteAccountHandler = async (password) => {
-        console.log(authCtx.isLoggedIn, authCtx.username);
         const userInfo = { username: authCtx.username, password: password };
-        console.log(userInfo);
+        setIsLoading(true);
         const success = await deleteUserAccount(userInfo);
+        setIsLoading(false);
         success && authCtx.logout();
     };
 
@@ -36,6 +38,7 @@ const DeleteUser = () => {
 
     return (
         <Fragment>
+            {isLoading && <Loading />}
             {modalDialogIsVisible && <ModalDialog onCancel={cancel} onSubmit={showPasswordDialogHandler} text={'Naozaj chcete zmazať účet?'} />}
             {passwordDialogIsVisible && <PasswordDialog onCancel={cancel} onSubmit={deleteAccountHandler} />}
             <div className='smFullWidth'>

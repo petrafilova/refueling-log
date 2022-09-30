@@ -12,6 +12,8 @@ import SummaryPie from './SummaryPie';
 import FuelLineChart from './FuelLineChart';
 import ExpensesBarChart from './ExpensesBarChart';
 import ConsumptionLineChart from './ConsumptionLineChart';
+import Loading from '../Layout/Loading';
+
 
 const Stats = (props) => {
     registerLocale('sk', sk);
@@ -25,10 +27,13 @@ const Stats = (props) => {
     const [fuelData, setFuelData] = useState([]);
     const [expensesData, setExpensesData] = useState([]);
     const [consumptionData, setConsumptionData] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         (async () => {
+            setIsLoading(true);
             const vehicles = await getVehicles();
+            setIsLoading(false);
             setListOfVehicles(vehicles);
             if (vehicles.length > 0) {
                 setChosenVehicle(vehicles[0].id);
@@ -39,7 +44,9 @@ const Stats = (props) => {
     useEffect(() => {
         if (chosenVehicle) {
             (async () => {
+                setIsLoading(true);
                 const fuels = await listOfVehicleFuels(chosenVehicle);
+                setIsLoading(false);
                 setListOfFuels(fuels);
                 if (fuels.length > 0) {
                     setChosenFuel(fuels[0].id);
@@ -57,6 +64,7 @@ const Stats = (props) => {
     };
 
     useEffect(() => {
+        setIsLoading(true);
         if (props.tab === 'summary') {
             if (chosenVehicle) {
                 (async () => {
@@ -112,10 +120,12 @@ const Stats = (props) => {
                 })();
             }
         }
+        setIsLoading(false);
     }, [chosenVehicle, chosenFuel, startDate, endDate, props.tab]);
 
     return (
         <Fragment>
+            {isLoading && <Loading />}
             <div className='w3-section'>
                 <label className='w3-text-indigo' htmlFor='vehicle'>Vyberte vozidlo:</label>
                 <select className='w3-select w3-border' name='vehicle' id='vehicle' onChange={selectVehicleHandler}>

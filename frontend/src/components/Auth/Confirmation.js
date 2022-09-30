@@ -1,7 +1,8 @@
-import React, { useRef, useState, useContext } from 'react';
+import React, { useRef, useState, useContext, Fragment } from 'react';
 import { confirm } from '../../lib/api';
 import AuthContext from '../../store/auth-context';
 import { useNavigate, useParams } from 'react-router-dom';
+import Loading from '../Layout/Loading';
 
 const Confirmation = () => {
     const params = useParams();
@@ -9,6 +10,7 @@ const Confirmation = () => {
     const navigate = useNavigate();
     const keyInputRef = useRef();
     const [keyIsValid, setKeyIsValid] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     let registrationKey = '';
 
@@ -27,31 +29,36 @@ const Confirmation = () => {
             return;
         }
 
+        setIsLoading(true);
         const authData = await confirm(registrationKey);
+        setIsLoading(false);
         authCtx.login(authData.token, authData.refreshToken, authData.username);
         authData.token && navigate('/start');
     };
 
     return (
-        <div className='w3-container w3-content'>
-            <h1>Potvrdenie registrácie</h1>
-            <form onSubmit={submitKeyHandler}>
-                <div className='w3-padding-16'>
-                    <label className='w3-text-indigo' htmlFor='text'>Pre dokončenie registrácie prosím zadajte registračný kľúč.</label>
-                    <input className='w3-input w3-border'
-                        type='text'
-                        id='text'
-                        ref={keyInputRef}
-                        defaultValue={registrationKey}
-                    >
-                    </input>
-                </div>
-                <div className='w3-padding-16'>
-                    <button className='w3-button w3-indigo' type='submit'>Potvrdiť</button>
-                    {!keyIsValid && <p className='w3-red'>Neplatný registračný kľúč.</p>}
-                </div>
-            </form>
-        </div>
+        <Fragment>
+            {isLoading && <Loading />}
+            <div className='w3-container w3-content'>
+                <h1>Potvrdenie registrácie</h1>
+                <form onSubmit={submitKeyHandler}>
+                    <div className='w3-padding-16'>
+                        <label className='w3-text-indigo' htmlFor='text'>Pre dokončenie registrácie prosím zadajte registračný kľúč.</label>
+                        <input className='w3-input w3-border'
+                            type='text'
+                            id='text'
+                            ref={keyInputRef}
+                            defaultValue={registrationKey}
+                        >
+                        </input>
+                    </div>
+                    <div className='w3-padding-16'>
+                        <button className='w3-button w3-indigo' type='submit'>Potvrdiť</button>
+                        {!keyIsValid && <p className='w3-red'>Neplatný registračný kľúč.</p>}
+                    </div>
+                </form>
+            </div>
+        </Fragment>
     );
 };
 

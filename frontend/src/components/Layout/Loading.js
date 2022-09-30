@@ -6,9 +6,9 @@ const Loading = () => {
     return (
         <div className='loadingBackground w3-display-container'>
             <div className='w3-display-middle'>
-                <div className='rotate'>
-                    <FontAwesomeIcon icon={faSpinner} className='loadingSpinner' />
-                </div>
+                {/* <div className='rotate'> */}
+                <FontAwesomeIcon icon={faSpinner} className='w3-spin loadingSpinner' />
+                {/* </div> */}
             </div>
         </div>
     );

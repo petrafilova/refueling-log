@@ -1,7 +1,8 @@
-import React, { useRef, useState, useContext, useEffect } from 'react';
+import React, { useRef, useState, useContext, useEffect, Fragment } from 'react';
 import { login } from '../../lib/api';
 import AuthContext from '../../store/auth-context';
 import { useNavigate } from 'react-router-dom';
+import Loading from '../Layout/Loading';
 
 const SignIn = () => {
     const authCtx = useContext(AuthContext);
@@ -10,8 +11,9 @@ const SignIn = () => {
     const passwordInputRef = useRef();
     const [userNameIsValid, setUserNameIsValid] = useState(true);
     const [passwordIsValid, setPasswordIsValid] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
-    useEffect(() =>{
+    useEffect(() => {
         authCtx.isLoggedIn && navigate('/start');
     }, [authCtx.isLoggedIn, navigate]);
 
@@ -38,45 +40,50 @@ const SignIn = () => {
             password: enteredPassword,
         };
 
+        setIsLoading(true);
         const confirmedData = await login(loginData);
+        setIsLoading(false);
         authCtx.login(confirmedData.token, confirmedData.refreshToken, confirmedData.username);
     };
 
     return (
-        <div className='w3-container w3-content'>
-            <h1>Prihlásenie</h1>
-            <form onSubmit={submitHandler}>
-                <div className='w3-padding-16'>
-                    <label className='w3-text-indigo' htmlFor='text'>
-                        používateľské meno
-                    </label>
-                    <input
-                        className='w3-input w3-border'
-                        type='text'
-                        id='text'
-                        ref={userNameInputRef}
-                    ></input>
-                    {!userNameIsValid && <p className='w3-red'>Neplatné používateľského meno.</p>}
-                </div>
-                <div className='w3-padding-16'>
-                    <label className='w3-text-indigo' htmlFor='password'>
-                        prihlasovacie heslo
-                    </label>
-                    <input
-                        className='w3-input w3-border'
-                        type='password'
-                        id='password'
-                        ref={passwordInputRef}
-                    ></input>
-                    {!passwordIsValid && <p className='w3-red'>Neplatné heslo.</p>}
-                </div>
-                <div className='w3-padding-16'>
-                    <button className='w3-button w3-indigo' type='submit'>
-                        Prihlásiť sa
-                    </button>
-                </div>
-            </form>
-        </div>
+        <Fragment>
+            {isLoading && <Loading />}
+            <div className='w3-container w3-content'>
+                <h1>Prihlásenie</h1>
+                <form onSubmit={submitHandler}>
+                    <div className='w3-padding-16'>
+                        <label className='w3-text-indigo' htmlFor='text'>
+                            používateľské meno
+                        </label>
+                        <input
+                            className='w3-input w3-border'
+                            type='text'
+                            id='text'
+                            ref={userNameInputRef}
+                        ></input>
+                        {!userNameIsValid && <p className='w3-red'>Neplatné používateľského meno.</p>}
+                    </div>
+                    <div className='w3-padding-16'>
+                        <label className='w3-text-indigo' htmlFor='password'>
+                            prihlasovacie heslo
+                        </label>
+                        <input
+                            className='w3-input w3-border'
+                            type='password'
+                            id='password'
+                            ref={passwordInputRef}
+                        ></input>
+                        {!passwordIsValid && <p className='w3-red'>Neplatné heslo.</p>}
+                    </div>
+                    <div className='w3-padding-16'>
+                        <button className='w3-button w3-indigo' type='submit'>
+                            Prihlásiť sa
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </Fragment>
     );
 };
 

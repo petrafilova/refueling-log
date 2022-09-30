@@ -6,6 +6,7 @@ import { listOfExpenseLogs, deleteExpenseLog, listOfExpensesTypes } from '../../
 import SelectExpenseType from './SelectExpenseType';
 import ExpenseDialog from './ExpenseDialog';
 import ModalDialog from '../UI/ModalDialog';
+import Loading from '../Layout/Loading';
 
 const Expense = () => {
     const [listOfET, setListOfET] = useState([]);
@@ -16,9 +17,12 @@ const Expense = () => {
     const [chosenType, setChosenType] = useState();
     const [singleExpenseId, setSingleExpenseId] = useState();
     const [modalDialog, setModalDialog] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const listOfTypes = useCallback(() => {
+        setIsLoading(true);
         listOfExpensesTypes().then((data) => {
+            setIsLoading(false);
             setListOfET(data);
         });
     }, []);
@@ -50,7 +54,9 @@ const Expense = () => {
     };
 
     const deleteSingleExpense = async () => {
+        setIsLoading(true);
         await deleteExpenseLog(singleExpenseId);
+        setIsLoading(false);
         setSingleExpenseId('');
         setModalDialog(false);
         getListOfExpenses();
@@ -74,7 +80,9 @@ const Expense = () => {
 
     const getListOfExpenses = useCallback(() => {
         if (chosenType && chosenVehicle) {
+            setIsLoading(true);
             listOfExpenseLogs(chosenVehicle, { page: 0, pageSize: 10, order: 'DESC', typeId: +chosenType }).then((data) => {
+                setIsLoading(false);
                 setList(data);
             });
         }
@@ -86,6 +94,7 @@ const Expense = () => {
 
     return (
         <Fragment>
+            {isLoading && <Loading />}
             <div className='w3-bar'>
                 <h1 className='w3-left'>Zoznam výdavkov</h1>
             </div>

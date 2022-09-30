@@ -1,10 +1,11 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, Fragment } from 'react';
 import { getSingleFuelLog, createFuelLog, updateFuelLog } from '../../lib/api';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { registerLocale } from 'react-datepicker';
 import sk from 'date-fns/locale/sk';
 import { isoDateTimeToString } from '../../lib/dateFormatter';
+import Loading from '../Layout/Loading';
 
 const RefuelingDialog = (props) => {
     registerLocale('sk', sk);
@@ -26,6 +27,7 @@ const RefuelingDialog = (props) => {
     const [dateTimeIsValid, setDateTimeIsValid] = useState(true);
     const [fullIsValid, setFullIsValid] = useState(true);
     const [prevMissingIsValid, setPrevMissingIsValid] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     const [date, setDate] = useState(new Date());
 
@@ -103,11 +105,13 @@ const RefuelingDialog = (props) => {
             vehicleFuelId: props.fuelId,
         };
 
+        setIsLoading(true);
         if (props.singleFuelLogId) {
             await updateFuelLog(props.singleFuelLogId, fuelLog);
         } else {
             await createFuelLog(fuelLog);
         }
+        setIsLoading(false);
 
         props.onCancel();
     };
@@ -115,7 +119,9 @@ const RefuelingDialog = (props) => {
     useEffect(() => {
         if (props.singleFuelLogId) {
             const getData = async () => {
+                setIsLoading(true);
                 const data = await getSingleFuelLog(props.singleFuelLogId);
+                setIsLoading(false);
                 quantityInputRef.current.value = data.quantity;
                 unitPriceInputRef.current.value = data.unitPrice;
                 totalPriceInputRef.current.value = data.totalPrice;
@@ -155,84 +161,87 @@ const RefuelingDialog = (props) => {
     };
 
     return (
-        <div className='w3-modal w3-show'>
-            <div className='w3-modal-content dialog'>
-                <header className='w3-container w3-light-grey'>
-                    <h2>{props.singleFuelLogId ? 'Úprava záznamu o tankovaní' : 'Pridanie záznamu o tankovaní'}</h2>
-                </header>
-                <div className='w3-container'>
-                    <p>
-                        <label className='w3-text-indigo' htmlFor='quantity'>množstvo: <span className='w3-text-red'>*</span></label>
-                        <input className='w3-input w3-border' type='number' id='quantity' ref={quantityInputRef} onChange={count}></input>
-                    </p>
-                    {!quantityIsValid && <p className='w3-red'>Neplatný údaj.</p>}
-                    <p>
-                        <label className='w3-text-indigo' htmlFor='unitPrice'>jednotková cena: <span className='w3-text-red'>*</span></label>
-                        <input className='w3-input w3-border' type='number' id='unitPrice' ref={unitPriceInputRef} onChange={count}></input>
-                    </p>
-                    {!unitPriceIsValid && <p className='w3-red'>Neplatný údaj.</p>}
-                    <p>
-                        <label className='w3-text-indigo' htmlFor='totalPrice'>celková cena: <span className='w3-text-red'>*</span></label>
-                        <input className='w3-input w3-border' type='number' id='totalPrice' ref={totalPriceInputRef} onChange={count}></input>
-                    </p>
-                    {!totalPriceIsValid && <p className='w3-red'>Neplatný údaj.</p>}
-                    <p>
-                        <label className='w3-text-indigo' htmlFor='mileage'>najazdené kilometre: <span className='w3-text-red'>*</span></label>
-                        <input className='w3-input w3-border' type='number' id='mileage' ref={mileageInputRef}></input>
-                    </p>
-                    {!mileageIsValid && <p className='w3-red'>Neplatný údaj.</p>}
-                    <div>
-                        <label className='w3-text-indigo' htmlFor='dateTime'>dátum a čas: <span className='w3-text-red'>*</span></label>
-                        <DatePicker
-                            className='w3-input w3-border'
-                            type='datetime-local'
-                            id='dateTime'
-                            selected={date}
-                            onChange={(date) => setDate(date)}
-                            timeInputLabel="Time:"
-                            dateFormat="dd.MM.yyyy HH:mm"
-                            showTimeInput
-                            locale="sk"
-                        />
+        <Fragment>
+            {isLoading && <Loading />}
+            <div className='w3-modal w3-show'>
+                <div className='w3-modal-content dialog'>
+                    <header className='w3-container w3-light-grey'>
+                        <h2>{props.singleFuelLogId ? 'Úprava záznamu o tankovaní' : 'Pridanie záznamu o tankovaní'}</h2>
+                    </header>
+                    <div className='w3-container'>
+                        <p>
+                            <label className='w3-text-indigo' htmlFor='quantity'>množstvo: <span className='w3-text-red'>*</span></label>
+                            <input className='w3-input w3-border' type='number' id='quantity' ref={quantityInputRef} onChange={count}></input>
+                        </p>
+                        {!quantityIsValid && <p className='w3-red'>Neplatný údaj.</p>}
+                        <p>
+                            <label className='w3-text-indigo' htmlFor='unitPrice'>jednotková cena: <span className='w3-text-red'>*</span></label>
+                            <input className='w3-input w3-border' type='number' id='unitPrice' ref={unitPriceInputRef} onChange={count}></input>
+                        </p>
+                        {!unitPriceIsValid && <p className='w3-red'>Neplatný údaj.</p>}
+                        <p>
+                            <label className='w3-text-indigo' htmlFor='totalPrice'>celková cena: <span className='w3-text-red'>*</span></label>
+                            <input className='w3-input w3-border' type='number' id='totalPrice' ref={totalPriceInputRef} onChange={count}></input>
+                        </p>
+                        {!totalPriceIsValid && <p className='w3-red'>Neplatný údaj.</p>}
+                        <p>
+                            <label className='w3-text-indigo' htmlFor='mileage'>najazdené kilometre: <span className='w3-text-red'>*</span></label>
+                            <input className='w3-input w3-border' type='number' id='mileage' ref={mileageInputRef}></input>
+                        </p>
+                        {!mileageIsValid && <p className='w3-red'>Neplatný údaj.</p>}
+                        <div>
+                            <label className='w3-text-indigo' htmlFor='dateTime'>dátum a čas: <span className='w3-text-red'>*</span></label>
+                            <DatePicker
+                                className='w3-input w3-border'
+                                type='datetime-local'
+                                id='dateTime'
+                                selected={date}
+                                onChange={(date) => setDate(date)}
+                                timeInputLabel="Time:"
+                                dateFormat="dd.MM.yyyy HH:mm"
+                                showTimeInput
+                                locale="sk"
+                            />
+                        </div>
+                        {!dateTimeIsValid && <p className='w3-red'>Neplatný údaj.</p>}
+                        <div>
+                            <p className='w3-text-indigo'>plná nádrž: <span className='w3-text-red'>*</span></p>
+                            <input type='radio' id='fullTrue' name='full' value='true' checked={full === true} onChange={fullChanged}></input>
+                            <label htmlFor='fullTrue'> áno</label><br></br>
+                            <input type='radio' id='fullFalse' name='full' value='false' checked={full === false} onChange={fullChanged}></input>
+                            <label htmlFor='fullFalse'> nie</label>
+                        </div>
+                        {!fullIsValid && <p className='w3-red'>Neplatný údaj.</p>}
+                        <div>
+                            <p className='w3-text-indigo'>chýbajúce predchádzajúce údaje: <span className='w3-text-red'>*</span></p>
+                            <input type='radio' id='previousMissingTrue' name='previousMissing' value='true' checked={prevMissing === true} onChange={prevMissingChanged}></input>
+                            <label htmlFor='previousMissingTrue'> áno</label><br></br>
+                            <input type='radio' id='previousMissingFalse' name='previousMissing' value='false' checked={prevMissing === false} onChange={prevMissingChanged}></input>
+                            <label htmlFor='previousMissingFalse'> nie</label>
+                        </div>
+                        {!prevMissingIsValid && <p className='w3-red'>Neplatný údaj.</p>}
+                        {props.singleFuelLogId && <p>
+                            <label className='w3-text-indigo' htmlFor='consumption'>spotreba: </label>
+                            <input className='w3-input w3-border' type='number' id='consumption' readOnly ref={consumptionInputRef}></input>
+                        </p>}
+                        {props.singleFuelLogId && <p>
+                            <label className='w3-text-indigo' htmlFor='createdAt'>vytvorené: </label>
+                            <input className='w3-input w3-border' type='text' id='createdAt' readOnly ref={createdAtInputRef}></input>
+                        </p>}
+                        {props.singleFuelLogId && <p>
+                            <label className='w3-text-indigo' htmlFor='updatedAt'>upravené: </label>
+                            <input className='w3-input w3-border' type='text' id='updatedAt' readOnly ref={updatedAtInputRef}></input>
+                        </p>}
                     </div>
-                    {!dateTimeIsValid && <p className='w3-red'>Neplatný údaj.</p>}
-                    <div>
-                        <p className='w3-text-indigo'>plná nádrž: <span className='w3-text-red'>*</span></p>
-                        <input type='radio' id='fullTrue' name='full' value='true' checked={full === true} onChange={fullChanged}></input>
-                        <label htmlFor='fullTrue'> áno</label><br></br>
-                        <input type='radio' id='fullFalse' name='full' value='false' checked={full === false} onChange={fullChanged}></input>
-                        <label htmlFor='fullFalse'> nie</label>
-                    </div>
-                    {!fullIsValid && <p className='w3-red'>Neplatný údaj.</p>}
-                    <div>
-                        <p className='w3-text-indigo'>chýbajúce predchádzajúce údaje: <span className='w3-text-red'>*</span></p>
-                        <input type='radio' id='previousMissingTrue' name='previousMissing' value='true' checked={prevMissing === true} onChange={prevMissingChanged}></input>
-                        <label htmlFor='previousMissingTrue'> áno</label><br></br>
-                        <input type='radio' id='previousMissingFalse' name='previousMissing' value='false' checked={prevMissing === false} onChange={prevMissingChanged}></input>
-                        <label htmlFor='previousMissingFalse'> nie</label>
-                    </div>
-                    {!prevMissingIsValid && <p className='w3-red'>Neplatný údaj.</p>}
-                    {props.singleFuelLogId && <p>
-                        <label className='w3-text-indigo' htmlFor='consumption'>spotreba: </label>
-                        <input className='w3-input w3-border' type='number' id='consumption' readOnly ref={consumptionInputRef}></input>
-                    </p>}
-                    {props.singleFuelLogId && <p>
-                        <label className='w3-text-indigo' htmlFor='createdAt'>vytvorené: </label>
-                        <input className='w3-input w3-border' type='text' id='createdAt' readOnly ref={createdAtInputRef}></input>
-                    </p>}
-                    {props.singleFuelLogId && <p>
-                        <label className='w3-text-indigo' htmlFor='updatedAt'>upravené: </label>
-                        <input className='w3-input w3-border' type='text' id='updatedAt' readOnly ref={updatedAtInputRef}></input>
-                    </p>}
+                    <footer className='w3-container w3-light-grey'>
+                        <p>
+                            <button className='w3-button w3-indigo' onClick={props.onCancel}>Zrušiť</button>
+                            <button className='w3-button w3-indigo w3-right' onClick={submitHandler}>Potvrdiť</button>
+                        </p>
+                    </footer>
                 </div>
-                <footer className='w3-container w3-light-grey'>
-                    <p>
-                        <button className='w3-button w3-indigo' onClick={props.onCancel}>Zrušiť</button>
-                        <button className='w3-button w3-indigo w3-right' onClick={submitHandler}>Potvrdiť</button>
-                    </p>
-                </footer>
             </div>
-        </div>
+        </Fragment>
     );
 };
 

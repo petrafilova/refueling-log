@@ -5,15 +5,19 @@ import AddVehicle from './AddVehicle';
 import ModalDialog from '../UI/ModalDialog';
 import { deleteVehicleById } from '../../lib/api';
 import VehicleDialog from './VehicleDialog';
+import Loading from '../Layout/Loading';
 
 const Vehicles = () => {
     const [vehiclesList, setVehiclesList] = useState([]);
     const [deleteId, setDeleteId] = useState();
     const [editId, setEditId] = useState();
+    const [isLoading, setIsLoading] = useState(false);
 
     const loadVehicles = useCallback(() => {
         const load = async () => {
+            setIsLoading(true);
             const availableVehicles = await getVehicles();
+            setIsLoading(false);
             setVehiclesList(
                 availableVehicles.map((vehicle) =>
                     <VehicleItem
@@ -41,19 +45,24 @@ const Vehicles = () => {
     };
 
     const deleteVehicleItem = async () => {
+        setIsLoading(true);
         await deleteVehicleById(deleteId);
+        setIsLoading(false);
         setDeleteId();
         loadVehicles();
     };
 
     const editItem = async (editedVehicle) => {
+        setIsLoading(true);
         await updateVehicleById(editId, editedVehicle);
+        setIsLoading(false);
         setEditId();
         loadVehicles();
     };
 
     return (
         <Fragment>
+            {isLoading && <Loading />}
             <div className='w3-bar'>
                 <h1 className='w3-left'>Zoznam vozidiel</h1>
                 <AddVehicle reloadVehicles={loadVehicles} />

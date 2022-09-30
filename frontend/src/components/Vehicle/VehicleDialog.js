@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, Fragment } from 'react';
 import { createVehicleFuel, getVehicleById, listOfVehicleFuels, deleteVehicleFuel, updateVehicleFuel } from '../../lib/api';
 import FuelTable from '../VehicleFuel/FuelTable';
 import DatePicker from 'react-datepicker';
@@ -10,6 +10,7 @@ import getMonth from 'date-fns/getMonth';
 import getDate from 'date-fns/getDate';
 import { padNumber } from '../../lib/dateFormatter';
 import { isoDateTimeToString } from '../../lib/dateFormatter';
+import Loading from '../Layout/Loading';
 
 const VehicleDialog = (props) => {
     registerLocale('sk', sk);
@@ -30,13 +31,18 @@ const VehicleDialog = (props) => {
     const [vinIsInvalid, setVinIsInvalid] = useState(false);
     const [vehicleFuelIsInvalid, setVehicleFuelIsInvalid] = useState(false);
     const [vehicleFuel, setVehicleFuel] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isLoadingVehicle, setIsLoadingVehicle] = useState(false);
+    const [isLoadingFuel, setIsLoadingFuel] = useState(false);
 
     const [date, setDate] = useState(new Date());
 
     useEffect(() => {
         if (vehicleId) {
             const getData = async () => {
+                setIsLoadingVehicle(true);
                 const data = await getVehicleById(vehicleId);
+                setIsLoadingVehicle(false);
                 brandInputRef.current.value = data.brand;
                 modelInputRef.current.value = data.model;
                 licensePlateNoInputRef.current.value = data.licensePlateNo;
@@ -48,7 +54,9 @@ const VehicleDialog = (props) => {
             };
             getData();
             const getFuels = async () => {
+                setIsLoadingFuel(true);
                 const fuels = await listOfVehicleFuels(vehicleId);
+                setIsLoadingFuel(false);
                 setVehicleFuel(fuels);
             };
             getFuels();
@@ -121,6 +129,7 @@ const VehicleDialog = (props) => {
             vin,
         };
 
+        setIsLoading(true);
         if (vehicleId) {
             await props.onEdit(createdVehicle);
             for (let i = 0; i < vehicleFuel.length; i++) {
@@ -140,71 +149,75 @@ const VehicleDialog = (props) => {
                 }
             }
         }
+        setIsLoading(false);
     };
 
     return (
-        <div className='w3-modal w3-show'>
-            <div className='w3-modal-content dialog'>
-                <header className='w3-container w3-light-grey'>
-                    <h2>{props.id ? 'Úprava vozidla' : 'Pridanie vozidla'}</h2>
-                </header>
-                <div className='w3-container'>
-                    <p>
-                        <label className='w3-text-indigo' htmlFor='brand'>výrobca: <span className='w3-text-red'>*</span></label>
-                        <input className='w3-input w3-border' type='text' id='brand' ref={brandInputRef}></input>
-                    </p>
-                    {brandIsInvalid && <p className='w3-red'>Neplatný údaj. Zadajte min 1 a max 20 znakov.</p>}
-                    <p>
-                        <label className='w3-text-indigo' htmlFor='model'>model: <span className='w3-text-red'>*</span></label>
-                        <input className='w3-input w3-border' type='text' id='model' ref={modelInputRef}></input>
-                    </p>
-                    {modelIsInvalid && <p className='w3-red'>Neplatný údaj. Zadajte min 1 a max 60 znakov.</p>}
-                    <p>
-                        <label className='w3-text-indigo' htmlFor='licensePlateNo'>štátna poznávacia značka: <span className='w3-text-red'>*</span></label>
-                        <input className='w3-input w3-border' type='text' id='licensePlateNo' ref={licensePlateNoInputRef}></input>
-                    </p>
-                    {licenseIsInvalid && <p className='w3-red'>Neplatný údaj. Zadajte min 1 a max 10 znakov.</p>}
-                    <div>
-                        <label className='w3-text-indigo' htmlFor='dateOfReg'>dátum registrácie: </label>
-                        <DatePicker
-                            className='w3-input w3-border'
-                            type='date'
-                            id='dateOfReg'
-                            locale="sk"
-                            dateFormat="dd.MM.yyyy"
-                            selected={date}
-                            onChange={(date) => setDate(date)}
-                        />
+        <Fragment>
+            {(isLoading || isLoadingVehicle || isLoadingFuel) && <Loading />}
+            <div className='w3-modal w3-show'>
+                <div className='w3-modal-content dialog'>
+                    <header className='w3-container w3-light-grey'>
+                        <h2>{props.id ? 'Úprava vozidla' : 'Pridanie vozidla'}</h2>
+                    </header>
+                    <div className='w3-container'>
+                        <p>
+                            <label className='w3-text-indigo' htmlFor='brand'>výrobca: <span className='w3-text-red'>*</span></label>
+                            <input className='w3-input w3-border' type='text' id='brand' ref={brandInputRef}></input>
+                        </p>
+                        {brandIsInvalid && <p className='w3-red'>Neplatný údaj. Zadajte min 1 a max 20 znakov.</p>}
+                        <p>
+                            <label className='w3-text-indigo' htmlFor='model'>model: <span className='w3-text-red'>*</span></label>
+                            <input className='w3-input w3-border' type='text' id='model' ref={modelInputRef}></input>
+                        </p>
+                        {modelIsInvalid && <p className='w3-red'>Neplatný údaj. Zadajte min 1 a max 60 znakov.</p>}
+                        <p>
+                            <label className='w3-text-indigo' htmlFor='licensePlateNo'>štátna poznávacia značka: <span className='w3-text-red'>*</span></label>
+                            <input className='w3-input w3-border' type='text' id='licensePlateNo' ref={licensePlateNoInputRef}></input>
+                        </p>
+                        {licenseIsInvalid && <p className='w3-red'>Neplatný údaj. Zadajte min 1 a max 10 znakov.</p>}
+                        <div>
+                            <label className='w3-text-indigo' htmlFor='dateOfReg'>dátum registrácie: </label>
+                            <DatePicker
+                                className='w3-input w3-border'
+                                type='date'
+                                id='dateOfReg'
+                                locale="sk"
+                                dateFormat="dd.MM.yyyy"
+                                selected={date}
+                                onChange={(date) => setDate(date)}
+                            />
+                        </div>
+                        <p>
+                            <label className='w3-text-indigo' htmlFor='color'>farba: </label>
+                            <input className='w3-input w3-border' type='text' id='color' ref={colorInputRef}></input>
+                        </p>
+                        {colorIsInvalid && <p className='w3-red'>Neplatný údaj. Zadajte max 20 znakov.</p>}
+                        <p>
+                            <label className='w3-text-indigo' htmlFor='vin'>výrobné číslo: </label>
+                            <input className='w3-input w3-border' type='text' id='vin' ref={vinInputRef}></input>
+                        </p>
+                        {vinIsInvalid && <p className='w3-red'>Neplatný údaj. Zadajte max 17 znakov.</p>}
+                        <FuelTable setFuelList={setVehicleFuel} fuelList={vehicleFuel} />
+                        {vehicleFuelIsInvalid && <p className='w3-red'>Povinný údaj.</p>}
+                        {vehicleId && <p>
+                            <label className='w3-text-indigo' htmlFor='createdAt'>vytvorené: </label>
+                            <input className='w3-input w3-border' type='text' id='createdAt' readOnly ref={createdAtInputRef}></input>
+                        </p>}
+                        {vehicleId && <p>
+                            <label className='w3-text-indigo' htmlFor='updatedAt'>upravené: </label>
+                            <input className='w3-input w3-border' type='text' id='updatedAt' readOnly ref={updatedAtInputRef}></input>
+                        </p>}
                     </div>
-                    <p>
-                        <label className='w3-text-indigo' htmlFor='color'>farba: </label>
-                        <input className='w3-input w3-border' type='text' id='color' ref={colorInputRef}></input>
-                    </p>
-                    {colorIsInvalid && <p className='w3-red'>Neplatný údaj. Zadajte max 20 znakov.</p>}
-                    <p>
-                        <label className='w3-text-indigo' htmlFor='vin'>výrobné číslo: </label>
-                        <input className='w3-input w3-border' type='text' id='vin' ref={vinInputRef}></input>
-                    </p>
-                    {vinIsInvalid && <p className='w3-red'>Neplatný údaj. Zadajte max 17 znakov.</p>}
-                    <FuelTable setFuelList={setVehicleFuel} fuelList={vehicleFuel} />
-                    {vehicleFuelIsInvalid && <p className='w3-red'>Povinný údaj.</p>}
-                    {vehicleId && <p>
-                        <label className='w3-text-indigo' htmlFor='createdAt'>vytvorené: </label>
-                        <input className='w3-input w3-border' type='text' id='createdAt' readOnly ref={createdAtInputRef}></input>
-                    </p>}
-                    {vehicleId && <p>
-                        <label className='w3-text-indigo' htmlFor='updatedAt'>upravené: </label>
-                        <input className='w3-input w3-border' type='text' id='updatedAt' readOnly ref={updatedAtInputRef}></input>
-                    </p>}
+                    <footer className='w3-container w3-light-grey'>
+                        <p>
+                            <button className='w3-button w3-indigo' onClick={props.onCancel}>Zrušiť</button>
+                            <button className='w3-button w3-indigo w3-right' onClick={submitHandler}>Potvrdiť</button>
+                        </p>
+                    </footer>
                 </div>
-                <footer className='w3-container w3-light-grey'>
-                    <p>
-                        <button className='w3-button w3-indigo' onClick={props.onCancel}>Zrušiť</button>
-                        <button className='w3-button w3-indigo w3-right' onClick={submitHandler}>Potvrdiť</button>
-                    </p>
-                </footer>
             </div>
-        </div>
+        </Fragment>
     );
 };
 

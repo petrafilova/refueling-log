@@ -4,18 +4,22 @@ import RefuelingTable from './RefuelingTable';
 import Selection from './Selection';
 import RefuelingDialog from './RefuelingDialog';
 import ModalDialog from '../UI/ModalDialog';
+import Loading from '../Layout/Loading';
 
 const Refueling = () => {
     const [fuelId, setFuelId] = useState();
     const [list, setList] = useState([]);
-
+    const [isLoading, setIsLoading] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
     const [fuelLogId, setFuelLogId] = useState(false);
     const [editDialogIsVisible, setEditDialogIsVisible] = useState(false);
     const [deleteDialogIsVisible, setDeleteDialogIsVisible] = useState(false);
 
     const records = useCallback((fId) => {
         if (fId) {
+            setIsLoading(true);
             listOfFuelLogs(fId, { page: 0, pageSize: 10, order: 'DESC' }).then((data) => {
+                setIsLoading(false);
                 setList(data);
             });
         } else {
@@ -53,7 +57,9 @@ const Refueling = () => {
     };
 
     const deleteSingleFuelLog = async () => {
+        setIsDeleting(true);
         await deleteFuelLog(fuelLogId);
+        setIsDeleting(false);
         setFuelLogId();
         setDeleteDialogIsVisible(false);
         records(fuelId);
@@ -61,6 +67,7 @@ const Refueling = () => {
 
     return (
         <Fragment>
+            {(isLoading || isDeleting) && <Loading />}
             <div className='w3-bar'>
                 <h1 className='w3-left'>Záznamy tankovania</h1>
             </div>

@@ -1,0 +1,25 @@
+name: Docker Image CI
+
+on:
+  push:
+    tags: [ "*" ]
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: docker login
+      env:
+        DOCKER_USER: ${{secrets.DOCKER_USER}}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+      run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+    - name: Build Frontend Docker image
+      run: docker build . -f Dockerfile.frontend -t petrafilova/refueling-log-frontend:${{github.ref_name}} -t petrafilova/refueling-log-frontend:latest
+    - name: Build Backend Docker image
+      run: docker build . -f Dockerfile.backend -t petrafilova/refueling-log-backend:${{github.ref_name}} -t petrafilova/refueling-log-backend:latest
+    - name: Docker push frontend image
+      run: docker image push --all-tags ${{secrets.DOCKER_USER}}/refueling-log-frontend
+    - name: Docker push backend image
+      run: docker image push --all-tags ${{secrets.DOCKER_USER}}/refueling-log-backend
+      

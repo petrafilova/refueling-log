@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import AuthContext from '../../store/auth-context';
 import { password } from '../../lib/api';
 import ChangePasswordDialog from '../UI/ChangePasswordDialog';
+import Loading from '../Layout/Loading';
 
 const ChangePassword = () => {
     const authCtx = useContext(AuthContext);
     const navigate = useNavigate();
     const [changePasswordDialogIsVisible, setChangePasswordDialogIsVisible] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const showChangePasswordDialogHandler = () => {
         setChangePasswordDialogIsVisible(true);
@@ -24,12 +26,15 @@ const ChangePassword = () => {
             password: enteredCurrentPassword,
             newPassword: enteredNewPassword,
         };
+        setIsLoading(true);
         const success = await password(newPassword);
+        setIsLoading(false);
         success && setChangePasswordDialogIsVisible(false);
     };
 
     return (
         <Fragment>
+            {isLoading && <Loading />}
             <div className='smFullWidth'>
                 <button className='w3-button w3-indigo add-button-margin smFullWidth' onClick={showChangePasswordDialogHandler}>Zmeniť heslo</button>
             </div>
