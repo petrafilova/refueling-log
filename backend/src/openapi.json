@@ -2,7 +2,7 @@
     "openapi": "3.0.2",
     "info": {
         "title": "Refueling-log-backend",
-        "version": "0.0.1",
+        "version": "1.0.0",
         "license": {
             "name": "MIT"
         },
@@ -872,10 +872,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/SimpleFuelLog"
-                                    }
+                                    "$ref": "#/components/schemas/SimpleFuelLogPage"
                                 }
                             }
                         }
@@ -1108,10 +1105,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/SimpleExpenseLogPage"
-                                    }
+                                    "$ref": "#/components/schemas/SimpleExpenseLogPage"
                                 }
                             }
                         }

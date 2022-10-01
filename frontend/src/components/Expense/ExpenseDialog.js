@@ -84,7 +84,7 @@ const ExpenseDialog = (props) => {
                 setIsLoading(false);
                 priceInputRef.current.value = data.price;
                 mileageInputRef.current.value = data.mileage;
-                setDate(isoDateTimeToString(data.dateTime));
+                setDate(new Date(data.dateTime));
                 commentInputRef.current.value = data.comment;
                 createdAtInputRef.current.value = isoDateTimeToString(data.createdAt);
                 updatedAtInputRef.current.value = isoDateTimeToString(data.updatedAt);

@@ -50,6 +50,12 @@ Application demo is running on https://tankovanie.ddns.net between 08:30 - 22:00
 11) backend /api/health and /api/api-docs should be available on port 3000 while frontend is running
 12) to shutdown backend server run `docker compose down` in frontend directory
 
+## This application depends on 3rd party libraries.
+
+Backend: Libraries are listed in file backend/LICENSES
+
+Frontend: Libraries are listed in file frontend/LICENSES
+
 ### How to update list of used libraries
 
 If added new dependencies, list of used libraries can be updated using this script
@@ -88,3 +94,9 @@ test/Test1234
 | EMAIL_SECURE | boolean | false ||It TLS should be used|
 | CONFIRM_URL | string | http://localhost:3000/confirm/ ||Url in emal for confirming registration|
 | REGISTRATION_ENABLED | boolean | false ||Enable posibility to register new users|
+
+### Frontend
+
+| Name | Type of value | Default | Required | Description |
+|---|---|---|---|---|
+| BASE_API_URL | string |/api||Base url to backend api|

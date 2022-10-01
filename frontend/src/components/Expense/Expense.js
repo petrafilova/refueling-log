@@ -18,6 +18,8 @@ const Expense = () => {
     const [singleExpenseId, setSingleExpenseId] = useState();
     const [modalDialog, setModalDialog] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [page, setPage] = useState(0);
+    const [count, setCount] = useState(0);
 
     const listOfTypes = useCallback(() => {
         setIsLoading(true);
@@ -78,15 +80,42 @@ const Expense = () => {
         }
     };
 
+    const onChangeVehicleHandler = useCallback((vehicle) => {
+        console.log(vehicle);
+        setChosenVehicle(vehicle);
+        setPage(0);
+    }, []);
+
+    const onChangeTypeHandler = useCallback((type) => {
+        console.log(type);
+        setChosenType(type);
+        setPage(0);
+    }, []);
+
     const getListOfExpenses = useCallback(() => {
         if (chosenType && chosenVehicle) {
             setIsLoading(true);
-            listOfExpenseLogs(chosenVehicle, { page: 0, pageSize: 10, order: 'DESC', typeId: +chosenType }).then((data) => {
+            listOfExpenseLogs(chosenVehicle, { page: page, pageSize: 10, order: 'DESC', typeId: +chosenType }).then((data) => {
                 setIsLoading(false);
-                setList(data);
+                setList(data.rows);
+                setCount(data.count);
             });
         }
-    }, [chosenType, chosenVehicle]);
+    }, [chosenType, chosenVehicle, page]);
+
+    const previousPageHandler = () => {
+        setPage((page) => {
+            if (page === 0) {
+                return 0;
+            } else {
+                return page - 1;
+            }
+        });
+    };
+
+    const nextPageHandler = () => {
+        setPage((page) => page + 1);
+    };
 
     useEffect(() => {
         getListOfExpenses();
@@ -98,8 +127,8 @@ const Expense = () => {
             <div className='w3-bar'>
                 <h1 className='w3-left'>Zoznam výdavkov</h1>
             </div>
-            <SelectVehicle setChosenVehicle={setChosenVehicle} />
-            <SelectExpenseType setChosenType={setChosenType} listOfTypes={listOfET} chosenType={chosenType} />
+            <SelectVehicle setChosenVehicle={onChangeVehicleHandler} />
+            <SelectExpenseType setChosenType={onChangeTypeHandler} listOfTypes={listOfET} chosenType={chosenType} />
             <div className='w3-left smFullWidth'>
                 <button className='w3-button w3-indigo add-button-margin smFullWidth' onClick={expensesTypesHandler}>Spravovať typy výdavkov</button>
             </div>
@@ -109,6 +138,10 @@ const Expense = () => {
             <div className='w3-bar'>
                 {list.length < 1 && <p>Zoznam výdavkov pre dané vozidlo a typ výdavku je prázdny.</p>}
                 {list.length >= 1 && <ListOfExpenses list={list} editExpense={editExpense} deleteExpense={deleteExpense} listOfTypes={listOfET} />}
+            </div>
+            <div className='w3-bar w3-border'>
+                <button className='w3-button' disabled={page === 0} onClick={previousPageHandler}>&#10094; Previous</button>
+                <button className='w3-button w3-right' disabled={(count/(page + 1)) <= 10} onClick={nextPageHandler}>Next &#10095;</button>
             </div>
             {expenseTypeDialog && <ExpenseTypeDialog onCancel={cancelExpenseType} listOfExpenses={listOfET} loadList={listOfTypes} />}
             {expenseDialog && <ExpenseDialog onCancel={cancelExpense} vehicleId={chosenVehicle} expenseTypeId={chosenType} listOfExpenses={getListOfExpenses} singleExpenseId={singleExpenseId} />}

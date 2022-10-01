@@ -7,7 +7,7 @@ name                               installed version  author                    
 @testing-library/react             13.4.0             Kent C. Dodds <me@kentcdodds.com> (https://kentcdodds.com)           MIT                  git+https://github.com/testing-library/react-testing-library.git
 @testing-library/user-event        13.5.0             Giorgio Polvara <polvara@gmail.com>                                  MIT                  git+https://github.com/testing-library/user-event.git
 chart.js                           3.9.1              n/a                                                                  MIT                  git+https://github.com/chartjs/Chart.js.git
-eslint                             8.23.1             Nicholas C. Zakas <nicholas+npm@nczconsulting.com>                   MIT                  git+https://github.com/eslint/eslint.git
+eslint                             8.24.0             Nicholas C. Zakas <nicholas+npm@nczconsulting.com>                   MIT                  git+https://github.com/eslint/eslint.git
 eslint-plugin-react                7.31.8             Yannick Croissant <yannick.croissant+npm@gmail.com>                  MIT                  git+https://github.com/jsx-eslint/eslint-plugin-react.git
 http-proxy-middleware              2.0.6              Steven Chim                                                          MIT                  git+https://github.com/chimurai/http-proxy-middleware.git
 jwt-decode                         3.1.2              Jose F. Romaniello <jfromaniello@gmail.com> (http://joseoncode.com)  MIT                  git://github.com/auth0/jwt-decode.git
@@ -15,6 +15,6 @@ react                              18.2.0             n/a                       
 react-chartjs-2                    4.3.1              Jeremy Ayerst                                                        MIT                  git+https://github.com/reactchartjs/react-chartjs-2.git
 react-datepicker                   4.8.0              HackerOne                                                            MIT                  git://github.com/Hacker0x01/react-datepicker.git
 react-dom                          18.2.0             n/a                                                                  MIT                  git+https://github.com/facebook/react.git
-react-router-dom                   6.4.0              Remix Software <hello@remix.run>                                     MIT                  git+https://github.com/remix-run/react-router.git
+react-router-dom                   6.4.1              Remix Software <hello@remix.run>                                     MIT                  git+https://github.com/remix-run/react-router.git
 react-scripts                      5.0.1              n/a                                                                  MIT                  git+https://github.com/facebook/create-react-app.git
 web-vitals                         2.1.4              Philip Walton philip@philipwalton.com http://philipwalton.com        Apache-2.0           git+https://github.com/GoogleChrome/web-vitals.git
