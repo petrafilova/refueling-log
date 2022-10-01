@@ -1110,7 +1110,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/SimpleExpenseLog"
+                                        "$ref": "#/components/schemas/SimpleExpenseLogPage"
                                     }
                                 }
                             }
@@ -1867,6 +1867,33 @@
                     }
                 }
             },
+            "SimpleFuelLogPage": {
+                "type": "object",
+                "required": ["page", "pageSize", "rows", "count"],
+                "properties": {
+                    "page": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "pageSize": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 1
+                    },
+                    "rows": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SimpleFuelLog"
+                        }
+                    },
+                    "count": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    }
+                }
+            },
             "SimpleFuelLog": {
                 "type": "object",
                 "required": ["id", "quantity", "totalPrice", "dateTime"],
@@ -2031,6 +2058,33 @@
             "UpdateFuelLog": {
                 "type": "object",
                 "$ref": "#/components/schemas/CreateFuelLog"
+            },
+            "SimpleExpenseLogPage": {
+                "type": "object",
+                "required": ["page", "pageSize", "rows", "count"],
+                "properties": {
+                    "page": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "pageSize": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 1
+                    },
+                    "rows": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SimpleExpenseLog"
+                        }
+                    },
+                    "count": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    }
+                }
             },
             "SimpleExpenseLog": {
                 "type": "object",

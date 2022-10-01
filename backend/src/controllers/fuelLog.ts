@@ -18,7 +18,7 @@ export const getByVehicleFuel = (
 
     checkVehicleFuelOwnership(req.username!, vehicleFuelId)
         .then(() => {
-            return FuelLog.findAll({
+            return FuelLog.findAndCountAll({
                 where: {
                     vehicleFuelId: vehicleFuelId,
                 },
@@ -29,7 +29,12 @@ export const getByVehicleFuel = (
             });
         })
         .then((fuelLogs) => {
-            res.status(200).json(fuelLogs);
+            res.status(200).json({
+                page: +req.body.page,
+                pageSize: +req.body.pageSize,
+                rows: fuelLogs.rows,
+                count: fuelLogs.count,
+            });
         })
         .catch((err) => {
             next(err);

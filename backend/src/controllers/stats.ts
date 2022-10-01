@@ -6,6 +6,7 @@ import FuelLog from '../models/database/fuelLog';
 import MonthStatistics from '../models/database/monthStatistics';
 import { DateTime } from 'luxon';
 import { checkVehicleOwnership } from '../util/vehicleOwnership';
+import { roundToTwoDecimals } from '../util/numberFormatter';
 
 export const getTotalExpenses = async (
     req: Request,
@@ -28,7 +29,7 @@ export const getTotalExpenses = async (
                     vehicleFuelId: e.id,
                 },
             }).then((sum) => {
-                return { price: sum ?? 0, fuel: e.fuel };
+                return { price: roundToTwoDecimals(sum), fuel: e.fuel };
             })
         );
 
@@ -56,7 +57,7 @@ export const getTotalExpenses = async (
                     expenseTypeId: et.id,
                 },
             }).then((sum) => {
-                return { price: sum ?? 0, type: et.name };
+                return { price: roundToTwoDecimals(sum), type: et.name };
             })
         );
 
@@ -68,10 +69,10 @@ export const getTotalExpenses = async (
         res.status(200).json({
             mileage: mileage?.mileage,
             costOfFuel,
-            costOfFuelTotal,
+            costOfFuelTotal: roundToTwoDecimals(costOfFuelTotal),
             expenses,
-            expensesTotal,
-            sum: expensesTotal + costOfFuelTotal,
+            expensesTotal: roundToTwoDecimals(expensesTotal),
+            sum: roundToTwoDecimals(expensesTotal + costOfFuelTotal),
         });
     } catch (err) {
         next(err);
@@ -127,7 +128,7 @@ export const getExpenses = async (
                 type: et.name,
                 stats: stat.map((s) => {
                     return {
-                        price: s.priceSummary,
+                        price: roundToTwoDecimals(s.priceSummary),
                         date: s.year + '-' + (s.month + 1),
                     };
                 }),
@@ -187,7 +188,7 @@ export const getFuel = async (
                 stats: stat.map((fuelLog) => {
                     return {
                         dateTime: fuelLog.dateTime,
-                        unitPrice: fuelLog.unitPrice,
+                        unitPrice: roundToTwoDecimals(fuelLog.unitPrice),
                     };
                 }),
             };
@@ -248,7 +249,7 @@ export const getConsumption = async (
                 stats: stat.map((fuelLog) => {
                     return {
                         dateTime: fuelLog.dateTime,
-                        consumption: fuelLog.consumption,
+                        consumption: roundToTwoDecimals(fuelLog.consumption),
                     };
                 }),
             };

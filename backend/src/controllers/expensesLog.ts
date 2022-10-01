@@ -31,7 +31,7 @@ export const getByVehicle = (
                 where.typeId = typeId;
             }
 
-            return ExpensesLog.findAll({
+            return ExpensesLog.findAndCountAll({
                 where: where,
                 attributes: ['id', 'typeId', 'price', 'dateTime'],
                 limit: limit,
@@ -40,7 +40,12 @@ export const getByVehicle = (
             });
         })
         .then((expensesLogs) => {
-            res.status(200).json(expensesLogs);
+            res.status(200).json({
+                page: +req.body.page,
+                pageSize: +req.body.pageSize,
+                rows: expensesLogs.rows,
+                count: expensesLogs.count,
+            });
         })
         .catch((err) => {
             next(err);
