@@ -16,7 +16,7 @@ const PasswordDialog = (props) => {
                 </header>
                 <div className='w3-container'>
                     <p>
-                        <label className='w3-text-indigo' htmlFor='currentPassword'>heslo: </label>
+                        <label className='w3-text-indigo' htmlFor='currentPassword'>Heslo: </label>
                         <input className='w3-input w3-border' type='password' id='password' ref={passwordInputRef}></input>
                     </p>
                 </div>

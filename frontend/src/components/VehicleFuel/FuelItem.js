@@ -16,7 +16,7 @@ const FuelItem = (props) => {
                     <h2>Zmena paliva</h2>
                 </header>
                 <div className='w3-container w3-section'>
-                    <label className='w3-text-indigo' htmlFor='fuel'>zmeniť typ paliva na: </label>
+                    <label className='w3-text-indigo' htmlFor='fuel'>Zmeniť typ paliva na: </label>
                     <div className='flex'>
                         <select className='w3-select w3-border' name='fuel' id='fuel' defaultValue={props.fuelType} onChange={selectChangeHandler}>
                             {FuelTypes.filter((f) => (props.fuelList.findIndex(fl => fl.fuel === f) === -1) || f === props.fuelType).map((ft) => <option key={ft} value={ft}>{formatFuelName(ft)}</option>)}

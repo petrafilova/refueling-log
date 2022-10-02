@@ -170,27 +170,27 @@ const RefuelingDialog = (props) => {
                     </header>
                     <div className='w3-container'>
                         <p>
-                            <label className='w3-text-indigo' htmlFor='quantity'>množstvo: <span className='w3-text-red'>*</span></label>
+                            <label className='w3-text-indigo' htmlFor='quantity'>Množstvo: <span className='w3-text-red'>*</span></label>
                             <input className='w3-input w3-border' type='number' id='quantity' ref={quantityInputRef} onChange={count}></input>
                         </p>
                         {!quantityIsValid && <p className='w3-red'>Neplatný údaj.</p>}
                         <p>
-                            <label className='w3-text-indigo' htmlFor='unitPrice'>jednotková cena: <span className='w3-text-red'>*</span></label>
+                            <label className='w3-text-indigo' htmlFor='unitPrice'>Jednotková cena: <span className='w3-text-red'>*</span></label>
                             <input className='w3-input w3-border' type='number' id='unitPrice' ref={unitPriceInputRef} onChange={count}></input>
                         </p>
                         {!unitPriceIsValid && <p className='w3-red'>Neplatný údaj.</p>}
                         <p>
-                            <label className='w3-text-indigo' htmlFor='totalPrice'>celková cena: <span className='w3-text-red'>*</span></label>
+                            <label className='w3-text-indigo' htmlFor='totalPrice'>Celková cena: <span className='w3-text-red'>*</span></label>
                             <input className='w3-input w3-border' type='number' id='totalPrice' ref={totalPriceInputRef} onChange={count}></input>
                         </p>
                         {!totalPriceIsValid && <p className='w3-red'>Neplatný údaj.</p>}
                         <p>
-                            <label className='w3-text-indigo' htmlFor='mileage'>najazdené kilometre: <span className='w3-text-red'>*</span></label>
+                            <label className='w3-text-indigo' htmlFor='mileage'>Najazdené kilometre: <span className='w3-text-red'>*</span></label>
                             <input className='w3-input w3-border' type='number' id='mileage' ref={mileageInputRef}></input>
                         </p>
                         {!mileageIsValid && <p className='w3-red'>Neplatný údaj.</p>}
                         <div>
-                            <label className='w3-text-indigo' htmlFor='dateTime'>dátum a čas: <span className='w3-text-red'>*</span></label>
+                            <label className='w3-text-indigo' htmlFor='dateTime'>Dátum a čas: <span className='w3-text-red'>*</span></label>
                             <DatePicker
                                 className='w3-input w3-border'
                                 type='datetime-local'
@@ -205,7 +205,7 @@ const RefuelingDialog = (props) => {
                         </div>
                         {!dateTimeIsValid && <p className='w3-red'>Neplatný údaj.</p>}
                         <div>
-                            <p className='w3-text-indigo'>plná nádrž: <span className='w3-text-red'>*</span></p>
+                            <p className='w3-text-indigo'>Plná nádrž: <span className='w3-text-red'>*</span></p>
                             <input type='radio' id='fullTrue' name='full' value='true' checked={full === true} onChange={fullChanged}></input>
                             <label htmlFor='fullTrue'> áno</label><br></br>
                             <input type='radio' id='fullFalse' name='full' value='false' checked={full === false} onChange={fullChanged}></input>
@@ -213,7 +213,7 @@ const RefuelingDialog = (props) => {
                         </div>
                         {!fullIsValid && <p className='w3-red'>Neplatný údaj.</p>}
                         <div>
-                            <p className='w3-text-indigo'>chýbajúce predchádzajúce údaje: <span className='w3-text-red'>*</span></p>
+                            <p className='w3-text-indigo'>Chýbajúce predchádzajúce údaje: <span className='w3-text-red'>*</span></p>
                             <input type='radio' id='previousMissingTrue' name='previousMissing' value='true' checked={prevMissing === true} onChange={prevMissingChanged}></input>
                             <label htmlFor='previousMissingTrue'> áno</label><br></br>
                             <input type='radio' id='previousMissingFalse' name='previousMissing' value='false' checked={prevMissing === false} onChange={prevMissingChanged}></input>
@@ -221,15 +221,15 @@ const RefuelingDialog = (props) => {
                         </div>
                         {!prevMissingIsValid && <p className='w3-red'>Neplatný údaj.</p>}
                         {props.singleFuelLogId && <p>
-                            <label className='w3-text-indigo' htmlFor='consumption'>spotreba: </label>
+                            <label className='w3-text-indigo' htmlFor='consumption'>Spotreba: </label>
                             <input className='w3-input w3-border' type='number' id='consumption' readOnly ref={consumptionInputRef}></input>
                         </p>}
                         {props.singleFuelLogId && <p>
-                            <label className='w3-text-indigo' htmlFor='createdAt'>vytvorené: </label>
+                            <label className='w3-text-indigo' htmlFor='createdAt'>Vytvorené: </label>
                             <input className='w3-input w3-border' type='text' id='createdAt' readOnly ref={createdAtInputRef}></input>
                         </p>}
                         {props.singleFuelLogId && <p>
-                            <label className='w3-text-indigo' htmlFor='updatedAt'>upravené: </label>
+                            <label className='w3-text-indigo' htmlFor='updatedAt'>Upravené: </label>
                             <input className='w3-input w3-border' type='text' id='updatedAt' readOnly ref={updatedAtInputRef}></input>
                         </p>}
                     </div>

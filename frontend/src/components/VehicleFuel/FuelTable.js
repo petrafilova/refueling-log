@@ -68,7 +68,7 @@ const FuelTable = (props) => {
 
     return (
         <div>
-            <label className='w3-text-indigo' htmlFor='fuel'>palivo: <span className='w3-text-red'>*</span></label>
+            <label className='w3-text-indigo' htmlFor='fuel'>Palivo: <span className='w3-text-red'>*</span></label>
             <div className='flex'>
                 <select className='w3-select w3-border' name='fuel' id='fuel' value={fuel} onChange={selectChangeHandler}>
                     <option value='' disabled>Vyberte typ paliva</option>

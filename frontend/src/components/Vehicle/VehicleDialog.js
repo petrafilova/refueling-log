@@ -162,22 +162,22 @@ const VehicleDialog = (props) => {
                     </header>
                     <div className='w3-container'>
                         <p>
-                            <label className='w3-text-indigo' htmlFor='brand'>výrobca: <span className='w3-text-red'>*</span></label>
+                            <label className='w3-text-indigo' htmlFor='brand'>Výrobca: <span className='w3-text-red'>*</span></label>
                             <input className='w3-input w3-border' type='text' id='brand' ref={brandInputRef}></input>
                         </p>
                         {brandIsInvalid && <p className='w3-red'>Neplatný údaj. Zadajte min 1 a max 20 znakov.</p>}
                         <p>
-                            <label className='w3-text-indigo' htmlFor='model'>model: <span className='w3-text-red'>*</span></label>
+                            <label className='w3-text-indigo' htmlFor='model'>Model: <span className='w3-text-red'>*</span></label>
                             <input className='w3-input w3-border' type='text' id='model' ref={modelInputRef}></input>
                         </p>
                         {modelIsInvalid && <p className='w3-red'>Neplatný údaj. Zadajte min 1 a max 60 znakov.</p>}
                         <p>
-                            <label className='w3-text-indigo' htmlFor='licensePlateNo'>štátna poznávacia značka: <span className='w3-text-red'>*</span></label>
+                            <label className='w3-text-indigo' htmlFor='licensePlateNo'>Štátna poznávacia značka: <span className='w3-text-red'>*</span></label>
                             <input className='w3-input w3-border' type='text' id='licensePlateNo' ref={licensePlateNoInputRef}></input>
                         </p>
                         {licenseIsInvalid && <p className='w3-red'>Neplatný údaj. Zadajte min 1 a max 10 znakov.</p>}
                         <div>
-                            <label className='w3-text-indigo' htmlFor='dateOfReg'>dátum registrácie: </label>
+                            <label className='w3-text-indigo' htmlFor='dateOfReg'>Dátum registrácie: </label>
                             <DatePicker
                                 className='w3-input w3-border'
                                 type='date'
@@ -189,23 +189,23 @@ const VehicleDialog = (props) => {
                             />
                         </div>
                         <p>
-                            <label className='w3-text-indigo' htmlFor='color'>farba: </label>
+                            <label className='w3-text-indigo' htmlFor='color'>Farba: </label>
                             <input className='w3-input w3-border' type='text' id='color' ref={colorInputRef}></input>
                         </p>
                         {colorIsInvalid && <p className='w3-red'>Neplatný údaj. Zadajte max 20 znakov.</p>}
                         <p>
-                            <label className='w3-text-indigo' htmlFor='vin'>výrobné číslo: </label>
+                            <label className='w3-text-indigo' htmlFor='vin'>Výrobné číslo: </label>
                             <input className='w3-input w3-border' type='text' id='vin' ref={vinInputRef}></input>
                         </p>
                         {vinIsInvalid && <p className='w3-red'>Neplatný údaj. Zadajte max 17 znakov.</p>}
                         <FuelTable setFuelList={setVehicleFuel} fuelList={vehicleFuel} />
                         {vehicleFuelIsInvalid && <p className='w3-red'>Povinný údaj.</p>}
                         {vehicleId && <p>
-                            <label className='w3-text-indigo' htmlFor='createdAt'>vytvorené: </label>
+                            <label className='w3-text-indigo' htmlFor='createdAt'>Vytvorené: </label>
                             <input className='w3-input w3-border' type='text' id='createdAt' readOnly ref={createdAtInputRef}></input>
                         </p>}
                         {vehicleId && <p>
-                            <label className='w3-text-indigo' htmlFor='updatedAt'>upravené: </label>
+                            <label className='w3-text-indigo' htmlFor='updatedAt'>Upravené: </label>
                             <input className='w3-input w3-border' type='text' id='updatedAt' readOnly ref={updatedAtInputRef}></input>
                         </p>}
                     </div>

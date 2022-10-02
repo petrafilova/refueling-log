@@ -69,7 +69,7 @@ const SignUp = () => {
                 <form onSubmit={submitHandler}>
                     <div className='w3-padding-16'>
                         <label className='w3-text-indigo' htmlFor='text'>
-                            používateľské meno
+                            Používateľské meno
                         </label>
                         <input
                             className='w3-input w3-border'
@@ -81,7 +81,7 @@ const SignUp = () => {
                     </div>
                     <div className='w3-padding-16'>
                         <label className='w3-text-indigo' htmlFor='password'>
-                            prihlasovacie heslo
+                            Prihlasovacie heslo
                         </label>
                         <input
                             className='w3-input w3-border'
@@ -93,7 +93,7 @@ const SignUp = () => {
                     </div>
                     <div className='w3-padding-16'>
                         <label className='w3-text-indigo' htmlFor='email'>
-                            email
+                            Email
                         </label>
                         <input
                             className="w3-input w3-border"

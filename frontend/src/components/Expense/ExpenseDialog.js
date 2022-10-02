@@ -103,17 +103,17 @@ const ExpenseDialog = (props) => {
                     </header>
                     <div className='w3-container'>
                         <p>
-                            <label className='w3-text-indigo' htmlFor='price'>cena: <span className='w3-text-red'>*</span></label>
+                            <label className='w3-text-indigo' htmlFor='price'>Cena: <span className='w3-text-red'>*</span></label>
                             <input className='w3-input w3-border' type='number' id='price' ref={priceInputRef}></input>
                         </p>
                         {priceInputIsInvalid && <p className='w3-red'>Neplatný údaj</p>}
                         <p>
-                            <label className='w3-text-indigo' htmlFor='mileage'>najazdené kilometre: <span className='w3-text-red'>*</span></label>
+                            <label className='w3-text-indigo' htmlFor='mileage'>Najazdené kilometre: <span className='w3-text-red'>*</span></label>
                             <input className='w3-input w3-border' type='number' id='mileage' ref={mileageInputRef}></input>
                         </p>
                         {mileageInputIsInvalid && <p className='w3-red'>Neplatný údaj</p>}
                         <div>
-                            <label className='w3-text-indigo' htmlFor='dateTime'>dátum a čas: <span className='w3-text-red'>*</span></label>
+                            <label className='w3-text-indigo' htmlFor='dateTime'>Dátum a čas: <span className='w3-text-red'>*</span></label>
                             <DatePicker
                                 className='w3-input w3-border'
                                 type='datetime-local'
@@ -128,15 +128,15 @@ const ExpenseDialog = (props) => {
                         </div>
                         {dateTimeInputIsInvalid && <p className='w3-red'>Neplatný údaj</p>}
                         <p>
-                            <label className='w3-text-indigo' htmlFor='comment'>komentár: </label>
+                            <label className='w3-text-indigo' htmlFor='comment'>Komentár: </label>
                             <input className='w3-input w3-border' type='text' id='comment' ref={commentInputRef}></input>
                         </p>
                         {props.singleExpenseId && <p>
-                            <label className='w3-text-indigo' htmlFor='createdAt'>vytvorené: </label>
+                            <label className='w3-text-indigo' htmlFor='createdAt'>Vytvorené: </label>
                             <input className='w3-input w3-border' type='text' id='createdAt' readOnly ref={createdAtInputRef}></input>
                         </p>}
                         {props.singleExpenseId && <p>
-                            <label className='w3-text-indigo' htmlFor='updatedAt'>upravené: </label>
+                            <label className='w3-text-indigo' htmlFor='updatedAt'>Upravené: </label>
                             <input className='w3-input w3-border' type='text' id='updatedAt' readOnly ref={updatedAtInputRef}></input>
                         </p>}
                     </div>

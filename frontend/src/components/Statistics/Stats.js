@@ -140,7 +140,7 @@ const Stats = (props) => {
                 <label className='w3-text-indigo' htmlFor='date'>Vyberte dátum:</label>
                 <div>
                     <div className='w3-left w3-margin-top smFullWidth w3-'>
-                        <label className='w3-text-indigo' htmlFor='date'>od:</label>
+                        <label className='w3-text-indigo' htmlFor='date'>Od:</label>
                         <DatePicker
                             selected={startDate}
                             onChange={(date) => setStartDate(date)}
@@ -156,7 +156,7 @@ const Stats = (props) => {
                         />
                     </div>
                     <div className='w3-right w3-section smFullWidth'>
-                        <label className='w3-text-indigo' htmlFor='date'>do:</label>
+                        <label className='w3-text-indigo' htmlFor='date'>Do:</label>
                         <DatePicker
                             selected={endDate}
                             onChange={(date) => setEndDate(date)}

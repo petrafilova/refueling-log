@@ -56,32 +56,32 @@ const SummaryPie = (props) => {
                 <table className='w3-table-all w3-section'>
                     <thead>
                         <tr className='w3-indigo'>
-                            <th>názov</th>
-                            <th>spolu</th>
+                            <th>Názov</th>
+                            <th>Spolu</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr >
-                            <td>najazdené kilometre</td>
+                            <td>Najazdené kilometre</td>
                             <td>{props.summaryData?.mileage} km</td>
                         </tr>
                         <tr >
-                            <td>výdavky za palivo</td>
+                            <td>Výdavky za palivo</td>
                             <td>{props.summaryData?.costOfFuelTotal} €</td>
                         </tr>
                         <tr >
-                            <td>iné výdavky</td>
+                            <td>Iné výdavky</td>
                             <td>{props.summaryData?.expensesTotal} €</td>
                         </tr>
                         <tr >
-                            <td>spolu za výdavky</td>
+                            <td>Spolu za výdavky</td>
                             <td>{props.summaryData?.sum} €</td>
                         </tr>
                     </tbody>
                     <thead>
                         <tr className='w3-indigo'>
-                            <th>výdavky za palivo</th>
-                            <th>spolu</th>
+                            <th>Výdavky za palivo</th>
+                            <th>Spolu</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -93,8 +93,8 @@ const SummaryPie = (props) => {
                     </tbody>
                     <thead>
                         <tr className='w3-indigo'>
-                            <th>iné výdavky</th>
-                            <th>spolu</th>
+                            <th>Iné výdavky</th>
+                            <th>Spolu</th>
                         </tr>
                     </thead>
                     <tbody>

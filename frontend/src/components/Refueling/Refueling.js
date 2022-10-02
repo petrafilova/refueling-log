@@ -105,8 +105,8 @@ const Refueling = () => {
             </div>
             {list.length >= 1 &&
                 <div className='w3-bar w3-border w3-margin-bottom'>
-                    <button className='w3-button' disabled={page === 0} onClick={previousPageHandler}>&#10094; Previous</button>
-                    <button className='w3-button w3-right' disabled={(count / (page + 1)) <= 10} onClick={nextPageHandler}>Next &#10095;</button>
+                    <button className='w3-button' disabled={page === 0} onClick={previousPageHandler}>&#10094; Predchádzajúca strana</button>
+                    <button className='w3-button w3-right' disabled={(count / (page + 1)) <= 10} onClick={nextPageHandler}>Nasledujúca strana &#10095;</button>
                 </div>}
             {editDialogIsVisible && <RefuelingDialog fuelId={fuelId} onCancel={cancel} singleFuelLogId={fuelLogId} />}
             {deleteDialogIsVisible && <ModalDialog text={'Naozaj si prajete vymazať záznam?'} onCancel={cancelDeleteDialog} onSubmit={deleteSingleFuelLog} />}
