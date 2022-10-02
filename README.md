@@ -52,9 +52,9 @@ Application demo is running on https://tankovanie.ddns.net between 08:30 - 22:00
 
 ## This application depends on 3rd party libraries.
 
-Backend: Libraries are listed in file backend/LICENSES
+Backend: Libraries are listed in file [backend/LIBRARIES](backend/LIBRARIES)
 
-Frontend: Libraries are listed in file frontend/LICENSES
+Frontend: Libraries are listed in file [frontend/LIBRARIES](frontend/LIBRARIES)
 
 ### How to update list of used libraries
 
