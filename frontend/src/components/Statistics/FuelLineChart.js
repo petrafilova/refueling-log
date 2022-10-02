@@ -29,7 +29,7 @@ const FuelLineChart = (props) => {
         plugins: {
             title: {
                 display: true,
-                text: 'graf vývoja jednotkových cien za palivo',
+                text: 'graf vývoja jednotkových cien paliva za dané obdobie',
             },
         },
     };

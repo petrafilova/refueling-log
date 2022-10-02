@@ -28,7 +28,7 @@ const ExpensesBarChart = (props) => {
         plugins: {
             title: {
                 display: true,
-                text: 'graf vývoja jednotkových cien za iné výdavky',
+                text: 'graf súčtu iných výdavkov za dané obdobie',
             },
         },
     };
