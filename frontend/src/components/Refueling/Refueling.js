@@ -103,10 +103,11 @@ const Refueling = () => {
                 {list.length < 1 && <div className='w3-padding-64'>Zoznam záznamov tankovania je prázdny.</div>}
                 {list.length >= 1 && <RefuelingTable list={list} editSingleFuelLog={editFuelLog} deleteSingleFuelLog={delFuelLog} />}
             </div>
-            <div className='w3-bar w3-border'>
-                <button className='w3-button' disabled={page === 0} onClick={previousPageHandler}>&#10094; Previous</button>
-                <button className='w3-button w3-right' disabled={(count/(page + 1)) <= 10} onClick={nextPageHandler}>Next &#10095;</button>
-            </div>
+            {list.length >= 1 &&
+                <div className='w3-bar w3-border w3-margin-bottom'>
+                    <button className='w3-button' disabled={page === 0} onClick={previousPageHandler}>&#10094; Previous</button>
+                    <button className='w3-button w3-right' disabled={(count / (page + 1)) <= 10} onClick={nextPageHandler}>Next &#10095;</button>
+                </div>}
             {editDialogIsVisible && <RefuelingDialog fuelId={fuelId} onCancel={cancel} singleFuelLogId={fuelLogId} />}
             {deleteDialogIsVisible && <ModalDialog text={'Naozaj si prajete vymazať záznam?'} onCancel={cancelDeleteDialog} onSubmit={deleteSingleFuelLog} />}
         </Fragment>

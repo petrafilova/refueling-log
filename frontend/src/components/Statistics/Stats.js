@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getVehicles, listOfVehicleFuels, vehicleFuelConsumptionStatistic, vehicleStatisticsSummary, vehicleFuelCostsStatistic, vehicleExpensesStatistic } from '../../lib/api';
 import { formatFuelName } from '../../lib/fuelNameFormatter';
 import DatePicker from 'react-datepicker';
@@ -64,19 +64,17 @@ const Stats = (props) => {
     };
 
     useEffect(() => {
-        setIsLoading(true);
-        if (props.tab === 'summary') {
-            if (chosenVehicle) {
-                (async () => {
+        (async () => {
+            setIsLoading(true);
+            if (props.tab === 'summary') {
+                if (chosenVehicle) {
                     const data = await vehicleStatisticsSummary(chosenVehicle);
                     setSummaryData(data);
-                })();
+                }
             }
-        }
 
-        if (props.tab === 'fuel') {
-            if (chosenVehicle && startDate && endDate && chosenFuel) {
-                (async () => {
+            if (props.tab === 'fuel') {
+                if (chosenVehicle && startDate && endDate && chosenFuel) {
                     const startMonth = padNumber(getMonth(startDate) + 1);
                     const endMonth = padNumber(getMonth(endDate) + 1);
                     const display = {
@@ -86,13 +84,11 @@ const Stats = (props) => {
                     };
                     const data = await vehicleFuelCostsStatistic(chosenVehicle, display);
                     setFuelData(data);
-                })();
+                }
             }
-        }
 
-        if (props.tab === 'expenses') {
-            if (chosenVehicle && startDate && endDate) {
-                (async () => {
+            if (props.tab === 'expenses') {
+                if (chosenVehicle && startDate && endDate) {
                     const startMonth = padNumber(getMonth(startDate) + 1);
                     const endMonth = padNumber(getMonth(endDate) + 1);
                     const selectedDate = {
@@ -101,13 +97,11 @@ const Stats = (props) => {
                     };
                     const data = await vehicleExpensesStatistic(chosenVehicle, selectedDate);
                     setExpensesData(data);
-                })();
+                }
             }
-        }
 
-        if (props.tab === 'consumption') {
-            if (chosenVehicle && startDate && endDate && chosenFuel) {
-                (async () => {
+            if (props.tab === 'consumption') {
+                if (chosenVehicle && startDate && endDate && chosenFuel) {
                     const startMonth = padNumber(getMonth(startDate) + 1);
                     const endMonth = padNumber(getMonth(endDate) + 1);
                     const display = {
@@ -117,14 +111,14 @@ const Stats = (props) => {
                     };
                     const data = await vehicleFuelConsumptionStatistic(chosenVehicle, display);
                     setConsumptionData(data);
-                })();
+                }
             }
-        }
-        setIsLoading(false);
+            setIsLoading(false);
+        })();
     }, [chosenVehicle, chosenFuel, startDate, endDate, props.tab]);
 
     return (
-        <Fragment>
+        <div className='w3-margin-bottom'>
             {isLoading && <Loading />}
             <div className='w3-section'>
                 <label className='w3-text-indigo' htmlFor='vehicle'>Vyberte vozidlo:</label>
@@ -142,7 +136,7 @@ const Stats = (props) => {
                     )};
                 </select>
             </div>}
-            {(props.tab === 'expenses' || props.tab === 'fuel' || props.tab === 'consumption') && <div>   
+            {(props.tab === 'expenses' || props.tab === 'fuel' || props.tab === 'consumption') && <div>
                 <label className='w3-text-indigo' htmlFor='date'>Vyberte dátum:</label>
                 <div>
                     <div className='w3-left w3-margin-top smFullWidth w3-'>
@@ -179,11 +173,11 @@ const Stats = (props) => {
                     </div>
                 </div>
             </div>}
-            {(props.tab === 'summary') && <SummaryPie summaryData={summaryData}/>}
-            {(props.tab === 'fuel') && <FuelLineChart fuelData={fuelData}/>}
-            {(props.tab === 'expenses') && <ExpensesBarChart expensesData={expensesData}/>}
-            {(props.tab === 'consumption') && <ConsumptionLineChart consumptionData={consumptionData}/>}
-        </Fragment>
+            {(props.tab === 'summary') && <SummaryPie summaryData={summaryData} />}
+            {(props.tab === 'fuel') && <FuelLineChart fuelData={fuelData} />}
+            {(props.tab === 'expenses') && <ExpensesBarChart expensesData={expensesData} />}
+            {(props.tab === 'consumption') && <ConsumptionLineChart consumptionData={consumptionData} />}
+        </div>
     );
 };
 

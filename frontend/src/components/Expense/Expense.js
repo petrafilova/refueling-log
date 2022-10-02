@@ -139,10 +139,11 @@ const Expense = () => {
                 {list.length < 1 && <p>Zoznam výdavkov pre dané vozidlo a typ výdavku je prázdny.</p>}
                 {list.length >= 1 && <ListOfExpenses list={list} editExpense={editExpense} deleteExpense={deleteExpense} listOfTypes={listOfET} />}
             </div>
-            <div className='w3-bar w3-border'>
-                <button className='w3-button' disabled={page === 0} onClick={previousPageHandler}>&#10094; Previous</button>
-                <button className='w3-button w3-right' disabled={(count/(page + 1)) <= 10} onClick={nextPageHandler}>Next &#10095;</button>
-            </div>
+            {list.length >= 1 &&
+                <div className='w3-bar w3-border w3-margin-bottom'>
+                    <button className='w3-button' disabled={page === 0} onClick={previousPageHandler}>&#10094; Previous</button>
+                    <button className='w3-button w3-right' disabled={(count / (page + 1)) <= 10} onClick={nextPageHandler}>Next &#10095;</button>
+                </div>}
             {expenseTypeDialog && <ExpenseTypeDialog onCancel={cancelExpenseType} listOfExpenses={listOfET} loadList={listOfTypes} />}
             {expenseDialog && <ExpenseDialog onCancel={cancelExpense} vehicleId={chosenVehicle} expenseTypeId={chosenType} listOfExpenses={getListOfExpenses} singleExpenseId={singleExpenseId} />}
             {modalDialog && <ModalDialog text={'Naozaj chcete vymazať výdavok?'} onCancel={cancelDeletion} onSubmit={deleteSingleExpense} />}
