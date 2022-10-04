@@ -7,6 +7,7 @@ import CustomError from '../models/customError';
 import { Transaction } from 'sequelize';
 import { CUSTOM_ERROR_CODES } from '../models/errorCodes';
 import { checkVehicleOwnership } from '../util/vehicleOwnership';
+import ExpenseType from '../models/database/expenseType';
 
 export const getByVehicle = (
     req: Request,
@@ -83,6 +84,15 @@ export const createExpensesLog = async (
     try {
         const expensesLog = await sequelize.transaction(async (t) => {
             await checkVehicleOwnership(req.username!, vehicleId, t);
+            let expenseType = await ExpenseType.findByPk(typeId, {
+                transaction: t,
+            });
+            if (!expenseType || expenseType.username !== req.username) {
+                const error = new CustomError();
+                error.code = CUSTOM_ERROR_CODES.NOT_FOUND;
+                error.statusCode = 404;
+                throw error;
+            }
             const expensesLog = await ExpensesLog.create(req.body, {
                 fields: [
                     'price',
@@ -122,7 +132,14 @@ export const updateExpensesLog = async (
             let expensesLog = await ExpensesLog.findByPk(expensesLogId, {
                 transaction: t,
             });
-            if (!expensesLog) {
+            let expenseType = await ExpenseType.findByPk(typeId, {
+                transaction: t,
+            });
+            if (
+                !expensesLog ||
+                !expenseType ||
+                expenseType.username !== req.username
+            ) {
                 const error = new CustomError();
                 error.code = CUSTOM_ERROR_CODES.NOT_FOUND;
                 error.statusCode = 404;
@@ -247,6 +264,7 @@ const updateStats = async (
             expenseTypeId: expenseTypeId,
         },
         limit: 1,
+        transaction: t,
     });
 
     if (stats) {
