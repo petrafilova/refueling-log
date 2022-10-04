@@ -81,13 +81,11 @@ const Expense = () => {
     };
 
     const onChangeVehicleHandler = useCallback((vehicle) => {
-        console.log(vehicle);
         setChosenVehicle(vehicle);
         setPage(0);
     }, []);
 
     const onChangeTypeHandler = useCallback((type) => {
-        console.log(type);
         setChosenType(type);
         setPage(0);
     }, []);
