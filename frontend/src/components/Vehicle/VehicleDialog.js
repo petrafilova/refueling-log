@@ -172,7 +172,7 @@ const VehicleDialog = (props) => {
                         </p>
                         {modelIsInvalid && <p className='w3-red'>Neplatný údaj. Zadajte min 1 a max 60 znakov.</p>}
                         <p>
-                            <label className='w3-text-indigo' htmlFor='licensePlateNo'>Štátna poznávacia značka: <span className='w3-text-red'>*</span></label>
+                            <label className='w3-text-indigo' htmlFor='licensePlateNo'>Evidenčné číslo vozidla: <span className='w3-text-red'>*</span></label>
                             <input className='w3-input w3-border' type='text' id='licensePlateNo' ref={licensePlateNoInputRef}></input>
                         </p>
                         {licenseIsInvalid && <p className='w3-red'>Neplatný údaj. Zadajte min 1 a max 10 znakov.</p>}

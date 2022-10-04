@@ -31,7 +31,7 @@ const Selection = (props) => {
                 setIsLoading(false);
                 setListOfFuels(fuels);
                 if (fuels.length > 0) {
-                    onChangeFuel(fuels[0].id);
+                    onChangeFuel(fuels[0]);
                 }
             })();
         }
@@ -42,7 +42,8 @@ const Selection = (props) => {
     };
 
     const selectFuelHandler = (event) => {
-        onChangeFuel(event.target.value);
+        const fuel = listOfFuels.find((element) => element.id === +(event.target.value));
+        onChangeFuel(fuel);
     };
 
     return (

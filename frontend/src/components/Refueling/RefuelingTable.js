@@ -20,7 +20,7 @@ const RefuelingTable = (props) => {
                 <tbody>
                     {props.list.map((l) =>
                         <tr key={l.id} id={l.id}>
-                            <td>{l.quantity}</td>
+                            <td>{l.quantity} {props.unitOfMeasure(props.fuelType)}</td>
                             <td>{l.totalPrice} €</td>
                             <td>{isoDateTimeToString(l.dateTime)}</td>
                             <td className='w3-center'><button className='w3-button' aria-label='upraviť' onClick={props.editSingleFuelLog.bind(null, l.id)}><FontAwesomeIcon icon={faPencil} /></button></td>

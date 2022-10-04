@@ -67,15 +67,15 @@ const SummaryPie = (props) => {
                         </tr>
                         <tr >
                             <td>Výdavky za palivo</td>
-                            <td>{props.summaryData?.costOfFuelTotal} €</td>
+                            <td>{(+props.summaryData?.costOfFuelTotal).toFixed(2)} €</td>
                         </tr>
                         <tr >
                             <td>Iné výdavky</td>
-                            <td>{props.summaryData?.expensesTotal} €</td>
+                            <td>{(+props.summaryData?.expensesTotal).toFixed(2)} €</td>
                         </tr>
                         <tr >
                             <td>Spolu za výdavky</td>
-                            <td>{props.summaryData?.sum} €</td>
+                            <td>{(+props.summaryData?.sum).toFixed(2)} €</td>
                         </tr>
                     </tbody>
                     <thead>
@@ -88,7 +88,7 @@ const SummaryPie = (props) => {
                         {props.summaryData?.costOfFuel.map((l) =>
                             <tr key={l.fuel} >
                                 <td>{formatFuelName(l.fuel)}</td>
-                                <td>{l.price} €</td>
+                                <td>{(l.price).toFixed(2)} €</td>
                             </tr>)}
                     </tbody>
                     <thead>
@@ -101,7 +101,7 @@ const SummaryPie = (props) => {
                         {props.summaryData?.expenses.map((l) =>
                             <tr key={l.type} >
                                 <td>{l.type}</td>
-                                <td>{l.price} €</td>
+                                <td>{(l.price).toFixed(2)} €</td>
                             </tr>)}
                     </tbody>
                 </table>

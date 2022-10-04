@@ -7,7 +7,7 @@ import ModalDialog from '../UI/ModalDialog';
 import Loading from '../Layout/Loading';
 
 const Refueling = () => {
-    const [fuelId, setFuelId] = useState();
+    const [fuel, setFuel] = useState();
     const [list, setList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
@@ -16,6 +16,8 @@ const Refueling = () => {
     const [deleteDialogIsVisible, setDeleteDialogIsVisible] = useState(false);
     const [page, setPage] = useState(0);
     const [count, setCount] = useState(0);
+
+    console.log(fuel, fuel?.fuel);
 
     const records = useCallback((fId) => {
         if (fId) {
@@ -31,8 +33,8 @@ const Refueling = () => {
     }, [page]);
 
     useEffect(() => {
-        records(fuelId);
-    }, [records, fuelId]);
+        records(fuel?.id);
+    }, [records, fuel]);
 
     const previousPageHandler = () => {
         setPage((page) => {
@@ -56,7 +58,7 @@ const Refueling = () => {
     const cancel = () => {
         setEditDialogIsVisible(false);
         setFuelLogId(false);
-        records(fuelId);
+        records(fuel?.id);
     };
 
     const createRecordHandler = () => {
@@ -73,8 +75,8 @@ const Refueling = () => {
         setDeleteDialogIsVisible(false);
     };
 
-    const onChangeFuelHandler = useCallback((id) => {
-        setFuelId(id);
+    const onChangeFuelHandler = useCallback((fuel) => {
+        setFuel(fuel);
         setPage(0);
     }, []);
 
@@ -84,7 +86,28 @@ const Refueling = () => {
         setIsDeleting(false);
         setFuelLogId();
         setDeleteDialogIsVisible(false);
-        records(fuelId);
+        records(fuel?.id);
+    };
+
+    const fuelsUnitOfMeasure = (fuelType) => {
+        let fuelUnit;
+        switch (fuelType) {
+            case 'GASOLINE':
+            case 'DIESEL':
+            case 'LPG':
+                fuelUnit = 'l';
+                break;
+            case 'HYDROGEN':
+            case 'CNG':
+                fuelUnit = 'kg';
+                break;
+            case 'ELECTRICITY':
+                fuelUnit = 'kW';
+                break;
+            default:
+                fuelUnit = '';
+        }
+        return fuelUnit;
     };
 
     return (
@@ -94,21 +117,21 @@ const Refueling = () => {
                 <h1 className='w3-left'>Záznamy tankovania</h1>
             </div>
             <div>
-                <Selection onChangeFuel={onChangeFuelHandler} fuelId={fuelId} />
+                <Selection onChangeFuel={onChangeFuelHandler} />
             </div>
             <div className='w3-right smFullWidth'>
-                <button className='w3-button w3-indigo add-button-margin smFullWidth' disabled={!fuelId} onClick={createRecordHandler} title={!fuelId ? 'Pre pridanie záznamu musíte vybrať vozidlo a typ paliva.' : undefined} >Pridať záznam o výdavku</button>
+                <button className='w3-button w3-indigo add-button-margin smFullWidth' disabled={!fuel} onClick={createRecordHandler} title={!fuel ? 'Pre pridanie záznamu musíte vybrať vozidlo a typ paliva.' : undefined} >Pridať záznam tankovania</button>
             </div>
             <div>
                 {list.length < 1 && <div className='w3-padding-64'>Zoznam záznamov tankovania je prázdny.</div>}
-                {list.length >= 1 && <RefuelingTable list={list} editSingleFuelLog={editFuelLog} deleteSingleFuelLog={delFuelLog} />}
+                {list.length >= 1 && <RefuelingTable list={list} editSingleFuelLog={editFuelLog} deleteSingleFuelLog={delFuelLog} fuelType={fuel.fuel} unitOfMeasure={fuelsUnitOfMeasure} />}
             </div>
             {list.length >= 1 &&
                 <div className='w3-bar w3-border w3-margin-bottom'>
                     <button className='w3-button' disabled={page === 0} onClick={previousPageHandler}>&#10094; Predchádzajúca strana</button>
                     <button className='w3-button w3-right' disabled={(count / (page + 1)) <= 10} onClick={nextPageHandler}>Nasledujúca strana &#10095;</button>
                 </div>}
-            {editDialogIsVisible && <RefuelingDialog fuelId={fuelId} onCancel={cancel} singleFuelLogId={fuelLogId} />}
+            {editDialogIsVisible && <RefuelingDialog fuelId={fuel?.id} onCancel={cancel} singleFuelLogId={fuelLogId} />}
             {deleteDialogIsVisible && <ModalDialog text={'Naozaj si prajete vymazať záznam?'} onCancel={cancelDeleteDialog} onSubmit={deleteSingleFuelLog} />}
         </Fragment>
     );
