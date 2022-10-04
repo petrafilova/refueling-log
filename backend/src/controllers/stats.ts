@@ -48,7 +48,11 @@ export const getTotalExpenses = async (
             limit: 1,
         });
 
-        const expenseTypes = await ExpenseType.findAll();
+        const expenseTypes = await ExpenseType.findAll({
+            where: {
+                username: req.username!,
+            },
+        });
 
         const expensesPromises = expenseTypes.map((et) =>
             MonthStatistics.sum('priceSummary', {
@@ -91,7 +95,11 @@ export const getExpenses = async (
         const dateFrom = new Date(req.body.dateFrom);
         const dateTo = new Date(req.body.dateTo);
 
-        const expenseTypes = await ExpenseType.findAll();
+        const expenseTypes = await ExpenseType.findAll({
+            where: {
+                username: req.username!,
+            },
+        });
 
         const expensesPromises = expenseTypes.map(async (et) => {
             const stat = await MonthStatistics.findAll({
