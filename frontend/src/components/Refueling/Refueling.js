@@ -100,7 +100,7 @@ const Refueling = () => {
                 fuelUnit = 'kg';
                 break;
             case 'ELECTRICITY':
-                fuelUnit = 'kW';
+                fuelUnit = 'kWh';
                 break;
             default:
                 fuelUnit = '';

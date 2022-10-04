@@ -76,7 +76,7 @@ const Vehicles = () => {
                                 <tr className='w3-indigo'>
                                     <th>Výrobca</th>
                                     <th>Model</th>
-                                    <th>Štátna poznávacia značka</th>
+                                    <th>Evidenčné číslo vozidla</th>
                                     <th className='w3-center'>Upraviť</th>
                                     <th className='w3-center'>Vymazať</th>
                                 </tr>

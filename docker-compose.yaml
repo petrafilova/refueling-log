@@ -30,7 +30,7 @@ services:
             - db
 
     backend:
-        image: 'refueling-log-backend:latest'
+        image: 'petrafilova/refueling-log-backend:latest'
         restart: always
         environment:
             PORT: 8080
@@ -62,7 +62,7 @@ services:
             - traefik.http.services.refueling-api.loadbalancer.server.port=8080
 
     frontend:
-        image: 'refueling-log-frontend:latest'
+        image: 'petrafilova/refueling-log-frontend:latest'
         restart: always
         environment:
             NGINX_PORT: 80
