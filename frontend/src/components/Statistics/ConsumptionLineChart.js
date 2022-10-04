@@ -29,7 +29,7 @@ const ConsumptionLineChart = (props) => {
         plugins: {
             title: {
                 display: true,
-                text: 'graf vývoja spotreby paliva',
+                text: 'graf vývoja spotreby paliva na 100 km',
             },
         },
     };

@@ -98,6 +98,9 @@ const Expense = () => {
                 setList(data.rows);
                 setCount(data.count);
             });
+        } else {
+            setList([]);
+            setCount(0);
         }
     }, [chosenType, chosenVehicle, page]);
 

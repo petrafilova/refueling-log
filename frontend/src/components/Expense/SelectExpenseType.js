@@ -5,9 +5,11 @@ const SelectExpenseType = (props) => {
 
     useEffect (()=> {
         if(listOfTypes.length > 0) {
-            if (!chosenType) {
+            if (!chosenType || listOfTypes.findIndex(t => t.id === +chosenType) === -1) {
                 setChosenType(listOfTypes[0].id);
             }
+        } else {
+            setChosenType(undefined);
         }   
     }, [listOfTypes, setChosenType, chosenType]);
     
