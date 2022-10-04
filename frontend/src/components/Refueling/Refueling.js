@@ -17,8 +17,6 @@ const Refueling = () => {
     const [page, setPage] = useState(0);
     const [count, setCount] = useState(0);
 
-    console.log(fuel, fuel?.fuel);
-
     const records = useCallback((fId) => {
         if (fId) {
             setIsLoading(true);

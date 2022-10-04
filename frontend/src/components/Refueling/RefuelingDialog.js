@@ -8,7 +8,6 @@ import { isoDateTimeToString } from '../../lib/dateFormatter';
 import Loading from '../Layout/Loading';
 
 const RefuelingDialog = (props) => {
-    console.log(props);
     registerLocale('sk', sk);
     const [full, setFull] = useState(true);
     const [prevMissing, setPrevMissing] = useState(false);
@@ -94,8 +93,6 @@ const RefuelingDialog = (props) => {
         if (formIsInvalid) {
             return;
         }
-
-        console.log(props.fuelId);
 
         const fuelLog = {
             quantity: quantityInput,
