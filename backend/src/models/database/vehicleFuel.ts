@@ -48,7 +48,7 @@ class VehicleFuel extends Model<
     })
     @ForeignKey(() => Vehicle)
     @Column({
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
     })
     vehicleId: number;
 

@@ -94,7 +94,7 @@ class Vehicle extends Model<VehicleAttributes, VehicleCreationAttributes> {
     })
     @ForeignKey(() => User)
     @Column({
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
     })
     username: string;
 

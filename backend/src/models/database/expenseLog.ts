@@ -68,7 +68,7 @@ class ExpenseLog extends Model<
     })
     @ForeignKey(() => ExpenseType)
     @Column({
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
     })
     typeId: number;
 
@@ -78,7 +78,7 @@ class ExpenseLog extends Model<
     @AllowNull(false)
     @ForeignKey(() => Vehicle)
     @Column({
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
     })
     vehicleId: number;
 

@@ -53,14 +53,14 @@ class MonthStatistics extends Model<
     @AllowNull(false)
     @ForeignKey(() => ExpenseType)
     @Column({
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
     })
     expenseTypeId: number;
 
     @AllowNull(false)
     @ForeignKey(() => Vehicle)
     @Column({
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
     })
     vehicleId: number;
 }

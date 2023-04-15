@@ -46,7 +46,7 @@ class ExpenseType extends Model<
     })
     @ForeignKey(() => User)
     @Column({
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
     })
     username: string;
 

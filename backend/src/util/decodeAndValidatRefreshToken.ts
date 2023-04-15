@@ -9,7 +9,11 @@ import CustomError from '../models/customError';
 import User from '../models/database/user';
 import { CUSTOM_ERROR_CODES } from '../models/errorCodes';
 
-const decodeAndValidateRefreshToken = async (token: string) => {
+/**
+ *  @param {string} token - Token of authenticated user
+ *  @returns {PromiseLike<string>} - Promise with username or throws error if token is invalid or user not found
+ */
+const decodeAndValidateRefreshToken = async (token: string): Promise<string> => {
     try {
         const decodedToken = jwt.verify(
             token,
@@ -22,7 +26,7 @@ const decodeAndValidateRefreshToken = async (token: string) => {
 
         const employee = await User.findOne({
             where: {
-                username: decodedToken.username
+                username: decodedToken.username,
             },
         });
 

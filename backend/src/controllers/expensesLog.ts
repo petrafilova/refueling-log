@@ -84,7 +84,7 @@ export const createExpensesLog = async (
     try {
         const expensesLog = await sequelize.transaction(async (t) => {
             await checkVehicleOwnership(req.username!, vehicleId, t);
-            let expenseType = await ExpenseType.findByPk(typeId, {
+            const expenseType = await ExpenseType.findByPk(typeId, {
                 transaction: t,
             });
             if (!expenseType || expenseType.username !== req.username) {
@@ -132,7 +132,7 @@ export const updateExpensesLog = async (
             let expensesLog = await ExpensesLog.findByPk(expensesLogId, {
                 transaction: t,
             });
-            let expenseType = await ExpenseType.findByPk(typeId, {
+            const expenseType = await ExpenseType.findByPk(typeId, {
                 transaction: t,
             });
             if (

@@ -4,6 +4,12 @@ import Vehicle from '../models/database/vehicle';
 import VehicleFuel from '../models/database/vehicleFuel';
 import { CUSTOM_ERROR_CODES } from '../models/errorCodes';
 
+/**
+ *  @param {string} username - Username
+ *  @param {number} vehicleId - ID of vehicle
+ *  @param {Transaction=} t - Sequelize transaction
+ *  @returns {PromiseLike<void>} - Returns promise which fails if username is not owner of vehicle
+ */
 export const checkVehicleOwnership = async (
     username: string,
     vehicleId: number,
@@ -24,6 +30,12 @@ export const checkVehicleOwnership = async (
     }
 };
 
+/**
+ *  @param {string} username - Username
+ *  @param {number} vehicleFuelId - ID of vehicle fuel
+ *  @param {Transaction=} t - Sequelize transaction
+ *  @returns {PromiseLike<void>} - Returns promise which fails if username is not owner of vehicle with specified vehicleFuel
+ */
 export const checkVehicleFuelOwnership = async (
     username: string,
     vehicleFuelId: number,

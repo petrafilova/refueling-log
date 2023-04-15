@@ -16,6 +16,13 @@ if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
 
 const transporter = nodemailer.createTransport(options);
 
+/**
+ *  @param {string} to - Email address of recipient
+ *  @param {string} subject - Email subject
+ *  @param {string} text - Plain text email body
+ *  @param {string=} html - HTML email body
+ *  @returns {PromiseLike<SMTPTransport.SentMessageInfo>} - Promise with sent message info
+ */
 export const sendMail = async (
     to: string,
     subject: string,
