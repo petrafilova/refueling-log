@@ -10,6 +10,7 @@ import { sendMail } from '../util/email';
 import sequelize from '../util/database';
 import { Op } from 'sequelize';
 import decodeAndValidateRefreshToken from '../util/decodeAndValidatRefreshToken';
+import moment from 'moment';
 
 export const login = (req: Request, res: Response, next: NextFunction) => {
     const username = req.body.username;
@@ -250,6 +251,125 @@ export const updatePassword = async (
             );
         });
         res.status(204).send();
+    } catch (err) {
+        next(err);
+    }
+};
+
+export const resetPasswordLink = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const email = req.body.email;
+        await sequelize.transaction(async (t) => {
+            const user = await User.scope('authScope').findOne({
+                where: {
+                    email,
+                },
+                transaction: t,
+            });
+
+            if (!user) {
+                const error = new CustomError();
+                error.code = CUSTOM_ERROR_CODES.ACCOUNT_DOESNT_EXIST;
+                error.statusCode = 404;
+                throw error;
+            }
+
+            const uuid = uuidv4();
+
+            await user.update(
+                { uuid },
+                {
+                    fields: ['uuid'],
+                    transaction: t,
+                }
+            );
+
+            const resetUrl =
+                process.env.RESET_URL ?? 'http://localhost:3000/reset/';
+            const emailInfo = await sendMail(
+                req.body.email,
+                'Reset hesla',
+                `Dobrý deň ${user.username}, vyžiadali ste si reset vašeho hesla. Váš kľúč na zmenu hesla je "${uuid}". Zadajte tento kľúč do formulára na stránke ${resetUrl}.`,
+                `<h1>Dobrý deň ${user.username},</h1><p>vyžiadali ste si reset vašeho hesla. Váš kľúč na zmenu hesla je "${uuid}". Zadajte tento kľúč do formulára na stránke ${resetUrl}. Pre jednoduchosť môžete využiť nasledujúci odkaz: <a href="${resetUrl}${uuid}">resetovať heslo</a></p>`
+            );
+
+            if (emailInfo.rejected.length > 0) {
+                const error = new CustomError();
+                error.code = CUSTOM_ERROR_CODES.UNABLE_TO_SENT_REG_EMAIL;
+                error.statusCode = 503;
+                throw error;
+            }
+        });
+        res.status(204).send();
+    } catch (err) {
+        next(err);
+    }
+};
+
+export const resetPassword = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        const uuid = req.body.uuid;
+        const newPassword = req.body.newPassword;
+        const username = req.body.username;
+
+        const success = await sequelize.transaction(async (t) => {
+            const user = await User.scope('authScope').findOne({
+                where: {
+                    uuid,
+                    username,
+                },
+                transaction: t,
+            });
+
+            if (!user) {
+                const error = new CustomError();
+                error.code = CUSTOM_ERROR_CODES.ACCOUNT_DOESNT_EXIST;
+                error.statusCode = 404;
+                throw error;
+            }
+
+            // if uuid updated more than N hours ago, don't allow to reset
+            if (
+                user.updatedAt <
+                moment()
+                    .subtract(+(process.env.RESET_LINK_VALIDITY ?? 12), 'hours')
+                    .toDate()
+            ) {
+                await user.update(
+                    { uuid: null },
+                    {
+                        fields: ['uuid'],
+                        transaction: t,
+                    }
+                );
+                return false;
+            } else {
+                await user.update(
+                    { password: newPassword, uuid: null, confirmed: true },
+                    {
+                        fields: ['password', 'uuid', 'confirmed'],
+                        transaction: t,
+                    }
+                );
+            }
+            return true;
+        });
+        if (success) {
+            res.status(204).send();
+        } else {
+            const error = new CustomError();
+            error.code = CUSTOM_ERROR_CODES.INVALID_CREDENTIALS;
+            error.statusCode = 401;
+            throw error;
+        }
     } catch (err) {
         next(err);
     }

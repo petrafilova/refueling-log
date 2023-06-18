@@ -13,6 +13,8 @@ import VehiclePage from './pages/VehiclePage';
 import RefuelingPage from './pages/RefuelingPage';
 import ExpensePage from './pages/ExpensePage';
 import StatisticsPage from './pages/StatisticsPage';
+import ForgottenPasswordPage from './pages/ForgottenPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 
 function App() {
     const authCtx = useContext(AuthContext);
@@ -23,6 +25,9 @@ function App() {
             <main className='w3-container'>
                 <Routes>
                     {isLoggedIn ? <Route path='/' element={<StartingPage />} /> : <Route path='/' element={<HomePage />} />}
+                    <Route path='/forgottenPassword' element={<ForgottenPasswordPage />} />
+                    <Route path='/reset' element={<ResetPasswordPage />} />
+                    <Route path='/reset/:resetKey' element={<ResetPasswordPage />} />
                     <Route path='/signIn' element={<SignInPage />} />
                     <Route path='/signUp' element={<SignUpPage />} />
                     <Route path='/confirm' element={<ConfirmationPage />} />

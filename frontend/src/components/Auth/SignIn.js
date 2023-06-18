@@ -1,7 +1,13 @@
-import React, { useRef, useState, useContext, useEffect, Fragment } from 'react';
+import React, {
+    useRef,
+    useState,
+    useContext,
+    useEffect,
+    Fragment,
+} from 'react';
 import { login } from '../../lib/api';
 import AuthContext from '../../store/auth-context';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Loading from '../Layout/Loading';
 
 const SignIn = () => {
@@ -25,12 +31,18 @@ const SignIn = () => {
         setUserNameIsValid(true);
         setPasswordIsValid(true);
 
-        if (enteredUserName.trim().length < 1 || enteredUserName.trim().length > 50) {
+        if (
+            enteredUserName.trim().length < 1 ||
+            enteredUserName.trim().length > 50
+        ) {
             setUserNameIsValid(false);
             return;
         }
 
-        if (enteredPassword.trim().length < 1 || enteredPassword.trim().length > 250) {
+        if (
+            enteredPassword.trim().length < 1 ||
+            enteredPassword.trim().length > 250
+        ) {
             setPasswordIsValid(false);
             return;
         }
@@ -43,7 +55,11 @@ const SignIn = () => {
         setIsLoading(true);
         const confirmedData = await login(loginData);
         setIsLoading(false);
-        authCtx.login(confirmedData.token, confirmedData.refreshToken, confirmedData.username);
+        authCtx.login(
+            confirmedData.token,
+            confirmedData.refreshToken,
+            confirmedData.username
+        );
     };
 
     return (
@@ -62,7 +78,11 @@ const SignIn = () => {
                             id='text'
                             ref={userNameInputRef}
                         ></input>
-                        {!userNameIsValid && <p className='w3-red'>Neplatné používateľského meno.</p>}
+                        {!userNameIsValid && (
+                            <p className='w3-red'>
+                                Neplatné používateľského meno.
+                            </p>
+                        )}
                     </div>
                     <div className='w3-padding-16'>
                         <label className='w3-text-indigo' htmlFor='password'>
@@ -74,12 +94,24 @@ const SignIn = () => {
                             id='password'
                             ref={passwordInputRef}
                         ></input>
-                        {!passwordIsValid && <p className='w3-red'>Neplatné heslo.</p>}
+                        {!passwordIsValid && (
+                            <p className='w3-red'>Neplatné heslo.</p>
+                        )}
                     </div>
                     <div className='w3-padding-16'>
-                        <button className='w3-button w3-indigo' type='submit'>
+                        <button
+                            className='w3-left smFullWidth smMarginTop w3-button w3-indigo'
+                            type='submit'
+                        >
                             Prihlásiť sa
                         </button>
+                        <Link
+                            className='w3-right smFullWidth smMarginTop w3-button w3-indigo'
+                            to='/forgottenPassword'
+                            aria-label='Zabudnuté heslo'
+                        >
+                            Zabudnuté heslo
+                        </Link>
                     </div>
                 </form>
             </div>

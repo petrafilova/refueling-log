@@ -21,6 +21,48 @@ export const register = async (regData) => {
     return false;
 };
 
+export const requestReset = async (regData) => {
+    try {
+        const response = await fetch(`${baseUrl}/auth/reset`, {
+            method: 'POST',
+            body: JSON.stringify(regData),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        if (response.ok) {
+            return true;
+        } else {
+            const data = await response.json();
+            throw new Error(data.code);
+        }
+    } catch (err) {
+        alert(`Nastala chyba pri žiadosti o reset hesla. ${err.message}`);
+    }
+    return false;
+};
+
+export const reset = async (regData) => {
+    try {
+        const response = await fetch(`${baseUrl}/auth/reset`, {
+            method: 'PATCH',
+            body: JSON.stringify(regData),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        if (response.ok) {
+            return true;
+        } else {
+            const data = await response.json();
+            throw new Error(data.code);
+        }
+    } catch (err) {
+        alert(`Nastala chyba pri resete hesla. ${err.message}`);
+    }
+    return false;
+};
+
 export const login = async (loginData) => {
     try {
         const response = await fetch(`${baseUrl}/auth/login`, {
@@ -64,7 +106,6 @@ export const confirm = async (registrationKey) => {
     } catch (err) {
         alert(`Nastala chyba pri registrácii. ${err.message}`);
     }
-
 };
 
 export const refreshToken = async (refreshToken) => {

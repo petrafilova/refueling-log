@@ -95,6 +95,9 @@
                     "422": {
                         "$ref": "#/components/responses/UnprocessableEntity"
                     },
+                    "429": {
+                        "$ref": "#/components/responses/TooManyRequestsError"
+                    },
                     "500": {
                         "$ref": "#/components/responses/InternalServerError"
                     }
@@ -136,6 +139,9 @@
                     "401": {
                         "$ref": "#/components/responses/UnauthorizedError"
                     },
+                    "429": {
+                        "$ref": "#/components/responses/TooManyRequestsError"
+                    },
                     "500": {
                         "$ref": "#/components/responses/InternalServerError"
                     }
@@ -173,11 +179,90 @@
                     "422": {
                         "$ref": "#/components/responses/UnprocessableEntity"
                     },
+                    "429": {
+                        "$ref": "#/components/responses/TooManyRequestsError"
+                    },
                     "500": {
                         "$ref": "#/components/responses/InternalServerError"
                     },
                     "503": {
                         "$ref": "#/components/responses/ServiceUnavailableError"
+                    }
+                }
+            }
+        },
+        "/auth/reset": {
+            "post": {
+                "operationId": "resetPasswordLink",
+                "tags": [
+                    "auth"
+                ],
+                "security": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ResetPasswordLinkRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "204": {
+                        "description": "Password link sended"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/UnprocessableEntity"
+                    },
+                    "429": {
+                        "$ref": "#/components/responses/TooManyRequestsError"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "503": {
+                        "$ref": "#/components/responses/ServiceUnavailableError"
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "resetPassword",
+                "tags": [
+                    "auth"
+                ],
+                "security": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ResetPasswordRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "204": {
+                        "description": "Successful password reset"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/UnprocessableEntity"
+                    },
+                    "429": {
+                        "$ref": "#/components/responses/TooManyRequestsError"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
                     }
                 }
             }
@@ -213,6 +298,9 @@
                     },
                     "422": {
                         "$ref": "#/components/responses/UnprocessableEntity"
+                    },
+                    "429": {
+                        "$ref": "#/components/responses/TooManyRequestsError"
                     },
                     "500": {
                         "$ref": "#/components/responses/InternalServerError"
@@ -1595,6 +1683,48 @@
                     }
                 }
             },
+            "ResetPasswordLinkRequest": {
+                "type": "object",
+                "required": [
+                    "email"
+                ],
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 320
+                    }
+                }
+            },
+            "ResetPasswordRequest": {
+                "type": "object",
+                "required": [
+                    "username",
+                    "uuid",
+                    "newPassword"
+                ],
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 50,
+                        "description": "Username of user"
+                    },
+                    "uuid": {
+                        "type": "string",
+                        "format": "uuid",
+                        "maxLength": 36,
+                        "description": "UUIDv4 from confirmation email"
+                    },
+                    "newPassword": {
+                        "type": "string",
+                        "format": "password",
+                        "minLength": 8,
+                        "maxLength": 250,
+                        "description": "New password for user. Should be at least 8 characters long, at least one small letter, one capital letter and one number."
+                    }
+                }
+            },
             "UpdatePasswordRequest": {
                 "type": "object",
                 "required": ["username", "password", "newPassword"],
@@ -2443,6 +2573,16 @@
             },
             "ConstraintError": {
                 "description": "Constraint or duplicity error.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Error"
+                        }
+                    }
+                }
+            },
+            "TooManyRequestsError": {
+                "description": "Client sent too many requests in short time.",
                 "content": {
                     "application/json": {
                         "schema": {

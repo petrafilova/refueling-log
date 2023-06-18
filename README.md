@@ -12,7 +12,7 @@ Refueling log and expense tracker. This application is based on Express NodeJS b
 3) check if backend is running on [http://localhost/api/health](http://localhost/api/health)
 4) open frontend at [http://localhost/](http://localhost/)
 5) email dev server avalaible on [http://localhost:8082](http://localhost:8082)
-6) pdadmin avalaible on [http://localhost:8083](http://localhost:8083)
+6) postgres database on port 5432
 
 ## Development - backend
 
@@ -25,7 +25,7 @@ Refueling log and expense tracker. This application is based on Express NodeJS b
 2) `cd backend`
 3) `docker compose up -d` to run database, mail server and pgadmin
 4) email dev server avalaible on [http://localhost:8082](http://localhost:8082)
-5) pdadmin avalaible on [http://localhost:8083](http://localhost:8083)
+5) postgres database on port 5432
 6) `npm install`
 7) `npm run start:dev`
 8) check if backend is running on [http://localhost:3000/api/health](http://localhost:3000/api/health)
@@ -41,7 +41,7 @@ Refueling log and expense tracker. This application is based on Express NodeJS b
 4) check if backend is running on [http://localhost:8080/api/health](http://localhost:8080/api/health)
 5) Openapi 3.0 specification available on [http://localhost:8080/api/api-docs](http://localhost:8080/api/api-docs)
 6) email dev server avalaible on [http://localhost:8082](http://localhost:8082)
-7) pdadmin avalaible on [http://localhost:8083](http://localhost:8083)
+7) postgres database on port 5432
 8) `npm install`
 9) `npm run start`
 10) check if frontend is running on [http://localhost:3000](http://localhost:3000)
@@ -90,6 +90,8 @@ test/Test1234
 | EMAIL_PASS | string |||Password to mail server|
 | EMAIL_FROM | string || true |Sender email address displayed in emails as from|
 | EMAIL_SECURE | boolean | false ||It TLS should be used|
+| RESET_URL | string | http://localhost:3000/reset/ ||Url in emal for reseting password|
+| RESET_LINK_VALIDITY | number | 12 ||Hours how long is reset link valid|
 | CONFIRM_URL | string | http://localhost:3000/confirm/ ||Url in emal for confirming registration|
 | REGISTRATION_ENABLED | boolean | false ||Enable posibility to register new users|
 
