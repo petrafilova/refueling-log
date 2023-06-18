@@ -2,7 +2,11 @@ import React, { useState, useCallback, useEffect, Fragment } from 'react';
 import SelectVehicle from './SelectVehicle';
 import ExpenseTypeDialog from './ExpenseTypeDialog';
 import ListOfExpenses from './ListOfExpenses';
-import { listOfExpenseLogs, deleteExpenseLog, listOfExpensesTypes } from '../../lib/api';
+import {
+    listOfExpenseLogs,
+    deleteExpenseLog,
+    listOfExpensesTypes,
+} from '../../lib/api';
 import SelectExpenseType from './SelectExpenseType';
 import ExpenseDialog from './ExpenseDialog';
 import ModalDialog from '../UI/ModalDialog';
@@ -93,7 +97,12 @@ const Expense = () => {
     const getListOfExpenses = useCallback(() => {
         if (chosenType && chosenVehicle) {
             setIsLoading(true);
-            listOfExpenseLogs(chosenVehicle, { page: page, pageSize: 10, order: 'DESC', typeId: +chosenType }).then((data) => {
+            listOfExpenseLogs(chosenVehicle, {
+                page: page,
+                pageSize: 10,
+                order: 'DESC',
+                typeId: +chosenType,
+            }).then((data) => {
                 setIsLoading(false);
                 setList(data.rows);
                 setCount(data.count);
@@ -129,26 +138,96 @@ const Expense = () => {
                 <h1 className='w3-left'>Záznamy výdavkov</h1>
             </div>
             <SelectVehicle setChosenVehicle={onChangeVehicleHandler} />
-            <SelectExpenseType setChosenType={onChangeTypeHandler} listOfTypes={listOfET} chosenType={chosenType} />
+            <SelectExpenseType
+                setChosenType={onChangeTypeHandler}
+                listOfTypes={listOfET}
+                chosenType={chosenType}
+            />
             <div className='w3-left smFullWidth'>
-                <button className='w3-button w3-indigo add-button-margin smFullWidth' onClick={expensesTypesHandler}>Spravovať typy výdavkov</button>
+                <button
+                    className='w3-button w3-indigo add-button-margin smFullWidth'
+                    onClick={expensesTypesHandler}
+                >
+                    Typy výdavkov
+                </button>
             </div>
             <div className='w3-right smFullWidth'>
-                <button className='w3-button w3-indigo add-button-margin smFullWidth' disabled={!chosenType || !chosenVehicle || listOfET.length < 1} onClick={createExpense} title={!chosenType || !chosenVehicle || listOfET.length < 1 ? 'Pre pridanie záznamu musíte vybrať vozidlo a typ výdavku.' : undefined} >Pridať záznam výdavku</button>
+                <button
+                    className='w3-button w3-indigo add-button-margin smFullWidth'
+                    disabled={
+                        !chosenType || !chosenVehicle || listOfET.length < 1
+                    }
+                    onClick={createExpense}
+                    title={
+                        !chosenType || !chosenVehicle || listOfET.length < 1
+                            ? 'Pre pridanie záznamu musíte vybrať vozidlo a typ výdavku.'
+                            : undefined
+                    }
+                >
+                    Pridať záznam výdavku
+                </button>
             </div>
             <div className='w3-bar'>
-                {list.length < 1 && <p>Zoznam výdavkov pre dané vozidlo a typ výdavku je prázdny.</p>}
-                {list.length >= 1 && <ListOfExpenses list={list} editExpense={editExpense} deleteExpense={deleteExpense} listOfTypes={listOfET} />}
+                {list.length < 1 && (
+                    <p>
+                        Zoznam výdavkov pre dané vozidlo a typ výdavku je
+                        prázdny.
+                    </p>
+                )}
+                {list.length >= 1 && (
+                    <ListOfExpenses
+                        list={list}
+                        editExpense={editExpense}
+                        deleteExpense={deleteExpense}
+                        listOfTypes={listOfET}
+                    />
+                )}
             </div>
-            {list.length >= 1 &&
+            {list.length >= 1 && (
                 <div className='w3-bar w3-border w3-margin-bottom'>
-                    <button className='w3-button' disabled={page === 0} onClick={previousPageHandler}>&#10094; Predchádzajúca strana</button>
-                    <button className='w3-button w3-right' disabled={(count / (page + 1)) <= 10} onClick={nextPageHandler}>Nasledujúca strana &#10095;</button>
-                </div>}
-            {expenseTypeDialog && <ExpenseTypeDialog onCancel={cancelExpenseType} listOfExpenses={listOfET} loadList={listOfTypes} />}
-            {expenseDialog && <ExpenseDialog onCancel={cancelExpense} vehicleId={chosenVehicle} expenseTypeId={chosenType} listOfExpenses={getListOfExpenses} singleExpenseId={singleExpenseId} />}
-            {modalDialog && <ModalDialog text={'Naozaj chcete vymazať výdavok?'} onCancel={cancelDeletion} onSubmit={deleteSingleExpense} />}
-        </Fragment >
+                    <button
+                        className='w3-button'
+                        disabled={page === 0}
+                        onClick={previousPageHandler}
+                    >
+                        &#10094;{' '}
+                        <span className='smHide'>Predchádzajúca strana</span>
+                    </button>
+                    <button
+                        className='w3-button w3-right'
+                        disabled={count / (page + 1) <= 10}
+                        onClick={nextPageHandler}
+                    >
+                        <span className='smHide'>Nasledujúca strana</span>{' '}
+                        &#10095;
+                    </button>
+                </div>
+            )}
+            {expenseTypeDialog && (
+                <ExpenseTypeDialog
+                    onCancel={cancelExpenseType}
+                    listOfExpenses={listOfET}
+                    loadList={listOfTypes}
+                />
+            )}
+            {expenseDialog && (
+                <ExpenseDialog
+                    onCancel={cancelExpense}
+                    vehicleId={chosenVehicle}
+                    expenseTypeId={chosenType}
+                    listOfExpenses={getListOfExpenses}
+                    listOfET={listOfET}
+                    singleExpenseId={singleExpenseId}
+                />
+            )}
+            {modalDialog && (
+                <ModalDialog
+                    text={'Naozaj chcete vymazať výdavok?'}
+                    onCancel={cancelDeletion}
+                    onSubmit={deleteSingleExpense}
+                />
+            )}
+        </Fragment>
     );
 };
 

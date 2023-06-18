@@ -20,7 +20,7 @@ const SignIn = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        authCtx.isLoggedIn && navigate('/start');
+        authCtx.isLoggedIn && navigate('/');
     }, [authCtx.isLoggedIn, navigate]);
 
     const submitHandler = async (event) => {

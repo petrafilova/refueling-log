@@ -12,7 +12,6 @@ import { Bar } from 'react-chartjs-2';
 import { borderColor } from '../../lib/graphColors';
 import { padNumber } from '../../lib/dateFormatter';
 
-
 const ExpensesBarChart = (props) => {
     ChartJS.register(
         CategoryScale,
@@ -25,6 +24,7 @@ const ExpensesBarChart = (props) => {
 
     const options = {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
             title: {
                 display: true,
@@ -85,7 +85,7 @@ const ExpensesBarChart = (props) => {
     });
 
     const formatLabels = (labels) => {
-        const dates = labels.map(label => {
+        const dates = labels.map((label) => {
             const aa = label.split('-');
             const lab = `${padNumber(aa[1])}.${aa[0]}`;
             return lab;
@@ -98,9 +98,7 @@ const ExpensesBarChart = (props) => {
         datasets: dataset,
     };
 
-    return (
-        <Bar options={options} data={data} />
-    );
+    return <Bar className='line-chart' options={options} data={data} />;
 };
 
 export default ExpensesBarChart;

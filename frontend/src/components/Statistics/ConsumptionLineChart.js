@@ -26,6 +26,7 @@ const ConsumptionLineChart = (props) => {
 
     const options = {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
             title: {
                 display: true,
@@ -38,7 +39,9 @@ const ConsumptionLineChart = (props) => {
     let values = [];
 
     if (props.consumptionData.length > 0) {
-        props.consumptionData[0].stats?.map((l) => labels.push(isoDateTimeToString(l.dateTime)));
+        props.consumptionData[0].stats?.map((l) =>
+            labels.push(isoDateTimeToString(l.dateTime))
+        );
         props.consumptionData[0].stats?.map((v) => values.push(v.consumption));
     }
 
@@ -54,9 +57,7 @@ const ConsumptionLineChart = (props) => {
         ],
     };
 
-    return (
-        <Line options={options} data={data} />
-    );
+    return <Line className='line-chart' options={options} data={data} />;
 };
 
 export default ConsumptionLineChart;

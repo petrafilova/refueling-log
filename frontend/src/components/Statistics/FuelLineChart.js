@@ -26,6 +26,7 @@ const FuelLineChart = (props) => {
 
     const options = {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
             title: {
                 display: true,
@@ -38,7 +39,9 @@ const FuelLineChart = (props) => {
     let values = [];
 
     if (props.fuelData.length > 0) {
-        props.fuelData[0].stats?.map((l) => labels.push(isoDateTimeToString(l.dateTime)));
+        props.fuelData[0].stats?.map((l) =>
+            labels.push(isoDateTimeToString(l.dateTime))
+        );
         props.fuelData[0].stats?.map((v) => values.push(v.unitPrice));
     }
 
@@ -55,7 +58,11 @@ const FuelLineChart = (props) => {
     };
 
     return (
-        <Line options={options} data={data} />
+        <Line
+            className='line-chart'
+            options={options}
+            data={data}
+        />
     );
 };
 

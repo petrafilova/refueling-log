@@ -14,10 +14,12 @@ code {
 
 .dialog {
     max-width: 500px;
+    display: flex;
+    flex-direction: column;
 }
 
 .add-button-margin {
-    margin: 18px 0;
+    margin: 12px 0;
 }
 
 .flex {
@@ -35,6 +37,14 @@ code {
     width: 100%;
 }
 
+.table-action {
+    min-width: 120px;
+}
+
+.line-chart {
+    height: 50dvh !important;
+}
+
 @media (max-width: 768px) {
     .smFullWidth {
         width: 100%;
@@ -49,13 +59,51 @@ code {
     }
 
     .smBig {
-        font-size: 2rem;
+        font-size: 1.8rem;
         padding: 0.1rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.6rem;
+    }
+
+    .dialog {
+        max-width: 100%;
+        margin: 0;
+        width: 100%;
+        min-height: 100%;
+    }
+
+    .w3-modal {
+        padding: 0;
+    }
+
+    .dialog > footer {
+        position: sticky;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin-top: 16px;
+    }
+
+    .dialog > header {
+        position: sticky;
+        top: 0;
+        left: 0;
+        right: 0;
+    }
+
+    .dialog > div {
+        flex: 1;
     }
 }
 
 .loadingBackground {
-    background-color: rgba(0,0,0,0.2);
+    background-color: rgba(0, 0, 0, 0.2);
     position: fixed;
     top: 0;
     bottom: 0;

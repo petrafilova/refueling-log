@@ -33,7 +33,7 @@ const Confirmation = () => {
         const authData = await confirm(registrationKey);
         setIsLoading(false);
         authCtx.login(authData.token, authData.refreshToken, authData.username);
-        authData.token && navigate('/start');
+        authData.token && navigate('/');
     };
 
     return (

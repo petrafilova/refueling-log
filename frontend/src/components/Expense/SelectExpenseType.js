@@ -6,6 +6,7 @@ const SelectExpenseType = (props) => {
     useEffect (()=> {
         if(listOfTypes.length > 0) {
             if (!chosenType || listOfTypes.findIndex(t => t.id === +chosenType) === -1) {
+                console.log('setujem na ', chosenType);
                 setChosenType(listOfTypes[0].id);
             }
         } else {
@@ -20,7 +21,7 @@ const SelectExpenseType = (props) => {
     return (
         <div className='w3-section'>
             <label className='w3-text-indigo' htmlFor='type'>Vyberte typ výdavku:</label>
-            <select className='w3-select w3-border' name='type' id='type' onChange={selectTypeHandler}>
+            <select className='w3-select w3-border' name='type' id='type' value={chosenType} onChange={selectTypeHandler}>
                 {props.listOfTypes && props.listOfTypes.map((l) =>
                     <option key={l.id} value={l.id}>{l.name}</option>
                 )};
