@@ -17,7 +17,7 @@ Refueling log and expense tracker. This application is based on Express NodeJS b
 ## Development - backend
 
 ### How to run for local development
-*(required docker, docker compose 2 and Node.js 18)*
+*(required docker, docker compose 2 and Node.js 22)*
 
 - enviroments variables for local development are set up in `backend/.env` file
 
@@ -33,7 +33,7 @@ Refueling log and expense tracker. This application is based on Express NodeJS b
 ## Development - frontend
 
 ### How to run for local development
-*(required docker, docker compose 2 and Node.js 18)*
+*(required docker, docker compose 2 and Node.js 22)*
 
 1) run `./build-images.sh`
 2) `cd frontend`
