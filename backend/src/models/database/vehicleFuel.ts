@@ -39,7 +39,7 @@ class VehicleFuel extends Model<
     @Column({
         type: DataType.ENUM(...Object.keys(FUEL_TYPE)),
     })
-    fuel: FUEL_TYPE;
+    declare fuel: FUEL_TYPE;
 
     @AllowNull(false)
     @Index({
@@ -50,7 +50,7 @@ class VehicleFuel extends Model<
     @Column({
         onDelete: 'CASCADE',
     })
-    vehicleId: number;
+    declare vehicleId: number;
 
     @BelongsTo(() => Vehicle)
     vehicle: Vehicle;

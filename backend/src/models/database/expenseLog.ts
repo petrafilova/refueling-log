@@ -37,13 +37,13 @@ class ExpenseLog extends Model<
     @Column({
         type: DataType.DECIMAL(10, 2),
     })
-    price: number;
+    declare price: number;
 
     @AllowNull(false)
     @Column({
         type: DataType.DECIMAL(10, 2),
     })
-    mileage: number;
+    declare mileage: number;
 
     @AllowNull(false)
     @Index({
@@ -53,13 +53,13 @@ class ExpenseLog extends Model<
     @Column({
         type: DataType.DATE,
     })
-    dateTime: Date;
+    declare dateTime: Date;
 
     @AllowNull
     @Column({
         type: DataType.TEXT,
     })
-    comment: string | null;
+    declare comment: string | null;
 
     @AllowNull(false)
     @Index({
@@ -70,7 +70,7 @@ class ExpenseLog extends Model<
     @Column({
         onDelete: 'CASCADE',
     })
-    typeId: number;
+    declare typeId: number;
 
     @BelongsTo(() => ExpenseType)
     type: ExpenseType;
@@ -80,7 +80,7 @@ class ExpenseLog extends Model<
     @Column({
         onDelete: 'CASCADE',
     })
-    vehicleId: number;
+    declare vehicleId: number;
 
     @BelongsTo(() => Vehicle)
     vehicle: Vehicle;

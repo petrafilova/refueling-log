@@ -37,7 +37,7 @@ class ExpenseType extends Model<
     @Column({
         type: DataType.STRING(30),
     })
-    name: string;
+    declare name: string;
 
     @AllowNull(false)
     @Index({
@@ -48,7 +48,7 @@ class ExpenseType extends Model<
     @Column({
         onDelete: 'CASCADE',
     })
-    username: string;
+    declare username: string;
 
     @HasMany(() => ExpenseLog)
     expenseLog: ExpenseLog[];

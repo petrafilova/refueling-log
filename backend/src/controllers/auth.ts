@@ -390,22 +390,24 @@ export const deleteAccount = async (req: Request, res: Response, next: NextFunct
 const issueToken = (user: User) => {
     const secretKey: string = process.env.TOKEN_SIGN_KEY!;
     const expiresIn: StringValue = (process.env.TOKEN_EXPIRES_IN as StringValue) ?? '1h';
+    const payload: object = { username: user.username };
 
-    const token = jwt.sign({ username: user.username }, secretKey, { algorithm: 'RS256', expiresIn });
+    console.log('Issuing token with expiresIn:', expiresIn, payload, secretKey);
+
+    const token = jwt.sign(payload, secretKey, { expiresIn });
     return token;
 };
 
 const issueRefreshToken = (user: User) => {
     const secretKey: string = process.env.TOKEN_SIGN_KEY!;
     const expiresIn: StringValue = (process.env.REFRESH_TOKEN_EXPIRES_IN as StringValue) ?? '30d';
+    const payload: object = {
+        username: user.username,
+        refresh: true
+    };
 
-    const refreshToken = jwt.sign(
-        {
-            username: user.username,
-            refresh: true
-        },
-        secretKey,
-        { algorithm: 'RS256', expiresIn }
-    );
+     console.log('Issuing refresh token with expiresIn:', expiresIn, payload, secretKey);
+
+    const refreshToken = jwt.sign(payload, secretKey, { expiresIn });
     return refreshToken;
 };
