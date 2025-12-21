@@ -26,6 +26,8 @@ declare global {
 
             CONFIRM_URL: string;
             REGISTRATION_ENABLED: boolean;
+
+            PROXY_TRUSTED_IPS: string;
         }
     }
 }

@@ -35,34 +35,34 @@ class MonthStatistics extends Model<
     @Column({
         type: DataType.INTEGER,
     })
-    year: number;
+    declare year: number;
 
     @AllowNull(false)
     @Column({
         type: DataType.INTEGER,
     })
-    month: number;
+    declare month: number;
 
     @AllowNull(false)
     @Default(0)
     @Column({
         type: DataType.DECIMAL(10, 2),
     })
-    priceSummary: number;
+    declare priceSummary: number;
 
     @AllowNull(false)
     @ForeignKey(() => ExpenseType)
     @Column({
         onDelete: 'CASCADE',
     })
-    expenseTypeId: number;
+    declare expenseTypeId: number;
 
     @AllowNull(false)
     @ForeignKey(() => Vehicle)
     @Column({
         onDelete: 'CASCADE',
     })
-    vehicleId: number;
+    declare vehicleId: number;
 }
 
 export default MonthStatistics;

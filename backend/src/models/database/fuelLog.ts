@@ -35,25 +35,25 @@ class FuelLog extends Model<FuelLogAttributes, FuelLogCreationAttributes> {
     @Column({
         type: DataType.DECIMAL(10, 2),
     })
-    quantity: number;
+    declare quantity: number;
 
     @AllowNull(false)
     @Column({
         type: DataType.DECIMAL(10, 2),
     })
-    unitPrice: number;
+    declare unitPrice: number;
 
     @AllowNull(false)
     @Column({
         type: DataType.DECIMAL(10, 2),
     })
-    totalPrice: number;
+    declare totalPrice: number;
 
     @AllowNull(false)
     @Column({
         type: DataType.DECIMAL(10, 2),
     })
-    mileage: number;
+    declare mileage: number;
 
     @AllowNull(false)
     @Index({
@@ -63,25 +63,25 @@ class FuelLog extends Model<FuelLogAttributes, FuelLogCreationAttributes> {
     @Column({
         type: DataType.DATE,
     })
-    dateTime: Date;
+    declare dateTime: Date;
 
     @AllowNull(false)
     @Column({
         type: DataType.BOOLEAN,
     })
-    full: boolean;
+    declare full: boolean;
 
     @AllowNull(false)
     @Column({
         type: DataType.BOOLEAN,
     })
-    previousMissing: boolean;
+    declare previousMissing: boolean;
 
     @AllowNull
     @Column({
         type: DataType.DECIMAL(10, 2),
     })
-    consumption: number | null; // automaticaly calculated
+    declare consumption: number | null; // automaticaly calculated
 
     @AllowNull(false)
     @Index({
@@ -92,7 +92,7 @@ class FuelLog extends Model<FuelLogAttributes, FuelLogCreationAttributes> {
     @Column({
         onDelete: 'CASCADE',
     })
-    vehicleFuelId: number;
+    declare vehicleFuelId: number;
 
     @BelongsTo(() => VehicleFuel)
     vehicleFuel: VehicleFuel;
