@@ -47,13 +47,13 @@ class Vehicle extends Model<VehicleAttributes, VehicleCreationAttributes> {
     @Column({
         type: DataType.STRING(20),
     })
-    brand: string;
+    declare brand: string;
 
     @AllowNull(false)
     @Column({
         type: DataType.STRING(60),
     })
-    model: string;
+    declare model: string;
 
     @AllowNull(false)
     @Index({
@@ -63,19 +63,19 @@ class Vehicle extends Model<VehicleAttributes, VehicleCreationAttributes> {
     @Column({
         type: DataType.STRING(10),
     })
-    licensePlateNo: string;
+    declare licensePlateNo: string;
 
     @AllowNull
     @Column({
         type: DataType.DATEONLY,
     })
-    dateOfReg: Date;
+    declare dateOfReg: Date;
 
     @AllowNull
     @Column({
         type: DataType.STRING(20),
     })
-    color: string;
+    declare color: string;
 
     @AllowNull
     @Index({
@@ -85,7 +85,7 @@ class Vehicle extends Model<VehicleAttributes, VehicleCreationAttributes> {
     @Column({
         type: DataType.STRING(17),
     })
-    vin: string;
+    declare vin: string;
 
     @AllowNull(false)
     @Index({
@@ -96,7 +96,7 @@ class Vehicle extends Model<VehicleAttributes, VehicleCreationAttributes> {
     @Column({
         onDelete: 'CASCADE',
     })
-    username: string;
+    declare username: string;
 
     @BelongsTo(() => User)
     user: User;

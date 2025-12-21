@@ -1,16 +1,17 @@
 import { NextFunction, Request, Response } from 'express';
-import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
+import bcrypt from 'bcryptjs';
+import { Op } from 'sequelize';
+import moment from 'moment';
+import type { StringValue } from 'ms';
 
 import CustomError from '../models/customError';
 import User from '../models/database/user';
 import { CUSTOM_ERROR_CODES } from '../models/errorCodes';
-import { sendMail } from '../util/email';
+import { sendMail, escapeHtml } from '../util/email';
 import sequelize from '../util/database';
-import { Op } from 'sequelize';
 import decodeAndValidateRefreshToken from '../util/decodeAndValidatRefreshToken';
-import moment from 'moment';
 
 export const login = (req: Request, res: Response, next: NextFunction) => {
     const username = req.body.username;
@@ -20,8 +21,8 @@ export const login = (req: Request, res: Response, next: NextFunction) => {
         .findOne({
             where: {
                 username: username,
-                confirmed: true,
-            },
+                confirmed: true
+            }
         })
         .then(async (user) => {
             if (!user) {
@@ -45,7 +46,7 @@ export const login = (req: Request, res: Response, next: NextFunction) => {
             res.status(200).json({
                 token: token,
                 refreshToken: refreshToken,
-                username: user.username,
+                username: user.username
             });
         })
         .catch((err) => {
@@ -53,11 +54,7 @@ export const login = (req: Request, res: Response, next: NextFunction) => {
         });
 };
 
-export const refreshToken = (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
+export const refreshToken = (req: Request, res: Response, next: NextFunction) => {
     const refreshToken = req.body.refreshToken;
     decodeAndValidateRefreshToken(refreshToken)
         .then((username) => {
@@ -65,8 +62,8 @@ export const refreshToken = (
                 .findOne({
                     where: {
                         username: username,
-                        confirmed: true,
-                    },
+                        confirmed: true
+                    }
                 })
                 .then((user) => {
                     if (!user) {
@@ -80,7 +77,7 @@ export const refreshToken = (
                     res.status(200).json({
                         token: token,
                         refreshToken: refreshToken,
-                        username: user.username,
+                        username: user.username
                     });
                 })
                 .catch((err) => {
@@ -92,11 +89,7 @@ export const refreshToken = (
         });
 };
 
-export const registerAccount = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
+export const registerAccount = async (req: Request, res: Response, next: NextFunction) => {
     try {
         if (process.env.REGISTRATION_ENABLED == 'true') {
             await sequelize.transaction(async (t) => {
@@ -104,10 +97,10 @@ export const registerAccount = async (
                     where: {
                         [Op.or]: {
                             username: req.body.username,
-                            email: req.body.email,
-                        },
+                            email: req.body.email
+                        }
                     },
-                    transaction: t,
+                    transaction: t
                 });
 
                 if (existingUser) {
@@ -124,23 +117,18 @@ export const registerAccount = async (
                 await User.create(
                     { ...req.body, confirmed: false, uuid: userUUID },
                     {
-                        fields: [
-                            'username',
-                            'password',
-                            'email',
-                            'confirmed',
-                            'uuid',
-                        ],
-                        transaction: t,
+                        fields: ['username', 'password', 'email', 'confirmed', 'uuid'],
+                        transaction: t
                     }
                 );
                 const confirmUrl =
                     process.env.CONFIRM_URL ?? 'http://localhost:3000/confirm/';
+                const safeUsername = escapeHtml(req.body.username);
                 const emailInfo = await sendMail(
                     req.body.email,
                     'Registrácia',
                     `Vitajte ${req.body.username}, na dokončenie registrácie prosím potvrďte svoju emailovú adresu. Váš registračný kľúč je "${userUUID}". Zadajte tento kľúč do formulára na stránke ${confirmUrl}.`,
-                    `<h1>Vitajte ${req.body.username},</h1><p>na dokončenie registrácie prosím potvrďte svoju emailovú adresu. Váš registračný kľúč je "${userUUID}". Zadajte tento kľúč do formulára na stránke ${confirmUrl}. Pre jednoduchosť môžete využiť nasledujúci odkaz: <a href="${confirmUrl}${userUUID}">aktivovať</a></p>`
+                    `<h1>Vitajte ${safeUsername},</h1><p>na dokončenie registrácie prosím potvrďte svoju emailovú adresu. Váš registračný kľúč je "${userUUID}". Zadajte tento kľúč do formulára na stránke ${confirmUrl}. Pre jednoduchosť môžete využiť nasledujúci odkaz: <a href="${confirmUrl}${userUUID}">aktivovať</a></p>`
                 );
 
                 if (emailInfo.rejected.length > 0) {
@@ -162,18 +150,14 @@ export const registerAccount = async (
     }
 };
 
-export const confirmAccount = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
+export const confirmAccount = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const result = await sequelize.transaction(async (t) => {
             const user = await User.scope('authScope').findOne({
                 where: {
-                    uuid: req.params.uuid,
+                    uuid: req.params.uuid
                 },
-                transaction: t,
+                transaction: t
             });
 
             if (!user) {
@@ -185,7 +169,7 @@ export const confirmAccount = async (
             user.confirmed = true;
             user.uuid = null;
             const confirmedUser = await user.save({
-                transaction: t,
+                transaction: t
             });
 
             const token = issueToken(confirmedUser);
@@ -194,7 +178,7 @@ export const confirmAccount = async (
             return {
                 token: token,
                 refreshToken: refreshToken,
-                username: confirmedUser.username,
+                username: confirmedUser.username
             };
         });
         res.status(200).json(result);
@@ -203,11 +187,7 @@ export const confirmAccount = async (
     }
 };
 
-export const updatePassword = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
+export const updatePassword = async (req: Request, res: Response, next: NextFunction) => {
     const usernameFromToken = req.username;
     const username = req.body.username;
     const password = req.body.password;
@@ -223,9 +203,9 @@ export const updatePassword = async (
             const user = await User.scope('authScope').findOne({
                 where: {
                     username: username,
-                    confirmed: true,
+                    confirmed: true
                 },
-                transaction: t,
+                transaction: t
             });
             if (!user) {
                 const error = new CustomError();
@@ -243,10 +223,10 @@ export const updatePassword = async (
 
             await user.update(
                 {
-                    password: newPassword,
+                    password: newPassword
                 },
                 {
-                    transaction: t,
+                    transaction: t
                 }
             );
         });
@@ -256,19 +236,15 @@ export const updatePassword = async (
     }
 };
 
-export const resetPasswordLink = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
+export const resetPasswordLink = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const email = req.body.email;
         await sequelize.transaction(async (t) => {
             const user = await User.scope('authScope').findOne({
                 where: {
-                    email,
+                    email
                 },
-                transaction: t,
+                transaction: t
             });
 
             if (!user) {
@@ -284,12 +260,11 @@ export const resetPasswordLink = async (
                 { uuid },
                 {
                     fields: ['uuid'],
-                    transaction: t,
+                    transaction: t
                 }
             );
 
-            const resetUrl =
-                process.env.RESET_URL ?? 'http://localhost:3000/reset/';
+            const resetUrl = process.env.RESET_URL ?? 'http://localhost:3000/reset/';
             const emailInfo = await sendMail(
                 req.body.email,
                 'Reset hesla',
@@ -310,11 +285,7 @@ export const resetPasswordLink = async (
     }
 };
 
-export const resetPassword = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
+export const resetPassword = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const uuid = req.body.uuid;
         const newPassword = req.body.newPassword;
@@ -324,9 +295,9 @@ export const resetPassword = async (
             const user = await User.scope('authScope').findOne({
                 where: {
                     uuid,
-                    username,
+                    username
                 },
-                transaction: t,
+                transaction: t
             });
 
             if (!user) {
@@ -347,7 +318,7 @@ export const resetPassword = async (
                     { uuid: null },
                     {
                         fields: ['uuid'],
-                        transaction: t,
+                        transaction: t
                     }
                 );
                 return false;
@@ -356,7 +327,7 @@ export const resetPassword = async (
                     { password: newPassword, uuid: null, confirmed: true },
                     {
                         fields: ['password', 'uuid', 'confirmed'],
-                        transaction: t,
+                        transaction: t
                     }
                 );
             }
@@ -376,11 +347,7 @@ export const resetPassword = async (
 };
 
 // TODO allow delete user and cascade delete all his data
-export const deleteAccount = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
+export const deleteAccount = async (req: Request, res: Response, next: NextFunction) => {
     const usernameFromToken = req.username;
     const username = req.body.username;
     const password = req.body.password;
@@ -395,9 +362,9 @@ export const deleteAccount = async (
             const user = await User.scope('authScope').findOne({
                 where: {
                     username: username,
-                    confirmed: true,
+                    confirmed: true
                 },
-                transaction: t,
+                transaction: t
             });
             if (!user) {
                 const error = new CustomError();
@@ -423,24 +390,26 @@ export const deleteAccount = async (
 };
 
 const issueToken = (user: User) => {
-    const token = jwt.sign(
-        {
-            username: user.username,
-        },
-        process.env.TOKEN_SIGN_KEY!,
-        { expiresIn: process.env.TOKEN_EXPIRES_IN ?? '1h' }
-    );
+    const secretKey: string = process.env.TOKEN_SIGN_KEY!;
+    const expiresIn: StringValue = (process.env.TOKEN_EXPIRES_IN as StringValue) ?? '1h';
+    const payload: object = { username: user.username };
+
+    console.log('Issuing token with expiresIn:', expiresIn, payload, secretKey);
+
+    const token = jwt.sign(payload, secretKey, { expiresIn });
     return token;
 };
 
 const issueRefreshToken = (user: User) => {
-    const refreshToken = jwt.sign(
-        {
-            username: user.username,
-            refresh: true,
-        },
-        process.env.TOKEN_SIGN_KEY!,
-        { expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN ?? '30d' }
-    );
+    const secretKey: string = process.env.TOKEN_SIGN_KEY!;
+    const expiresIn: StringValue = (process.env.REFRESH_TOKEN_EXPIRES_IN as StringValue) ?? '30d';
+    const payload: object = {
+        username: user.username,
+        refresh: true
+    };
+
+     console.log('Issuing refresh token with expiresIn:', expiresIn, payload, secretKey);
+
+    const refreshToken = jwt.sign(payload, secretKey, { expiresIn });
     return refreshToken;
 };
