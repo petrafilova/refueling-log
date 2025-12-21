@@ -16,6 +16,15 @@ if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
 
 const transporter = nodemailer.createTransport(options);
 
+export const escapeHtml = (value: string): string => {
+    return value
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+};
+
 /**
  *  @param {string} to - Email address of recipient
  *  @param {string} subject - Email subject

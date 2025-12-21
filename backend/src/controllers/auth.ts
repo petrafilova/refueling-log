@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import CustomError from '../models/customError';
 import User from '../models/database/user';
 import { CUSTOM_ERROR_CODES } from '../models/errorCodes';
-import { sendMail } from '../util/email';
+import { sendMail, escapeHtml } from '../util/email';
 import sequelize from '../util/database';
 import { Op } from 'sequelize';
 import decodeAndValidateRefreshToken from '../util/decodeAndValidatRefreshToken';
@@ -136,11 +136,12 @@ export const registerAccount = async (
                 );
                 const confirmUrl =
                     process.env.CONFIRM_URL ?? 'http://localhost:3000/confirm/';
+                const safeUsername = escapeHtml(req.body.username);
                 const emailInfo = await sendMail(
                     req.body.email,
                     'Registrácia',
                     `Vitajte ${req.body.username}, na dokončenie registrácie prosím potvrďte svoju emailovú adresu. Váš registračný kľúč je "${userUUID}". Zadajte tento kľúč do formulára na stránke ${confirmUrl}.`,
-                    `<h1>Vitajte ${req.body.username},</h1><p>na dokončenie registrácie prosím potvrďte svoju emailovú adresu. Váš registračný kľúč je "${userUUID}". Zadajte tento kľúč do formulára na stránke ${confirmUrl}. Pre jednoduchosť môžete využiť nasledujúci odkaz: <a href="${confirmUrl}${userUUID}">aktivovať</a></p>`
+                    `<h1>Vitajte ${safeUsername},</h1><p>na dokončenie registrácie prosím potvrďte svoju emailovú adresu. Váš registračný kľúč je "${userUUID}". Zadajte tento kľúč do formulára na stránke ${confirmUrl}. Pre jednoduchosť môžete využiť nasledujúci odkaz: <a href="${confirmUrl}${userUUID}">aktivovať</a></p>`
                 );
 
                 if (emailInfo.rejected.length > 0) {
