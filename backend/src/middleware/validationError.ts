@@ -8,7 +8,7 @@ const validationError = (req: Request, res: Response, next: NextFunction) => {
     if (!errors.isEmpty()) {
         const mappedErrors = errors.array().map((validationError) => {
             return {
-                field: validationError.param,
+                field: 'path' in validationError ? validationError.path : '',
                 error: validationError.msg,
             };
         });
