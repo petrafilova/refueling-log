@@ -94,6 +94,7 @@ test/Test1234
 | RESET_LINK_VALIDITY | number | 12 ||Hours how long is reset link valid|
 | CONFIRM_URL | string | http://localhost:3000/confirm/ ||Url in emal for confirming registration|
 | REGISTRATION_ENABLED | boolean | false ||Enable posibility to register new users|
+| PROXY_TRUSTED_IPS | string | false | true | Comma separated list of allowed proxies something like: '::ffff:172.18.0.2' |
 
 ### Frontend
 
