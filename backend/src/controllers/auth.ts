@@ -121,8 +121,7 @@ export const registerAccount = async (req: Request, res: Response, next: NextFun
                         transaction: t
                     }
                 );
-                const confirmUrl =
-                    process.env.CONFIRM_URL ?? 'http://localhost:3000/confirm/';
+                const confirmUrl = process.env.CONFIRM_URL ?? 'http://localhost:3000/confirm/';
                 const safeUsername = escapeHtml(req.body.username);
                 const emailInfo = await sendMail(
                     req.body.email,
@@ -394,8 +393,6 @@ const issueToken = (user: User) => {
     const expiresIn: StringValue = (process.env.TOKEN_EXPIRES_IN as StringValue) ?? '1h';
     const payload: object = { username: user.username };
 
-    console.log('Issuing token with expiresIn:', expiresIn, payload, secretKey);
-
     const token = jwt.sign(payload, secretKey, { expiresIn });
     return token;
 };
@@ -407,8 +404,6 @@ const issueRefreshToken = (user: User) => {
         username: user.username,
         refresh: true
     };
-
-     console.log('Issuing refresh token with expiresIn:', expiresIn, payload, secretKey);
 
     const refreshToken = jwt.sign(payload, secretKey, { expiresIn });
     return refreshToken;
