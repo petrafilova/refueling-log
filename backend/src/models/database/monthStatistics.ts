@@ -1,12 +1,4 @@
-import {
-    AllowNull,
-    Column,
-    DataType,
-    Default,
-    ForeignKey,
-    Model,
-    Table,
-} from 'sequelize-typescript';
+import { AllowNull, Column, DataType, Default, ForeignKey, Model, Table } from 'sequelize-typescript';
 import { Optional } from 'sequelize';
 
 import ExpenseType from './expenseType';
@@ -21,46 +13,40 @@ interface MonthStatisticsAttributes {
     vehicleId: number;
 }
 
-interface MonthStatisticsCreationAttributes
-    extends Optional<MonthStatisticsAttributes, 'id'> {}
-
 @Table({
-    timestamps: true,
+    timestamps: true
 })
-class MonthStatistics extends Model<
-    MonthStatisticsAttributes,
-    MonthStatisticsCreationAttributes
-> {
+class MonthStatistics extends Model<MonthStatisticsAttributes, Optional<MonthStatisticsAttributes, 'id'>> {
     @AllowNull(false)
     @Column({
-        type: DataType.INTEGER,
+        type: DataType.INTEGER
     })
     declare year: number;
 
     @AllowNull(false)
     @Column({
-        type: DataType.INTEGER,
+        type: DataType.INTEGER
     })
     declare month: number;
 
     @AllowNull(false)
     @Default(0)
     @Column({
-        type: DataType.DECIMAL(10, 2),
+        type: DataType.DECIMAL(10, 2)
     })
     declare priceSummary: number;
 
     @AllowNull(false)
     @ForeignKey(() => ExpenseType)
     @Column({
-        onDelete: 'CASCADE',
+        onDelete: 'CASCADE'
     })
     declare expenseTypeId: number;
 
     @AllowNull(false)
     @ForeignKey(() => Vehicle)
     @Column({
-        onDelete: 'CASCADE',
+        onDelete: 'CASCADE'
     })
     declare vehicleId: number;
 }

@@ -1,13 +1,4 @@
-import {
-    AllowNull,
-    BelongsTo,
-    Column,
-    DataType,
-    ForeignKey,
-    Index,
-    Model,
-    Table,
-} from 'sequelize-typescript';
+import { AllowNull, BelongsTo, Column, DataType, ForeignKey, Index, Model, Table } from 'sequelize-typescript';
 import { Optional } from 'sequelize/types';
 import VehicleFuel from './vehicleFuel';
 
@@ -24,73 +15,70 @@ interface FuelLogAttributes {
     vehicleFuelId: number;
 }
 
-interface FuelLogCreationAttributes
-    extends Optional<FuelLogAttributes, 'id' | 'consumption'> {}
-
 @Table({
-    timestamps: true,
+    timestamps: true
 })
-class FuelLog extends Model<FuelLogAttributes, FuelLogCreationAttributes> {
+class FuelLog extends Model<FuelLogAttributes, Optional<FuelLogAttributes, 'id' | 'consumption'>> {
     @AllowNull(false)
     @Column({
-        type: DataType.DECIMAL(10, 2),
+        type: DataType.DECIMAL(10, 2)
     })
     declare quantity: number;
 
     @AllowNull(false)
     @Column({
-        type: DataType.DECIMAL(10, 2),
+        type: DataType.DECIMAL(10, 2)
     })
     declare unitPrice: number;
 
     @AllowNull(false)
     @Column({
-        type: DataType.DECIMAL(10, 2),
+        type: DataType.DECIMAL(10, 2)
     })
     declare totalPrice: number;
 
     @AllowNull(false)
     @Column({
-        type: DataType.DECIMAL(10, 2),
+        type: DataType.DECIMAL(10, 2)
     })
     declare mileage: number;
 
     @AllowNull(false)
     @Index({
         name: 'unique-fuel-log',
-        unique: true,
+        unique: true
     })
     @Column({
-        type: DataType.DATE,
+        type: DataType.DATE
     })
     declare dateTime: Date;
 
     @AllowNull(false)
     @Column({
-        type: DataType.BOOLEAN,
+        type: DataType.BOOLEAN
     })
     declare full: boolean;
 
     @AllowNull(false)
     @Column({
-        type: DataType.BOOLEAN,
+        type: DataType.BOOLEAN
     })
     declare previousMissing: boolean;
 
     @AllowNull
     @Column({
-        type: DataType.DECIMAL(10, 2),
+        type: DataType.DECIMAL(10, 2)
     })
     declare consumption: number | null; // automaticaly calculated
 
     @AllowNull(false)
     @Index({
         name: 'unique-fuel-log',
-        unique: true,
+        unique: true
     })
     @ForeignKey(() => VehicleFuel)
     @Column({
-        onDelete: 'CASCADE',
+        onDelete: 'CASCADE'
     })
     declare vehicleFuelId: number;
 

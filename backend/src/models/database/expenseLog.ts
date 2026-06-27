@@ -1,13 +1,4 @@
-import {
-    AllowNull,
-    BelongsTo,
-    Column,
-    DataType,
-    ForeignKey,
-    Index,
-    Model,
-    Table,
-} from 'sequelize-typescript';
+import { AllowNull, BelongsTo, Column, DataType, ForeignKey, Index, Model, Table } from 'sequelize-typescript';
 import { Optional } from 'sequelize/types';
 
 import ExpenseType from './expenseType';
@@ -23,52 +14,46 @@ interface ExpenseLogAttributes {
     vehicleId: number;
 }
 
-interface ExpenseLogCreationAttributes
-    extends Optional<ExpenseLogAttributes, 'id' | 'comment'> {}
-
 @Table({
-    timestamps: true,
+    timestamps: true
 })
-class ExpenseLog extends Model<
-    ExpenseLogAttributes,
-    ExpenseLogCreationAttributes
-> {
+class ExpenseLog extends Model<ExpenseLogAttributes, Optional<ExpenseLogAttributes, 'id' | 'comment'>> {
     @AllowNull(false)
     @Column({
-        type: DataType.DECIMAL(10, 2),
+        type: DataType.DECIMAL(10, 2)
     })
     declare price: number;
 
     @AllowNull(false)
     @Column({
-        type: DataType.DECIMAL(10, 2),
+        type: DataType.DECIMAL(10, 2)
     })
     declare mileage: number;
 
     @AllowNull(false)
     @Index({
         name: 'unique-expense-log',
-        unique: true,
+        unique: true
     })
     @Column({
-        type: DataType.DATE,
+        type: DataType.DATE
     })
     declare dateTime: Date;
 
     @AllowNull
     @Column({
-        type: DataType.TEXT,
+        type: DataType.TEXT
     })
     declare comment: string | null;
 
     @AllowNull(false)
     @Index({
         name: 'unique-expense-log',
-        unique: true,
+        unique: true
     })
     @ForeignKey(() => ExpenseType)
     @Column({
-        onDelete: 'CASCADE',
+        onDelete: 'CASCADE'
     })
     declare typeId: number;
 
@@ -78,7 +63,7 @@ class ExpenseLog extends Model<
     @AllowNull(false)
     @ForeignKey(() => Vehicle)
     @Column({
-        onDelete: 'CASCADE',
+        onDelete: 'CASCADE'
     })
     declare vehicleId: number;
 

@@ -1,14 +1,4 @@
-import {
-    AllowNull,
-    BelongsTo,
-    Column,
-    DataType,
-    ForeignKey,
-    HasMany,
-    Index,
-    Model,
-    Table,
-} from 'sequelize-typescript';
+import { AllowNull, BelongsTo, Column, DataType, ForeignKey, HasMany, Index, Model, Table } from 'sequelize-typescript';
 import { Optional } from 'sequelize/types';
 import { FUEL_TYPE } from '../fuelTypeEnum';
 import FuelLog from './fuelLog';
@@ -21,34 +11,28 @@ interface VehicleFuelAttributes {
     vehicleId: number;
 }
 
-interface VehicleFuelCreationAttributes
-    extends Optional<VehicleFuelAttributes, 'id'> {}
-
 @Table({
-    timestamps: true,
+    timestamps: true
 })
-class VehicleFuel extends Model<
-    VehicleFuelAttributes,
-    VehicleFuelCreationAttributes
-> {
+class VehicleFuel extends Model<VehicleFuelAttributes, Optional<VehicleFuelAttributes, 'id'>> {
     @AllowNull(false)
     @Index({
         name: 'unique-vehicle-fuel',
-        unique: true,
+        unique: true
     })
     @Column({
-        type: DataType.ENUM(...Object.keys(FUEL_TYPE)),
+        type: DataType.ENUM(...Object.keys(FUEL_TYPE))
     })
     declare fuel: FUEL_TYPE;
 
     @AllowNull(false)
     @Index({
         name: 'unique-vehicle-fuel',
-        unique: true,
+        unique: true
     })
     @ForeignKey(() => Vehicle)
     @Column({
-        onDelete: 'CASCADE',
+        onDelete: 'CASCADE'
     })
     declare vehicleId: number;
 

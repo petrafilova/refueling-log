@@ -9,7 +9,7 @@ import {
     HasMany,
     Model,
     Scopes,
-    Table,
+    Table
 } from 'sequelize-typescript';
 import { Optional } from 'sequelize/types';
 import ExpenseLog from './expenseLog';
@@ -28,73 +28,70 @@ interface VehicleAttributes {
     username: string;
 }
 
-interface VehicleCreationAttributes
-    extends Optional<VehicleAttributes, 'id' | 'dateOfReg' | 'color' | 'vin'> {}
-
 @DefaultScope(() => ({
-    attributes: { exclude: ['username'] },
+    attributes: { exclude: ['username'] }
 }))
 @Scopes(() => ({
     ownershipScope: {
-        attributes: ['id', 'username'],
-    },
+        attributes: ['id', 'username']
+    }
 }))
 @Table({
-    timestamps: true,
+    timestamps: true
 })
-class Vehicle extends Model<VehicleAttributes, VehicleCreationAttributes> {
+class Vehicle extends Model<VehicleAttributes, Optional<VehicleAttributes, 'id' | 'dateOfReg' | 'color' | 'vin'>> {
     @AllowNull(false)
     @Column({
-        type: DataType.STRING(20),
+        type: DataType.STRING(20)
     })
     declare brand: string;
 
     @AllowNull(false)
     @Column({
-        type: DataType.STRING(60),
+        type: DataType.STRING(60)
     })
     declare model: string;
 
     @AllowNull(false)
     @Index({
         name: 'unique-vehicle',
-        unique: true,
+        unique: true
     })
     @Column({
-        type: DataType.STRING(10),
+        type: DataType.STRING(10)
     })
     declare licensePlateNo: string;
 
     @AllowNull
     @Column({
-        type: DataType.DATEONLY,
+        type: DataType.DATEONLY
     })
     declare dateOfReg: Date;
 
     @AllowNull
     @Column({
-        type: DataType.STRING(20),
+        type: DataType.STRING(20)
     })
     declare color: string;
 
     @AllowNull
     @Index({
         name: 'unique-vehicle',
-        unique: true,
+        unique: true
     })
     @Column({
-        type: DataType.STRING(17),
+        type: DataType.STRING(17)
     })
     declare vin: string;
 
     @AllowNull(false)
     @Index({
         name: 'unique-vehicle',
-        unique: true,
+        unique: true
     })
     @ForeignKey(() => User)
     @Column({
-        onDelete: 'CASCADE',
+        onDelete: 'CASCADE'
     })
     declare username: string;
 

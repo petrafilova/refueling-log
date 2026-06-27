@@ -30,7 +30,8 @@ export const getByVehicle = (
 };
 
 export const getById = (req: Request, res: Response, next: NextFunction) => {
-    VehicleFuel.findByPk(req.params.vehicleFuelId)
+    const vehicleFuelId = +req.params.vehicleFuelId;
+    VehicleFuel.findByPk(vehicleFuelId)
         .then(async (vehicleFuel) => {
             if (!vehicleFuel) {
                 const error = new CustomError();
@@ -73,7 +74,7 @@ export const updateVehicleFuel = async (
     res: Response,
     next: NextFunction
 ) => {
-    const vehicleFuelId = req.params.vehicleFuelId;
+    const vehicleFuelId = +req.params.vehicleFuelId;
     try {
         const vehicleFuel = await sequelize.transaction(async (t) => {
             const vehicleFuel = await VehicleFuel.findByPk(vehicleFuelId, {
@@ -113,8 +114,9 @@ export const deleteVehicleFuel = async (
 ) => {
     try {
         await sequelize.transaction(async (t) => {
+            const vehicleFuelId = +req.params.vehicleFuelId;
             const vehicleFuel = await VehicleFuel.findByPk(
-                req.params.vehicleFuelId,
+                vehicleFuelId,
                 { transaction: t }
             );
             if (!vehicleFuel) {

@@ -1,13 +1,4 @@
-import {
-    AllowNull,
-    Column,
-    DataType,
-    ForeignKey,
-    HasMany,
-    Index,
-    Model,
-    Table,
-} from 'sequelize-typescript';
+import { AllowNull, Column, DataType, ForeignKey, HasMany, Index, Model, Table } from 'sequelize-typescript';
 import { Optional } from 'sequelize/types';
 import ExpenseLog from './expenseLog';
 import MonthStatistics from './monthStatistics';
@@ -19,34 +10,28 @@ interface ExpenseTypeAttributes {
     username: string;
 }
 
-interface ExpenseTypeCreationAttributes
-    extends Optional<ExpenseTypeAttributes, 'id'> {}
-
 @Table({
-    timestamps: false,
+    timestamps: false
 })
-class ExpenseType extends Model<
-    ExpenseTypeAttributes,
-    ExpenseTypeCreationAttributes
-> {
+class ExpenseType extends Model<ExpenseTypeAttributes, Optional<ExpenseTypeAttributes, 'id'>> {
     @AllowNull(false)
     @Index({
         name: 'unique-expense-type',
-        unique: true,
+        unique: true
     })
     @Column({
-        type: DataType.STRING(30),
+        type: DataType.STRING(30)
     })
     declare name: string;
 
     @AllowNull(false)
     @Index({
         name: 'unique-expense-type',
-        unique: true,
+        unique: true
     })
     @ForeignKey(() => User)
     @Column({
-        onDelete: 'CASCADE',
+        onDelete: 'CASCADE'
     })
     declare username: string;
 

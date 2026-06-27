@@ -12,8 +12,6 @@ interface UserAttributes {
     confirmed: boolean;
 }
 
-interface UserCreationAttributes extends Optional<UserAttributes, 'uuid'> {}
-
 @DefaultScope(() => ({
     attributes: { exclude: ['password', 'uuid'] }
 }))
@@ -28,7 +26,7 @@ interface UserCreationAttributes extends Optional<UserAttributes, 'uuid'> {}
 @Table({
     timestamps: true
 })
-class User extends Model<UserAttributes, UserCreationAttributes> {
+class User extends Model<UserAttributes, Optional<UserAttributes, 'uuid'>> {
     @PrimaryKey
     @Column({
         type: DataType.STRING(50)
